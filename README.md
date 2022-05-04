@@ -72,4 +72,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 # Some notes about architecture
 
-## TODO
+## Levels
+
+1. Pages
+2. Modules
+3. Components
