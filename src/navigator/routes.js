@@ -1,5 +1,5 @@
 import React from 'react'
-import Login from '../views/Login/Login'
+import Login from '../pages/Login/Login'
 
 export const paths =Object.freeze({
     LOGIN: "/login"
