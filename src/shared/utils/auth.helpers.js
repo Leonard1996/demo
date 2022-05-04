@@ -1,20 +1,20 @@
-import { TOKEN, USER } from "./global.constants"
+import { TOKEN, USER } from './global.constants'
 
 export const login = () => {
-    localStorage.setItem(USER, 'user')
+  localStorage.setItem(USER, 'user')
 }
 
 export const logout = () => {
-    localStorage.removeItem(USER)
+  localStorage.removeItem(USER)
 }
 
-export const isLoggedIn =() => {
-    if (localStorage.getItem(TOKEN)) {
-        return true
-    }
-    return false
+export const isLoggedIn = () => {
+  if (localStorage.getItem(TOKEN)) {
+    return true
+  }
+  return false
 }
 
 export const getToken = () => {
-    return localStorage.getItem(TOKEN)
+  return localStorage.getItem(TOKEN)
 }

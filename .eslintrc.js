@@ -4,11 +4,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    jest: true,
-    node: true,
-    commonjs: true,
   },
-  parser: 'babel-eslint',
   extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:prettier/recommended'],
   parserOptions: {
     ecmaFeatures: {
@@ -26,7 +22,6 @@ module.exports = {
       },
     ],
     'template-curly-spacing': 'off',
-    indent: 'off',
     'react/prop-types': 0,
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
