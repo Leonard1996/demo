@@ -1,0 +1,23 @@
+.LoginLayout {
+  background-color: transparent;
+  height: 100vh;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.LoginHeader {
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: auto;
+  padding: 20px;
+}
+
+.LoginFooter {
+  background-color: transparent;
+}

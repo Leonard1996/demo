@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Button as AntButton } from "antd";
 
-const Button = () => {
+const Button = ({ name, type, size, danger, ghost }) => {
   return (
-    <button>Button</button>
-  )
-}
+    <AntButton type={type} size={size} danger={danger} ghost={ghost}>
+      {name}
+    </AntButton>
+  );
+};
 
-export default Button
+export default Button;
