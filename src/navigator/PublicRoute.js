@@ -1,6 +1,6 @@
-import React from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
-import { isLoggedIn } from '../shared/utils'
+import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { isLoggedIn } from "../shared/utils";
 
 const PublicRoute = ({ children }) => {
   let location = useLocation()

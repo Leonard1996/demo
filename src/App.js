@@ -1,6 +1,6 @@
-import './App.css'
-import { BrowserRouter } from 'react-router-dom'
-import Navigator from './navigator/navigator'
+import "./App.less";
+import { BrowserRouter } from "react-router-dom";
+import Navigator from "./navigator/navigator";
 
 function App() {
   return (
