@@ -9,7 +9,7 @@ function App() {
         <Navigator />
       </BrowserRouter>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
