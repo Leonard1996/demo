@@ -3,8 +3,9 @@ import axios from 'axios'
 
 import { getToken, isLoggedIn } from '../shared/utils'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
-const PrivateRoute = ({ children, pageName }) => {
+const PrivateRoute = ({ children }) => {
   let navigate = useNavigate()
   let location = useLocation()
 
@@ -28,6 +29,10 @@ const PrivateRoute = ({ children, pageName }) => {
   }
 
   return <>{children}</>
+}
+
+PrivateRoute.propTypes = {
+  children: PropTypes.children,
 }
 
 export default PrivateRoute

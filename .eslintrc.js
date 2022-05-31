@@ -4,7 +4,9 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    jest: true,
   },
+  parser: 'babel-eslint',
   extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:prettier/recommended'],
   parserOptions: {
     ecmaFeatures: {
@@ -21,15 +23,13 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
-    'template-curly-spacing': 'off',
-    'react/prop-types': 0,
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     quotes: ['error', 'single'],
     'no-use-before-define': ['error', { variables: false }],
-    // indent: ['error', 2, { SwitchCase: 1 }],
-    'linebreak-style': 0,
-    semi: ['error', 'always'],
+    indent: ['error', 2, { SwitchCase: 1 }],
+    'linebreak-style': ['error', 'unix'],
+    // 'react/prop-types': 2,
     'react/self-closing-comp': [
       'error',
       {
@@ -37,11 +37,10 @@ module.exports = {
         html: true,
       },
     ],
-    'no-unused-vars': 'warn',
   },
   settings: {
     react: {
       version: 'latest',
     },
   },
-};
+}

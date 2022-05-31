@@ -9,16 +9,20 @@ const Navigator = () => {
   return (
     <>
       <Routes>
-        {routes.map((route) => (
+        {routes.map(route => (
           <Route
             key={route.name}
             path={route.path}
             element={
-              route.protected ? <PrivateRoute pageName={route.name}>{route.element}</PrivateRoute> : <PublicRoute>{route.element}</PublicRoute>
+              route.protected ? (
+                <PrivateRoute pageName={route.name}>{route.element}</PrivateRoute>
+              ) : (
+                <PublicRoute>{route.element}</PublicRoute>
+              )
             }
-          ></Route>
+          />
         ))}
-        <Route path="*" element={<div>Not found!</div>}></Route>
+        <Route path="*" element={<div>Not found!</div>} />
       </Routes>
     </>
   )

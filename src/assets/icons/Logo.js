@@ -1,9 +1,10 @@
-import { Space } from "antd";
-import Icon from "@ant-design/icons";
+/* eslint-disable react/display-name */
+/* eslint-disable react/prop-types */
+import { Space } from 'antd'
 
 const Logo = ({ width, height }) => (
   <svg width={width} height={height} viewBox="0 0 245 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clip-path="url(#clip0_120181_178597)">
+    <g clipPath="url(#clip0_120181_178597)">
       <path
         d="M56.41 46.93C56.4044 46.8635 56.4044 46.7966 56.41 46.73C56.41 46.73 56.47 46.46 56.49 46.34C58.4 37.23 63.39 31.77 74.27 31.76H106.65C106.85 31.7678 107.039 31.8541 107.175 32.0001C107.312 32.1461 107.385 32.3401 107.38 32.54C107.384 32.6066 107.384 32.6734 107.38 32.74C105.68 42 100.59 47.74 89.52 47.74H57.14C56.9411 47.7297 56.7539 47.6427 56.6177 47.4972C56.4816 47.3518 56.4071 47.1592 56.41 46.96"
         fill="#31BAD6"
@@ -35,10 +36,10 @@ const Logo = ({ width, height }) => (
       </clipPath>
     </defs>
   </svg>
-);
+)
 
 export default ({ width, height }) => (
   <Space>
     <Logo width={width} height={height} />
   </Space>
-);
+)
