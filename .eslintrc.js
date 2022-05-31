@@ -29,7 +29,7 @@ module.exports = {
     'no-use-before-define': ['error', { variables: false }],
     indent: ['error', 2, { SwitchCase: 1 }],
     'linebreak-style': ['error', 'unix'],
-    // 'react/prop-types': 2,
+    'react/prop-types': 2,
     'react/self-closing-comp': [
       'error',
       {
