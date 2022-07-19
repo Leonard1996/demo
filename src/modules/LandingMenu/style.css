@@ -1,0 +1,26 @@
+.landingMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: none;
+    font-size: 22px;
+    text-transform: uppercase;
+    height: 120px;
+    line-height: 120px;
+    letter-spacing: 1px;
+}
+
+.landingMenu button {
+    font-size: 22px;
+    text-transform: uppercase;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 20px;
+    letter-spacing: .08em;
+}
+
+button {
+    color: #282c34;
+    padding: 0 20px;
+}
+
