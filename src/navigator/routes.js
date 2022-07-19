@@ -11,6 +11,12 @@ const routeNames = Object.freeze({
 
 export const routes = [
   {
+    name: 'Landing',
+    path: '/',
+    protected: false,
+    element: <div>Landing</div>,
+  },
+  {
     name: routeNames.LOGIN,
     path: paths.LOGIN,
     protected: false,

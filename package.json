@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^6.4.5",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.20.7",
     "axios": "^0.26.1",
+    "craco-less": "^2.0.0",
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -16,8 +18,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "craco start",
+    "build": "craco build",
     "deploy": "react-scripts build && aws s3 rm s3://hyrabucket/ --recursive && aws s3 cp ./build s3://hyrabucket/ --recursive --acl public-read",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
