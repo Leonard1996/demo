@@ -4,13 +4,9 @@ import { Layout, Row, Col } from 'antd'
 // import { UserOutlined, LockOutlined, QuestionOutlined } from '@ant-design/icons'
 
 // import CopyRight from '../../shared/components/CopyRight/CopyRight'
-
-import { login } from '../../services'
-
 import LandingMenu from '../../modules/LandingMenu/LandingMenu'
-import LoginForm from '../../modules/Form/Form'
 
-const Login = () => {
+const Landing = () => {
   const { Content } = Layout
   return (
     <Layout style={{ height: '100vh' }} className="LoginLayout">
@@ -18,7 +14,7 @@ const Login = () => {
       <Content>
         <Row style={{ paddingTop: '150px' }} align="middle" justify="center">
           <Col flex="640px">
-            <LoginForm onFinish={login} />
+            <div>Landing</div>
           </Col>
         </Row>
       </Content>
@@ -26,4 +22,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Landing

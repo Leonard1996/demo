@@ -10,7 +10,7 @@ const menuList = [
   { name: 'Come Funziona' },
   { name: 'Lavora con noi' },
   { name: 'Chi siamo' },
-  { name: 'Accedi', type: 'link' },
+  { name: 'Accedi', type: 'link', path: '/login' },
   { name: 'Inizia Adesso', type: 'primary' },
 ]
 
@@ -24,7 +24,7 @@ const MenuList = () => {
   }
   const mlist = menuList.map(({ name, type = 'text', path = '/' }, i) => {
     return (
-      <Button key={i} type={type} to={path} style={{ textDecoration: 'none' }}>
+      <Button key={i} type={type} href={path} style={{ textDecoration: 'none' }}>
         {name}
       </Button>
     )

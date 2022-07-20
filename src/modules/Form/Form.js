@@ -3,7 +3,6 @@ import { Button, Checkbox, Form, Input } from 'antd'
 import PropTypes from 'prop-types'
 
 //#9a77cf
-
 const LoginForm = ({ onFinish, onFinishFailed }) => {
   return (
     <Form

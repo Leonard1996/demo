@@ -1,5 +1,6 @@
 import React from 'react'
 import Login from '../pages/Login/Login'
+import Landing from '../pages/Landing/Landing'
 
 export const paths = Object.freeze({
   LOGIN: '/login',
@@ -14,7 +15,7 @@ export const routes = [
     name: 'Landing',
     path: '/',
     protected: false,
-    element: <div>Landing</div>,
+    element: <Landing />,
   },
   {
     name: routeNames.LOGIN,

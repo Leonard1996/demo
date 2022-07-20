@@ -10,7 +10,7 @@
     letter-spacing: 1px;
 }
 
-.landingMenu button {
+.landingMenu a {
     font-size: 22px;
     text-transform: uppercase;
     height: 50px;
@@ -19,7 +19,7 @@
     letter-spacing: .08em;
 }
 
-button {
+a {
     color: #282c34;
     padding: 0 20px;
 }
