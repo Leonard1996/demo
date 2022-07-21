@@ -8,6 +8,7 @@
     height: 120px;
     line-height: 120px;
     letter-spacing: 1px;
+    align-items: center;
 }
 
 .landingMenu a {

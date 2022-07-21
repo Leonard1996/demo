@@ -8,7 +8,7 @@ import './style.css'
 
 const menuList = [
   { name: 'Come Funziona' },
-  { name: 'Lavora con noi' },
+  { name: 'Lavora con noi', path: '/registerth' },
   { name: 'Chi siamo' },
   { name: 'Accedi', type: 'link', path: '/login' },
   { name: 'Inizia Adesso', type: 'primary' },

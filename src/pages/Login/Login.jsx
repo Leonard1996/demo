@@ -8,7 +8,7 @@ import { Layout, Row, Col } from 'antd'
 import { login } from '../../services'
 
 import LandingMenu from '../../modules/LandingMenu/LandingMenu'
-import LoginForm from '../../modules/Form/Form'
+import LoginForm from '../../modules/LoginForm/LoginForm'
 
 const Login = () => {
   const { Content } = Layout

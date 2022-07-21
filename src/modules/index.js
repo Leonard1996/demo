@@ -1,2 +1,3 @@
-export * from './Form/Form'
+export * from './LoginForm/LoginForm'
 export * from './LandingMenu/LandingMenu'
+export * from './RegisterTherapistForm/RegisterTherapistForm'
