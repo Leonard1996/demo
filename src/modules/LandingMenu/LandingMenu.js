@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Header } from 'antd/es/layout/layout'
 import Logo from '../../assets/icons/Logo'
@@ -11,7 +11,7 @@ const menuList = [
   { name: 'Lavora con noi', path: '/registerth' },
   { name: 'Chi siamo' },
   { name: 'Accedi', type: 'link', path: '/login' },
-  { name: 'Inizia Adesso', type: 'primary' },
+  { name: 'Inizia Adesso', type: 'primary', path: '/register' },
 ]
 
 const MenuList = () => {
@@ -33,8 +33,12 @@ const MenuList = () => {
 }
 
 const LandingMenu = () => {
+  const [scroll, setScroll] = useState(0)
+  window.addEventListener('scroll', () => {
+    setScroll(window.scrollY)
+  })
   return (
-    <Header className="landingMenu">
+    <Header className={'landingMenu ' + (scroll > 10 ? 'colored' : '')}>
       <Link to="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Logo width="200" height="90" fill="white" />
       </Link>

@@ -11,7 +11,7 @@ const Landing = () => {
   return (
     <Layout style={{ height: '100vh' }} className="LoginLayout">
       <LandingMenu />
-      <Content>
+      <Content style={{ marginTop: '120px' }}>
         <Row style={{ paddingTop: '150px' }} align="middle" justify="center">
           <Col flex="640px">
             <div>Landing</div>

@@ -2,12 +2,18 @@ import React from 'react'
 import { Button, Checkbox, Col, DatePicker, Form, Input, Radio, Row, Select, Upload } from 'antd'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { Option } from 'antd/es/mentions'
 import TextArea from 'antd/es/input/TextArea'
 
 const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
   const disabledDate = current => {
     return current && current > moment().endOf('day')
+  }
+
+  const dummyReq = async ({ file, onSuccess }) => {
+    setTimeout(() => {
+      onSuccess('ok')
+      console.log(file)
+    })
   }
   return (
     <Form
@@ -27,7 +33,7 @@ const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         <Input />
       </Form.Item>
 
-      <Form.Item label="COGNOME" name="surname" rules={[{ required: true, message: 'Please input your surname!' }]}>
+      <Form.Item label="COGNOME" name="lastName" rules={[{ required: true, message: 'Please input your surname!' }]}>
         <Input />
       </Form.Item>
 
@@ -67,11 +73,11 @@ const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         ]}
       >
         <Select placeholder="Please select a type">
-          <Option value="COGNITIVO-COMPORTAMENTALE">APPROCCIO COGNITIVO-COMPORTAMENTALE</Option>
-          <Option value="SISTEMICO">APPROCCIO SISTEMICO</Option>
-          <Option value="PSICODINAMICO">APPROCCIO PSICODINAMICO</Option>
-          <Option value="UMANISTICO-ESISTENZIALE">APPROCCIO UMANISTICO-ESISTENZIALE</Option>
-          <Option value="ALTRO">ALTRO</Option>
+          <Select.Option value="COGNITIVO-COMPORTAMENTALE">APPROCCIO COGNITIVO-COMPORTAMENTALE</Select.Option>
+          <Select.Option value="SISTEMICO">APPROCCIO SISTEMICO</Select.Option>
+          <Select.Option value="PSICODINAMICO">APPROCCIO PSICODINAMICO</Select.Option>
+          <Select.Option value="UMANISTICO-ESISTENZIALE">APPROCCIO UMANISTICO-ESISTENZIALE</Select.Option>
+          <Select.Option value="ALTRO">ALTRO</Select.Option>
         </Select>
       </Form.Item>
 
@@ -87,8 +93,8 @@ const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         ]}
       >
         <Select placeholder="Please select a type">
-          <Option value="italia">ITALIA</Option>
-          <Option value="altro">ALTRO</Option>
+          <Select.Option value="italia">ITALIA</Select.Option>
+          <Select.Option value="altro">ALTRO</Select.Option>
         </Select>
       </Form.Item>
 
@@ -104,8 +110,8 @@ const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         ]}
       >
         <Select placeholder="Please select a province">
-          <Option value="piemonte">PIEMONTE</Option>
-          <Option value="toscana">TOSCANA</Option>
+          <Select.Option value="piemonte">PIEMONTE</Select.Option>
+          <Select.Option value="toscana">TOSCANA</Select.Option>
         </Select>
       </Form.Item>
 
@@ -258,7 +264,7 @@ const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
       </Form.Item>
 
       <Form.Item label="CARICA IL TUO CV" name="cv" valuePropName="fileCV">
-        <Upload action="/upload.do" listType="text">
+        <Upload customRequest={dummyReq} listType="text">
           <Input />
         </Upload>
       </Form.Item>

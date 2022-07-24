@@ -1,0 +1,20 @@
+.intro {
+    height: 600px;
+    width: 100%;
+    background: url("../../assets/images/register.jpeg");
+    background-size: cover;
+    justify-content: center;
+    align-items: flex-start;
+    display: flex;
+    color: #f1f1f1;
+    flex-direction: column;
+    font-size: 28px;
+    padding-left: 80px;
+    font-family: sans-serif;
+}
+
+.intro .intro-head {
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}

@@ -7,6 +7,7 @@ import { Layout, Row, Col, Space } from 'antd'
 import LandingMenu from '../../modules/LandingMenu/LandingMenu'
 import RegisterTherapistForm from '../../modules/RegisterTherapistForm/RegisterTherapistForm'
 import { registerTherapist } from '../../services'
+import { useNavigate } from 'react-router-dom'
 
 const IntroText = (
   <p>
@@ -37,10 +38,16 @@ const IntroText = (
 
 const RegisterTherapist = () => {
   const { Content } = Layout
+  const navigate = useNavigate()
+
+  const onFinish = async values => {
+    const resultAction = await registerTherapist(values)
+    if (resultAction) navigate('/')
+  }
   return (
     <Layout className="LoginLayout">
       <LandingMenu />
-      <Content>
+      <Content style={{ marginTop: '120px' }}>
         <Row style={{ padding: '30px 80px' }} align="middle" justify="start">
           <Col style={{ textAlign: 'start' }} span={24}>
             <Space>
@@ -50,7 +57,7 @@ const RegisterTherapist = () => {
         </Row>
         <Row style={{ padding: '50px 80px', background: '#fff' }} align="middle" justify="start">
           <Col flex="740px" style={{ textAlign: 'start' }} span={24}>
-            <RegisterTherapistForm onFinish={registerTherapist} />
+            <RegisterTherapistForm onFinish={onFinish} />
           </Col>
         </Row>
       </Content>

@@ -9,7 +9,7 @@ export const logout = () => {
 }
 
 export const isLoggedIn = () => {
-  if (localStorage.getItem(TOKEN)) {
+  if (localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN)) {
     return true
   }
   return false

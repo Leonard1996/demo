@@ -9,16 +9,23 @@ import { login } from '../../services'
 
 import LandingMenu from '../../modules/LandingMenu/LandingMenu'
 import LoginForm from '../../modules/LoginForm/LoginForm'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const { Content } = Layout
+  const navigate = useNavigate()
+
+  const onFinish = async values => {
+    const resultAction = await login(values)
+    if (resultAction) navigate('/')
+  }
   return (
     <Layout style={{ height: '100vh' }} className="LoginLayout">
       <LandingMenu />
-      <Content>
+      <Content style={{ marginTop: '120px' }}>
         <Row style={{ paddingTop: '150px' }} align="middle" justify="center">
           <Col flex="640px">
-            <LoginForm onFinish={login} />
+            <LoginForm onFinish={onFinish} />
           </Col>
         </Row>
       </Content>
