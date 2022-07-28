@@ -8,6 +8,8 @@ import Step2Form from './Step2Form'
 import Step3Form from './Step3Form'
 import Step4Form from './Step4Form'
 
+import './style.css'
+
 const RegisterForm = ({ onFinish }) => {
   const [step, setStep] = useState(0)
   const [formData, setFormData] = useState({ name: 'test' })

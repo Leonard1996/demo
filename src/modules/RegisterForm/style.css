@@ -1,0 +1,12 @@
+.acceptConditions {
+    margin-bottom: 10px;
+}
+
+.acceptConditions a {
+    color: #ec4176;
+    font-size: 16px;
+}
+
+.acceptConditions a:hover {
+    color: #9a77cf;
+}

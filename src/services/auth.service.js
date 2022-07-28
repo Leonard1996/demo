@@ -16,6 +16,17 @@ export const login = async ({ remember, ...data }) => {
   return true
 }
 
+// eslint-disable-next-line no-unused-vars
+export const register = async ({ ignore, ...data }) => {
+  const response = await axios
+    .post('/register', data)
+    .catch(e => alert(e.response?.data?.error?.message || 'Something went wrong!'))
+  if (response) {
+    alert(response.data.message)
+    return true
+  }
+}
+
 export const registerTherapist = async data => {
   const formData = new FormData()
   const { cv, ...rest } = data
