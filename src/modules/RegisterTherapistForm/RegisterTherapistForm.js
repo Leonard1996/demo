@@ -3,11 +3,13 @@ import { Button, Checkbox, Col, DatePicker, Form, Input, Radio, Row, Select, Upl
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import TextArea from 'antd/es/input/TextArea'
+import { PrefixSelector } from '../../shared/components'
 
-const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
+export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
   const disabledDate = current => {
-    return current && current > moment().endOf('day')
+    return current && current > moment().subtract(18, 'years').endOf('day')
   }
+  const defaultPickerValue = moment().subtract(18, 'years')
 
   const dummyReq = async ({ file, onSuccess }) => {
     setTimeout(() => {
@@ -38,11 +40,29 @@ const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
       </Form.Item>
 
       <Form.Item
+        name="phone"
+        label="NUMERO DI TELEFONO"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your phone number!',
+          },
+        ]}
+      >
+        <Input
+          addonBefore=<PrefixSelector />
+          style={{
+            width: '100%',
+          }}
+        />
+      </Form.Item>
+
+      <Form.Item
         label="DATA DI NASCITA"
         name="birthday"
         rules={[{ required: true, message: 'Please input your birthday!' }]}
       >
-        <DatePicker disabledDate={disabledDate} />
+        <DatePicker disabledDate={disabledDate} defaultPickerValue={defaultPickerValue} />
       </Form.Item>
 
       <Form.Item
@@ -329,5 +349,3 @@ RegisterTherapistForm.propTypes = {
   onFinish: PropTypes.func,
   onFinishFailed: PropTypes.func,
 }
-
-export default RegisterTherapistForm

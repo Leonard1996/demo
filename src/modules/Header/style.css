@@ -1,0 +1,43 @@
+.headerMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: none;
+    font-size: 22px;
+    text-transform: uppercase;
+    height: 120px;
+    line-height: 120px;
+    letter-spacing: 1px;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    background: #f1f1f1;
+
+}
+
+.headerMenu.colored {
+    /*background: rgba(93,62,146,0.95);*/
+    /*color: #fff;*/
+    background: #f1f1f1;
+}
+
+
+.headerMenu a {
+    font-size: 22px;
+    text-transform: uppercase;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 20px;
+    letter-spacing: .08em;
+}
+
+a {
+    color: #282c34;
+    padding: 0 20px;
+}
+
+.headerMenu.colored a {
+    /*color: #fff;*/
+}
+

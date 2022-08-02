@@ -7,11 +7,10 @@ import { Layout, Row, Col } from 'antd'
 
 import { login } from '../../services'
 
-import LandingMenu from '../../modules/LandingMenu/LandingMenu'
-import LoginForm from '../../modules/LoginForm/LoginForm'
 import { useNavigate } from 'react-router-dom'
+import { HeaderMenu, LoginForm } from '../../modules'
 
-const Login = () => {
+export const Login = () => {
   const { Content } = Layout
   const navigate = useNavigate()
 
@@ -21,7 +20,7 @@ const Login = () => {
   }
   return (
     <Layout style={{ height: '100vh' }} className="LoginLayout">
-      <LandingMenu />
+      <HeaderMenu />
       <Content style={{ marginTop: '120px' }}>
         <Row style={{ paddingTop: '150px' }} align="middle" justify="center">
           <Col flex="640px">
@@ -32,5 +31,3 @@ const Login = () => {
     </Layout>
   )
 }
-
-export default Login

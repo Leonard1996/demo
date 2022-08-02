@@ -10,7 +10,7 @@ import Step4Form from './Step4Form'
 
 import './style.css'
 
-const RegisterForm = ({ onFinish }) => {
+export const RegisterForm = ({ onFinish }) => {
   const [step, setStep] = useState(0)
   const [formData, setFormData] = useState({ name: 'test' })
   const next = data => {
@@ -32,11 +32,9 @@ const RegisterForm = ({ onFinish }) => {
     <Step3Form key={2} next={next} prev={prev} percentage={66} formData={formData} />,
     <Step4Form key={3} next={next} prev={prev} percentage={100} formData={formData} />,
   ]
-  return steps[step]
+  return <div className="register-form">{steps[step]}</div>
 }
 RegisterForm.propTypes = {
   onFinish: PropTypes.func,
   onFinishFailed: PropTypes.func,
 }
-
-export default RegisterForm

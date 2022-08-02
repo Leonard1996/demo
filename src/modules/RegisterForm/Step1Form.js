@@ -1,26 +1,19 @@
 import React from 'react'
-import { Button, Form, Input, Progress, Select } from 'antd'
+import { Button, DatePicker, Form, Input, Progress } from 'antd'
 import PropTypes from 'prop-types'
+import { PrefixSelector } from '../../shared/components'
+import moment from 'moment'
 
 const Step1Form = ({ next, percentage, formData }) => {
-  const ages = [...Array(82).keys()].map(age => (
-    <Select.Option key={age} value={age + 18}>
-      {age + 18}
-    </Select.Option>
-  ))
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select
-        style={{
-          width: 70,
-        }}
-        defaultValue="39"
-      >
-        <Select.Option value="39">+39</Select.Option>
-        <Select.Option value="87">+87</Select.Option>
-      </Select>
-    </Form.Item>
-  )
+  // const ages = [...Array(82).keys()].map(age => (
+  //   <Select.Option key={age} value={age + 18}>
+  //     {age + 18}
+  //   </Select.Option>
+  // ))
+  const disabledDate = current => {
+    return current && current > moment().subtract(18, 'years').endOf('day')
+  }
+  const defaultPickerValue = moment().subtract(18, 'years')
   return (
     <>
       <Form
@@ -41,6 +34,14 @@ const Step1Form = ({ next, percentage, formData }) => {
         </Form.Item>
 
         <Form.Item
+          label="Il tou cognome?"
+          name="lastName"
+          rules={[{ required: true, message: 'Please input your lastName!' }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
           name="age"
           label="Quanti anni hai?"
           tooltip="Per poter accedere ai servizi di PSIQO, devi essere maggiorenne"
@@ -52,7 +53,8 @@ const Step1Form = ({ next, percentage, formData }) => {
             },
           ]}
         >
-          <Select placeholder="Please select your age">{ages}</Select>
+          <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} defaultPickerValue={defaultPickerValue} />
+          {/*<Select placeholder="Please select your age">{ages}</Select>*/}
         </Form.Item>
 
         <Form.Item label="La tua email?" name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
@@ -70,12 +72,44 @@ const Step1Form = ({ next, percentage, formData }) => {
           ]}
         >
           <Input
-            addonBefore={prefixSelector}
+            addonBefore=<PrefixSelector />
             style={{
               width: '100%',
             }}
           />
         </Form.Item>
+
+        <Form.Item
+          label="Il tuo password?"
+          name="password"
+          rules={[{ required: true, message: 'Please input your password!' }]}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item
+          label="Conferma password"
+          name="confirmPassword"
+          dependencies={['password']}
+          rules={[
+            {
+              required: true,
+              message: 'Please confirm your password!',
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve()
+                }
+
+                return Promise.reject(new Error('The two passwords that you entered do not match!'))
+              },
+            }),
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+
         <Form.Item>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Progress percent={percentage} />

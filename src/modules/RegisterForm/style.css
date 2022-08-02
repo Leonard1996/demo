@@ -1,3 +1,6 @@
+.register-form .ant-form-item-label {
+    font-weight: bold;
+}
 .acceptConditions {
     margin-bottom: 10px;
 }

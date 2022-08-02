@@ -1,18 +1,12 @@
 import axios from 'axios'
-import { TOKEN, USER } from '../shared/utils'
+import { setLogin } from '../shared/utils'
 
 export const login = async ({ remember, ...data }) => {
   const response = await axios
     .post('/login', data)
     .catch(e => alert(e.response?.data?.error?.message || 'Something went wrong!'))
   const { token, user } = response.data.data
-  if (remember) {
-    localStorage.setItem(TOKEN, token)
-    localStorage.setItem(USER, user)
-  } else {
-    sessionStorage.setItem(TOKEN, token)
-    sessionStorage.setItem(USER, user)
-  }
+  setLogin(remember, token, user)
   return true
 }
 

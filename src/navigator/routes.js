@@ -1,8 +1,5 @@
 import React from 'react'
-import Login from '../pages/Login/Login'
-import Landing from '../pages/Landing/Landing'
-import RegisterTherapist from '../pages/RegisterTherapist/RegisterTherapist'
-import Register from '../pages/Register/Register'
+import { ChangePassword, Consent, Dashboard, Landing, Login, Profile, Register, RegisterTherapist } from '../pages'
 
 export const paths = Object.freeze({
   LOGIN: '/login',
@@ -36,5 +33,29 @@ export const routes = [
     path: '/registerth',
     protected: false,
     element: <RegisterTherapist />,
+  },
+  {
+    name: 'Dashboard',
+    path: '/dashboard',
+    protected: true,
+    element: <Dashboard />,
+  },
+  {
+    name: 'My Profile',
+    path: '/me',
+    protected: true,
+    element: <Profile />,
+  },
+  {
+    name: 'Consent',
+    path: '/consent',
+    protected: true,
+    element: <Consent />,
+  },
+  {
+    name: 'Change Password',
+    path: '/change-password',
+    protected: true,
+    element: <ChangePassword />,
   },
 ]

@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Checkbox, Form, Input } from 'antd'
 import PropTypes from 'prop-types'
 
-const LoginForm = ({ onFinish, onFinishFailed }) => {
+export const LoginForm = ({ onFinish, onFinishFailed }) => {
   return (
     <Form
       name="basic"
@@ -38,5 +38,3 @@ LoginForm.propTypes = {
   onFinish: PropTypes.func,
   onFinishFailed: PropTypes.func,
 }
-
-export default LoginForm

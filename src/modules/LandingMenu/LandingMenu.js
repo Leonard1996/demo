@@ -1,7 +1,4 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Header } from 'antd/es/layout/layout'
-import Logo from '../../assets/icons/Logo'
+import React from 'react'
 import { Button, Row } from 'antd'
 
 import './style.css'
@@ -14,7 +11,7 @@ const menuList = [
   { name: 'Inizia Adesso', type: 'primary', path: '/register' },
 ]
 
-const MenuList = () => {
+export const LandingMenu = () => {
   const menuStyle = {
     display: 'flex',
     flexDirection: 'row',
@@ -31,20 +28,3 @@ const MenuList = () => {
   })
   return <Row style={menuStyle}>{mlist}</Row>
 }
-
-const LandingMenu = () => {
-  const [scroll, setScroll] = useState(0)
-  window.addEventListener('scroll', () => {
-    setScroll(window.scrollY)
-  })
-  return (
-    <Header className={'landingMenu ' + (scroll > 10 ? 'colored' : '')}>
-      <Link to="/" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Logo width="200" height="90" fill="white" />
-      </Link>
-      <MenuList />
-    </Header>
-  )
-}
-
-export default LandingMenu

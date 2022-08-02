@@ -177,6 +177,24 @@ const Step4Form = ({ next, prev, percentage, formData }) => {
         </Form.Item>
 
         <Form.Item
+          name="newsletter"
+          label="Iscriviti alla newsletter?"
+          rules={[
+            {
+              required: true,
+              message: 'Please check item',
+            },
+          ]}
+        >
+          <Radio.Group>
+            <Space direction="vertical">
+              <Radio value="1">Si</Radio>
+              <Radio value="0">No</Radio>
+            </Space>
+          </Radio.Group>
+        </Form.Item>
+
+        <Form.Item
           name="ignore"
           label="Abbiamo bisogno del tuo consenso!"
           rules={[

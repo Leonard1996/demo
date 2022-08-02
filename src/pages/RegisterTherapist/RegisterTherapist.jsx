@@ -4,10 +4,9 @@ import { Layout, Row, Col, Space } from 'antd'
 // import { UserOutlined, LockOutlined, QuestionOutlined } from '@ant-design/icons'
 
 // import CopyRight from '../../shared/components/CopyRight/CopyRight'
-import LandingMenu from '../../modules/LandingMenu/LandingMenu'
-import RegisterTherapistForm from '../../modules/RegisterTherapistForm/RegisterTherapistForm'
 import { registerTherapist } from '../../services'
 import { useNavigate } from 'react-router-dom'
+import { HeaderMenu, RegisterTherapistForm } from '../../modules'
 
 const IntroText = (
   <p>
@@ -36,7 +35,7 @@ const IntroText = (
   </p>
 )
 
-const RegisterTherapist = () => {
+export const RegisterTherapist = () => {
   const { Content } = Layout
   const navigate = useNavigate()
 
@@ -46,7 +45,7 @@ const RegisterTherapist = () => {
   }
   return (
     <Layout className="LoginLayout">
-      <LandingMenu />
+      <HeaderMenu />
       <Content style={{ marginTop: '120px' }}>
         <Row style={{ padding: '30px 80px' }} align="middle" justify="start">
           <Col style={{ textAlign: 'start' }} span={24}>
@@ -64,5 +63,3 @@ const RegisterTherapist = () => {
     </Layout>
   )
 }
-
-export default RegisterTherapist

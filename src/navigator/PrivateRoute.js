@@ -23,10 +23,10 @@ const PrivateRoute = ({ children }) => {
   if (!isLoggedIn()) {
     return <Navigate to={'/login'} state={{ from: location }} />
   }
-
-  if (isLoggedIn()) {
-    return <Navigate to={'/not-found'} state={{ from: location }} />
-  }
+  //
+  // if (isLoggedIn()) {
+  //   return <Navigate to={'/not-found'} state={{ from: location }} />
+  // }
 
   return <>{children}</>
 }

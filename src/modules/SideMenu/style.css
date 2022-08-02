@@ -1,0 +1,29 @@
+.side-menu {
+    background: transparent;
+    display: flex;
+    color: #282c34;
+    text-align: start;
+    padding-top: 50px;
+}
+
+.side-menu .item {
+    text-transform: uppercase;
+    font-size: 20px;
+    margin-top: 6px;
+}
+
+.side-menu .item.selected {
+    font-weight: bold;
+}
+
+.side-menu .label {
+    font-style: italic;
+    font-size: 20px;
+    margin-top: 30px;
+    cursor: default;
+    line-height: 30px;
+}
+
+.side-menu a {
+    padding: 0;
+}
