@@ -13,15 +13,27 @@ export const login = async ({ remember, ...data }) => {
 // eslint-disable-next-line no-unused-vars
 export const register = async ({ ignore, ...data }) => {
   const { email, password, confirmPassword, name, lastName, birthday, isSingle, newsletter, ...details } = data
-  console.log({ email, password, confirmPassword, name, lastName, birthday, isSingle, newsletter })
-  console.log(details)
-  // const response = await axios
-  //   .post('/register', data)
-  //   .catch(e => alert(e.response?.data?.error?.message || 'Something went wrong!'))
-  // if (response) {
-  //   alert(response.data.message)
-  //   return true
-  // }
+  details.phone = details.prefix + details.phone
+  delete details.prefix
+  const dataToSend = {
+    email,
+    password,
+    confirmPassword,
+    name,
+    lastName,
+    birthday,
+    isSingle,
+    newsletter,
+    details,
+    form: 'test',
+  }
+  const response = await axios.post('/register', dataToSend).catch(e => {
+    alert(e.response?.data?.error?.message || 'Something went wrong!')
+  })
+  if (response) {
+    alert(response.data.message)
+    return true
+  }
 }
 
 export const registerTherapist = async data => {

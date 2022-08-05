@@ -1,5 +1,15 @@
 import React from 'react'
-import { ChangePassword, Consent, Dashboard, Landing, Login, Profile, Register, RegisterTherapist } from '../pages'
+import {
+  ChangePassword,
+  Consent,
+  Dashboard,
+  Landing,
+  Login,
+  MyOrders,
+  Profile,
+  Register,
+  RegisterTherapist,
+} from '../pages'
 
 export const paths = Object.freeze({
   LOGIN: '/login',
@@ -45,6 +55,12 @@ export const routes = [
     path: '/me',
     protected: true,
     element: <Profile />,
+  },
+  {
+    name: 'My Orders',
+    path: '/my-orders',
+    protected: true,
+    element: <MyOrders />,
   },
   {
     name: 'Consent',
