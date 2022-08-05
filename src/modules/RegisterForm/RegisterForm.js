@@ -12,7 +12,7 @@ import './style.css'
 
 export const RegisterForm = ({ onFinish }) => {
   const [step, setStep] = useState(0)
-  const [formData, setFormData] = useState({ name: 'test' })
+  const [formData, setFormData] = useState({ prefix: '+39' })
   const next = data => {
     if (data.errorFields) return
     const newFormData = { ...formData, ...data }

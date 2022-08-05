@@ -7,10 +7,9 @@ export const PrefixSelector = () => (
       style={{
         width: 70,
       }}
-      defaultValue="39"
     >
-      <Select.Option value="39">+39</Select.Option>
-      <Select.Option value="87">+87</Select.Option>
+      <Select.Option value="+39">+39</Select.Option>
+      <Select.Option value="+87">+87</Select.Option>
     </Select>
   </Form.Item>
 )

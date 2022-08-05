@@ -42,7 +42,7 @@ const Step1Form = ({ next, percentage, formData }) => {
         </Form.Item>
 
         <Form.Item
-          name="age"
+          name="birthday"
           label="Quanti anni hai?"
           tooltip="Per poter accedere ai servizi di PSIQO, devi essere maggiorenne"
           hasFeedback
