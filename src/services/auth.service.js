@@ -2,12 +2,14 @@ import axios from 'axios'
 import { setLogin } from '../shared/utils'
 
 export const login = async ({ remember, ...data }) => {
-  const response = await axios
+  return await axios
     .post('/login', data)
-    .catch(e => alert(e.response?.data?.error?.message || 'Something went wrong!'))
-  const { token, user } = response.data.data
-  setLogin(remember, token, user)
-  return true
+    .then(response => {
+      const { token, user } = response.data.data
+      setLogin(remember, token, user)
+      return { error: false }
+    })
+    .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -27,13 +29,10 @@ export const register = async ({ ignore, ...data }) => {
     details,
     form: 'test',
   }
-  const response = await axios.post('/register', dataToSend).catch(e => {
-    alert(e.response?.data?.error?.message || 'Something went wrong!')
-  })
-  if (response) {
-    alert(response.data.message)
-    return true
-  }
+  return await axios
+    .post('/register', dataToSend)
+    .then(response => ({ error: false, msg: response.data.message }))
+    .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
 }
 
 export const registerTherapist = async data => {
@@ -43,11 +42,8 @@ export const registerTherapist = async data => {
   for (const d in rest) {
     formData.append(d, rest[d])
   }
-  const response = await axios
+  return await axios
     .post('/register-therapist', formData)
-    .catch(e => alert(e.response?.data?.error?.message || 'Something went wrong!'))
-  if (response) {
-    alert(response.data.message)
-    return true
-  }
+    .then(response => ({ error: false, msg: response.data.message }))
+    .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
 }

@@ -6,9 +6,13 @@ import {
   Landing,
   Login,
   MyOrders,
+  MyPatients,
+  MyTherapist,
   Profile,
   Register,
   RegisterTherapist,
+  Report,
+  Schedule,
 } from '../pages'
 
 export const paths = Object.freeze({
@@ -61,6 +65,30 @@ export const routes = [
     path: '/my-orders',
     protected: true,
     element: <MyOrders />,
+  },
+  {
+    name: 'My Therapist',
+    path: '/my-therapist',
+    protected: true,
+    element: <MyTherapist />,
+  },
+  {
+    name: 'My Schedule',
+    path: '/schedule',
+    protected: true,
+    element: <Schedule />,
+  },
+  {
+    name: 'My Reports',
+    path: '/reports',
+    protected: true,
+    element: <Report />,
+  },
+  {
+    name: 'My Patients',
+    path: '/my-patients',
+    protected: true,
+    element: <MyPatients />,
   },
   {
     name: 'Consent',

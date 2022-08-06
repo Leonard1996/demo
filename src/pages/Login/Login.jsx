@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.css'
-import { Layout, Row, Col } from 'antd'
+import { Layout, Row, Col, message } from 'antd'
 // import { UserOutlined, LockOutlined, QuestionOutlined } from '@ant-design/icons'
 
 // import CopyRight from '../../shared/components/CopyRight/CopyRight'
@@ -15,8 +15,11 @@ export const Login = () => {
   const navigate = useNavigate()
 
   const onFinish = async values => {
-    const resultAction = await login(values)
-    if (resultAction) navigate('/')
+    const { error, msg } = await login(values)
+    if (!error) {
+      return navigate('/')
+    }
+    message.error(msg)
   }
   return (
     <Layout style={{ height: '100vh' }} className="LoginLayout">

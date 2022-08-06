@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.css'
-import { Layout, Row, Col } from 'antd'
+import { Layout, Row, Col, message } from 'antd'
 // import { UserOutlined, LockOutlined, QuestionOutlined } from '@ant-design/icons'
 
 // import CopyRight from '../../shared/components/CopyRight/CopyRight'
@@ -22,8 +22,12 @@ export const Register = () => {
   const navigate = useNavigate()
 
   const onFinish = async values => {
-    const resultAction = await register(values)
-    if (resultAction) navigate('/')
+    const { error, msg } = await register(values)
+    if (error) {
+      return message.error(msg)
+    }
+    message.success(msg)
+    navigate('/login')
   }
   return (
     <Layout className="LoginLayout">
