@@ -2462,3 +2462,14 @@ export const getAllSessions = async year => {
   const monthsNames = moment.months()
   return monthsNames.map((m, i) => ({ name: `${m} ${year}`, ...session[i + 1] }))
 }
+
+export const getSessions = async month => {
+  const sessions = await axios
+    .get(`/sessions/my-agenda?month=${month}`)
+    .then(response => response.data.allSessions)
+    .catch(e => {
+      message.error(e.response?.data?.error?.message || 'Something went wrong!')
+      return []
+    })
+  return sessions
+}

@@ -1,0 +1,16 @@
+.schedule {
+    display: flex;
+    flex-direction: column;
+}
+.actions {
+    display: flex;
+    justify-content: space-between;
+}
+.calendar {
+    justify-content: space-between;
+}
+.label-container {
+    padding-top: 40px;
+    font-size: 13px;
+    color: #666;
+}
