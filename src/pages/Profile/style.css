@@ -1,0 +1,12 @@
+.profile {
+    font-size: 20px;
+}
+.profile .name {
+    text-transform: uppercase;
+}
+
+.profile .anticon-edit {
+    color: #bbb;
+    margin-left: 5px;
+    cursor: pointer;
+}

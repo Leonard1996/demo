@@ -1,0 +1,9 @@
+.my-therapist {
+    font-size: 20px;
+    line-height: 26px;
+}
+.my-therapist .intr{
+    text-align: start;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}

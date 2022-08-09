@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import axios from 'axios'
+import { getToken } from './shared/utils'
+
+axios.defaults.baseURL = 'http://localhost:5001'
+axios.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`
+axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 ReactDOM.render(
   <React.StrictMode>

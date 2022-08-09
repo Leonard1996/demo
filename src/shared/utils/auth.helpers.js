@@ -1,20 +1,37 @@
 import { TOKEN, USER } from './global.constants'
 
-export const login = () => {
-  localStorage.setItem(USER, 'user')
+export const setLogin = (remember, token, user) => {
+  if (remember) {
+    localStorage.setItem(USER, JSON.stringify(user))
+    localStorage.setItem(TOKEN, token)
+  } else {
+    sessionStorage.setItem(USER, JSON.stringify(user))
+    sessionStorage.setItem(TOKEN, token)
+  }
 }
 
 export const logout = () => {
+  localStorage.removeItem(TOKEN)
   localStorage.removeItem(USER)
+  sessionStorage.removeItem(TOKEN)
+  sessionStorage.removeItem(USER)
 }
 
 export const isLoggedIn = () => {
-  if (localStorage.getItem(TOKEN)) {
-    return true
-  }
-  return false
+  return !!(localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN))
 }
 
 export const getToken = () => {
-  return localStorage.getItem(TOKEN)
+  return localStorage.getItem(TOKEN) || sessionStorage.getItem(TOKEN)
+}
+
+export const getUser = () => {
+  let user
+  try {
+    const _u = localStorage.getItem(USER) || sessionStorage.getItem(USER)
+    user = JSON.parse(_u)
+  } catch (e) {
+    console.log(e.message)
+  }
+  return user
 }

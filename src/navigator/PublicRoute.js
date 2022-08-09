@@ -7,7 +7,7 @@ const PublicRoute = ({ children }) => {
   let location = useLocation()
 
   if (isLoggedIn()) {
-    return <Navigate to={'/'} state={{ from: location }} />
+    return <Navigate to={'/dashboard'} state={{ from: location }} />
   }
 
   return <>{children}</>

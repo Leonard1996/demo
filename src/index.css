@@ -13,6 +13,7 @@ body {
   height: 100%;
   width: 100%;
   position: relative;
+  font-family: sans-serif;
 }
 
 code {
@@ -20,7 +21,7 @@ code {
     monospace;
 }
 .ant-layout {
-  background: #fff;
+  background: #fff !important;
 }
 
 #root {
