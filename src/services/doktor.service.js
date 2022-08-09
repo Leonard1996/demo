@@ -2438,11 +2438,12 @@ const list = [
 ]
 
 export const getPatients = async () => {
-  return { data: list }
-  // return await axios
-  //   .get('/sessions/patients')
-  //   .then(response => ({ error: false, data: response.data.patients }))
-  //   .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
+  console.log(list)
+  // return { data: list }
+  return await axios
+    .get('/sessions/patients')
+    .then(response => ({ error: false, data: response.data.patients }))
+    .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
 }
 
 export const getAllSessions = async year => {
@@ -2466,10 +2467,18 @@ export const getAllSessions = async year => {
 export const getSessions = async month => {
   const sessions = await axios
     .get(`/sessions/my-agenda?month=${month}`)
-    .then(response => response.data.allSessions)
+    .then(response => response.data.agenda)
     .catch(e => {
       message.error(e.response?.data?.error?.message || 'Something went wrong!')
       return []
     })
   return sessions
+}
+
+export const createSession = async value => {
+  value.month = moment(value.startTime).month() + 1
+  return await axios
+    .post('/sessions/', value)
+    .then(response => ({ error: false, msg: response.data.message }))
+    .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
 }
