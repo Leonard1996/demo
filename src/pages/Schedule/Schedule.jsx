@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './style.css'
-import { HeaderMenu, SideMenu, WeeklySchedule } from '../../modules'
+import { HeaderMenu, NextSession, SideMenu, WeeklySchedule } from '../../modules'
 import { Layout, message } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import moment from 'moment'
@@ -10,11 +10,15 @@ export const Schedule = () => {
   const [week, setWeek] = useState(moment().week())
   const [events, setEvents] = useState([])
   const [patients, setPatients] = useState([])
+  const [nextSession, setNextSession] = useState()
   useEffect(() => {
     getPatients().then(d => setPatients(d.data))
   }, [])
   useEffect(() => {
-    getSessions(moment().week(week).month() + 1).then(d => setEvents(d))
+    getSessions(moment().week(week).month() + 1).then(d => {
+      setEvents(d.agenda)
+      setNextSession({ ...d.nextConfirmedSession, isConfirmed: 1 })
+    })
   }, [week])
   const next = () => setWeek(week + 1)
   const prev = () => setWeek(week - 1)
@@ -35,6 +39,10 @@ export const Schedule = () => {
       return message.error(msg)
     }
     message.success(msg)
+    getSessions(moment().week(week).month() + 1).then(d => {
+      setEvents(d.agenda)
+      setNextSession({ ...d.nextConfirmedSession, isConfirmed: 1 })
+    })
   }
   return (
     <Layout style={{ height: '100vh' }}>
@@ -42,6 +50,7 @@ export const Schedule = () => {
       <Layout style={{ marginTop: '120px', padding: '0 50px' }}>
         <SideMenu />
         <Content className="schedule" style={{ paddingTop: '55px', paddingLeft: '150px', paddingRight: '150px' }}>
+          {nextSession && <NextSession session={nextSession} />}
           <WeeklySchedule week={week} events={events} next={next} prev={prev} patients={patients} addEvent={addEvent} />
         </Content>
       </Layout>

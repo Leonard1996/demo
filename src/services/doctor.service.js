@@ -2467,7 +2467,7 @@ export const getAllSessions = async year => {
 export const getSessions = async month => {
   const sessions = await axios
     .get(`/sessions/my-agenda?month=${month}`)
-    .then(response => response.data.agenda)
+    .then(response => response.data)
     .catch(e => {
       message.error(e.response?.data?.error?.message || 'Something went wrong!')
       return []

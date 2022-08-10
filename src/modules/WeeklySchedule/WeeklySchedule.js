@@ -13,9 +13,10 @@ const getWeekDays = week => {
 }
 
 const DayHeader = ({ day }) => {
+  const isToday = moment(day).isSame(moment(), 'day') ? { color: '#9a77cf' } : {}
   return (
     <div style={{ display: 'flex' }}>
-      <div style={{ fontSize: '50px', display: 'flex', alignItems: 'center', height: '45px' }}>
+      <div style={{ fontSize: '50px', display: 'flex', alignItems: 'center', height: '45px', ...isToday }}>
         <span>{day.format('D')}</span>
       </div>
       <div
@@ -26,6 +27,7 @@ const DayHeader = ({ day }) => {
           textAlign: 'left',
           marginLeft: '7px',
           color: '#666',
+          ...isToday,
         }}
       >
         <div style={{ textTransform: 'capitalize', fontSize: '14px', fontWeight: 'bold' }}>{day.format('dddd')}</div>
@@ -94,7 +96,7 @@ const DayTimeSlots = ({ day, events, addEvent, patients }) => {
         {p.name} {p.lastName}
       </Select.Option>
     ))
-    const initData = { startTime: sStart.toISOString(), ...hasEvent }
+    const initData = { startTime: sStart.toISOString(), endTime: sEnd.toISOString(), ...hasEvent }
     const popContent = (
       <Form
         name="basic"
@@ -106,6 +108,7 @@ const DayTimeSlots = ({ day, events, addEvent, patients }) => {
         preserve={true}
         onFinish={onFinish}
         initialValues={initData}
+        labelCol={{ span: 8 }}
       >
         <Form.Item label="Paziente" name="patientId" rules={[{ required: true, message: 'Please select a patient!' }]}>
           <Select placeholder="Please select a patient">{patientsOptions}</Select>

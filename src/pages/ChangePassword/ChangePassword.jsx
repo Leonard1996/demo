@@ -1,7 +1,7 @@
 import React from 'react'
 import './style.css'
-import { Layout, Row, Col } from 'antd'
-import { login } from '../../services'
+import { Layout, Row, Col, message } from 'antd'
+import { changePassword } from '../../services'
 
 import { useNavigate } from 'react-router-dom'
 import { ChangePasswordForm, HeaderMenu, SideMenu } from '../../modules'
@@ -13,8 +13,11 @@ export const ChangePassword = () => {
   const navigate = useNavigate()
 
   const onFinish = async values => {
-    const resultAction = await login(values)
-    if (resultAction) navigate('/')
+    const { error, msg } = await changePassword(values)
+    if (!error) {
+      return navigate('/')
+    }
+    message.error(msg)
   }
   return (
     <Layout style={{ height: '100vh' }}>

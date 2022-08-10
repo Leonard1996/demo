@@ -47,3 +47,13 @@ export const registerTherapist = async data => {
     .then(response => ({ error: false, msg: response.data.message }))
     .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
 }
+
+export const changePassword = async data => {
+  return await axios
+    .patch('/users/me', data)
+    .then(response => ({ error: false, msg: response.data.message }))
+    .catch(e => ({
+      error: true,
+      msg: e.response?.data?.message || e.response?.data?.error?.message || 'Something went wrong!',
+    }))
+}
