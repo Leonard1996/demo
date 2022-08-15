@@ -16,7 +16,7 @@ export const Profile = () => {
     email,
     patient: {
       newsletter,
-      details: { phone },
+      details: { phone, address, zip, city },
     },
   } = getUser() || {}
   return (
@@ -40,9 +40,9 @@ export const Profile = () => {
                       <EditOutlined />
                     </Tooltip>
                   </div>
-                  <div>Address</div>
-                  <div>ZIP</div>
-                  <div>City</div>
+                  <div>Address {address}</div>
+                  <div>ZIP {zip}</div>
+                  <div>City {city}</div>
                 </div>
                 <Divider style={{ margin: '10px 0' }} />
                 <div className="email">

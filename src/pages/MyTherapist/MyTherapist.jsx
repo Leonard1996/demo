@@ -2,7 +2,6 @@ import { Col, Divider, Image, Layout, Row, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Content } from 'antd/es/layout/layout'
 import { HeaderMenu, SideMenu } from '../../modules'
-
 import './style.css'
 import { getMyTherapist } from '../../services'
 import { getUser } from '../../shared/utils'
@@ -31,10 +30,11 @@ export const MyTherapist = () => {
     if (role === 'patient') {
       getMyTherapist().then(d => setData(d.data || {}))
     } else {
-      setData(user.therapist || {})
+      setData({ ...user, ...user.therapist })
     }
   }, [])
-  const { details: { name, lastName, birthday, type, experiences = '', cover_letter } = {} } = data
+  const { details: { type, cover_letter, birthday, experiences = '' } = {} } = data
+  const { name, lastName } = data
   const experiencesList = experiences.split(',').map((exp, i) => <div key={i}>{exp}</div>)
   const intro = role === 'doctor' ? <div className="intr">La mia scheda visibile ai pazienti</div> : ''
 

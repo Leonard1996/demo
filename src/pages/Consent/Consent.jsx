@@ -2,11 +2,12 @@ import React from 'react'
 import { Button, Col, Layout, Row, message, Upload } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import { HeaderMenu, SideMenu } from '../../modules'
+import axios from 'axios'
 export const Consent = () => {
   const props = {
     showUploadList: false,
     name: 'file',
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    action: 'http://localhost:5001/patients/consent',
     headers: {
       authorization: 'authorization-text',
     },
@@ -23,6 +24,13 @@ export const Consent = () => {
       }
     },
   }
+
+  const handleDownload = async () => {
+    const result = await axios.get('http://localhost:5002/users/consent')
+    console.log({ result })
+    window.open('/Users/user/workspace/psiqo/src/static-files/consent.pdf')
+  }
+
   return (
     <Layout style={{ height: '100vh' }}>
       <HeaderMenu />
@@ -35,7 +43,7 @@ export const Consent = () => {
               <p style={{ marginBottom: '10px' }}>
                 SCARICA E COMPILA IL PDF DEL CONSENSO INFORMATO PER PARTECIPARE ALLE SEDUTE CON IL TUO PSICOTERAPEUTA
               </p>
-              <Button style={{ marginBottom: '30px' }} type="primary">
+              <Button style={{ marginBottom: '30px' }} type="primary" onClick={handleDownload}>
                 DOWNLOAD
               </Button>
               <p style={{ marginBottom: '10px' }}>CARICA IL PDF DEL CONSENSO INFORMATO DA TE COMPILATO.</p>

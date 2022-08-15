@@ -1,3 +1,11 @@
-.LoginLayout {
-    /*height: 100%;*/
+.landingMain {
+    background: url("../../assets/images/landing.jpeg") center;
+    background-size: cover;
+    flex-grow: 1;
+    padding: 100px;
+    text-align: start;
+}
+
+.landingMain div {
+    color: white;
 }
