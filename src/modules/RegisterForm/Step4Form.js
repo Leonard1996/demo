@@ -188,8 +188,8 @@ const Step4Form = ({ next, prev, percentage, formData }) => {
         >
           <Radio.Group>
             <Space direction="vertical">
-              <Radio value="1">Si</Radio>
-              <Radio value="0">No</Radio>
+              <Radio value={1}>Si</Radio>
+              <Radio value={0}>No</Radio>
             </Space>
           </Radio.Group>
         </Form.Item>

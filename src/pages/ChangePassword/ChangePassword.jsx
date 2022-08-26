@@ -1,7 +1,7 @@
 import React from 'react'
 import './style.css'
 import { Layout, Row, Col, message } from 'antd'
-import { changePassword } from '../../services'
+import { updateProfile } from '../../services'
 
 import { useNavigate } from 'react-router-dom'
 import { ChangePasswordForm, HeaderMenu, SideMenu } from '../../modules'
@@ -13,7 +13,7 @@ export const ChangePassword = () => {
   const navigate = useNavigate()
 
   const onFinish = async values => {
-    const { error, msg } = await changePassword(values)
+    const { error, msg } = await updateProfile(values)
     if (!error) {
       return navigate('/')
     }

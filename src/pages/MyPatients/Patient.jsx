@@ -1,9 +1,15 @@
 import PropTypes from 'prop-types'
 import { Button, Card, Col, Divider, Empty, Row } from 'antd'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import moment from 'moment'
+import { getPatientDetails } from '../../services'
 
-export const Patient = ({ patient }) => {
+export const Patient = ({ patient = {} }) => {
+  const [d, setD] = useState({})
+  useEffect(() => {
+    getPatientDetails(patient.id).then(d => setD(d.data))
+    console.log(d)
+  }, [patient])
   if (!patient)
     return (
       <Card title="Profilo di paziente">
@@ -19,7 +25,7 @@ export const Patient = ({ patient }) => {
     credit,
     sessions = 0,
     nextSession = 'N/A',
-    details: { question_1, question_2, question_3, question_4 },
+    details: { question_1, question_2, question_3, question_4 } = {},
   } = patient
   return (
     <Card title="Profilo di paziente" style={{ textAlign: 'start', fontSize: '16px' }}>

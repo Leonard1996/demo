@@ -48,10 +48,10 @@ export const registerTherapist = async data => {
     .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
 }
 
-export const changePassword = async data => {
+export const updateProfile = async data => {
   return await axios
     .patch('/users/me', data)
-    .then(response => ({ error: false, msg: response.data.message }))
+    .then(response => ({ error: false, msg: response.data.message, user: response.data.user }))
     .catch(e => ({
       error: true,
       msg: e.response?.data?.message || e.response?.data?.error?.message || 'Something went wrong!',

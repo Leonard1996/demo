@@ -3,13 +3,14 @@ import { Button, Col, Layout, Row, message, Upload } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import { HeaderMenu, SideMenu } from '../../modules'
 import axios from 'axios'
+import { getToken } from '../../shared/utils'
 export const Consent = () => {
   const props = {
     showUploadList: false,
-    name: 'file',
-    action: 'http://localhost:5001/patients/consent',
+    name: 'consent',
+    action: 'http://localhost:5002/patients/consent',
     headers: {
-      authorization: 'authorization-text',
+      authorization: `Bearer ${getToken()}`,
     },
 
     async onChange(info) {

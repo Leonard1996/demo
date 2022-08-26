@@ -35,3 +35,10 @@ export const getUser = () => {
   }
   return user
 }
+
+export const setGlobalUser = user => {
+  if (localStorage.getItem(USER)) {
+    return localStorage.setItem(USER, JSON.stringify(user))
+  }
+  sessionStorage.setItem(USER, JSON.stringify(user))
+}
