@@ -16,6 +16,7 @@ const items = {
     { name: 'Conseso Informato', path: '/consent' },
     { name: 'Modifica password', path: '/change-password' },
     { name: 'Contatta il team PSIQO', type: 'label' },
+    { name: 'Chat', path: '/chat' },
   ],
   doctor: [
     { name: 'Il mio calendario', path: '/schedule' },
@@ -25,6 +26,7 @@ const items = {
     { name: 'La mia scheda', path: '/my-therapist' },
     { name: 'Modifica password', path: '/change-password' },
     { name: 'Contatta il team PSIQO', type: 'label' },
+    { name: 'Chat', path: '/chat' },
   ],
 }
 

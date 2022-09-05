@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { setLogin } from '../shared/utils'
+import { setGlobalUser, setLogin } from '../shared/utils'
 
 export const login = async ({ remember, ...data }) => {
   return await axios
@@ -56,4 +56,15 @@ export const updateProfile = async data => {
       error: true,
       msg: e.response?.data?.message || e.response?.data?.error?.message || 'Something went wrong!',
     }))
+}
+
+export const getMe = async () => {
+  return await axios
+    .get('/users/me')
+    .then(response => {
+      const { user } = response.data
+      setGlobalUser(user)
+      return { error: false }
+    })
+    .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
 }

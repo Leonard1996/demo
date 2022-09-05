@@ -1,0 +1,54 @@
+.chat {
+    border: 1px solid #ccc;
+    height: 100%;
+}
+.chatList {
+    padding: 10px;
+    border-right: 1px solid #ccc;
+}
+
+.chatConversation {
+    /*padding: 10px;*/
+}
+
+.conversationHeader span{
+    margin-right: 10px;
+}
+.conversationHeader {
+    padding: 10px;
+    border-bottom: 1px solid #5d3e92;
+}
+
+.chatConversation > div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.chatConversation > div .messages {
+    flex-grow: 1;
+    background: #e3e3e3;
+    padding: 10px;
+    height: 0px;
+    overflow: auto;
+}
+
+.chatConversation > div .messages .message {
+    background: #ccc;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.chatConversation > div .messages .message.sent {
+    margin-left: auto;
+}
+
+.chatConversation > div .newMessage {
+    padding: 7px;
+    background: #e3e3e3;
+}
+
+.chatConversation > div .newMessage textarea {
+    border-radius: 6px;
+}

@@ -16,7 +16,10 @@ const PatientsList = ({ patients, select }) => {
   }, [patients])
   const onSearch = q => {
     if (!q) return setDisplayList(patients)
-    setDisplayList(patients.filter(({ name, lastName }) => name.includes(q) || lastName.includes(q)))
+    q = q.toLowerCase()
+    setDisplayList(
+      patients.filter(({ name, lastName }) => name.toLowerCase().includes(q) || lastName.toLowerCase().includes(q)),
+    )
   }
   const header = (
     <div style={{ display: 'flex', alignItems: 'center' }}>

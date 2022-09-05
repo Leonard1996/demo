@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   ChangePassword,
+  Chat,
   Consent,
   Dashboard,
   Landing,
@@ -101,5 +102,11 @@ export const routes = [
     path: '/change-password',
     protected: true,
     element: <ChangePassword />,
+  },
+  {
+    name: 'Chat',
+    path: '/chat',
+    protected: true,
+    element: <Chat />,
   },
 ]

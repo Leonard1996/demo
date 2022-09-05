@@ -3,8 +3,12 @@ import { Button, Col, Layout, Row, message, Upload } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import { HeaderMenu, SideMenu } from '../../modules'
 import axios from 'axios'
-import { getToken } from '../../shared/utils'
+import { getToken, getUser } from '../../shared/utils'
+import { getMe } from '../../services'
+import { useNavigate } from 'react-router-dom'
 export const Consent = () => {
+  const user = getUser()
+  const navigate = useNavigate()
   const props = {
     showUploadList: false,
     name: 'consent',
@@ -20,6 +24,8 @@ export const Consent = () => {
 
       if (info.file.status === 'done') {
         message.success(`${info.file.name} file uploaded successfully`)
+        const { error } = await getMe()
+        if (!error) return navigate('/consent')
       } else if (info.file.status === 'error') {
         message.error(`${info.file.name} file upload failed.`)
       }
@@ -27,11 +33,28 @@ export const Consent = () => {
   }
 
   const handleDownload = async () => {
-    const result = await axios.get('http://localhost:5002/users/consent')
-    console.log({ result })
-    window.open('/Users/user/workspace/psiqo/src/static-files/consent.pdf')
-  }
+    axios.get('http://localhost:5002/users/consent', { responseType: 'blob' }).then(response => {
+      // create file link in browser's memory
+      const href = URL.createObjectURL(response.data)
 
+      // create "a" HTLM element with href to file & click
+      const link = document.createElement('a')
+      link.href = href
+      link.setAttribute('download', 'consent.pdf') //or any other extension
+      document.body.appendChild(link)
+      link.click()
+
+      // clean up "a" element & remove ObjectURL
+      document.body.removeChild(link)
+      URL.revokeObjectURL(href)
+    })
+    // console.log(data)
+    // window.open(data, '_blank', {})
+  }
+  const handleSignedDownload = async () => {
+    window.open(consent)
+  }
+  const { consent } = user.patient || {}
   return (
     <Layout style={{ height: '100vh' }}>
       <HeaderMenu />
@@ -57,7 +80,12 @@ export const Consent = () => {
               <p style={{ marginBottom: '10px' }}>
                 SCARICA IL PDF DEL CONSENSO INFORMATO FIRMATO DAL TUO PSICOTERAPEUTA
               </p>
-              <Button style={{ marginBottom: '30px' }} type="primary" disabled={true} i>
+              <Button
+                style={{ marginBottom: '30px' }}
+                type="primary"
+                disabled={!consent}
+                onClick={handleSignedDownload}
+              >
                 DOWNLOAD
               </Button>
               {/*</Space>*/}
