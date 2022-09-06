@@ -1,26 +1,9 @@
 import { Avatar, Col, List, Row } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import Search from 'antd/es/input/Search'
-
-const history = [
-  {
-    name: 'Eri Dervishi',
-    lastMsg: 'I more dokumentat?',
-    date: Date.now(),
-  },
-  {
-    name: 'Elsiona Dervishi',
-    lastMsg: 'Po iki ne shtepi',
-    date: new Date('2022-09-05T20:32:00'),
-  },
-  {
-    name: 'Derald Shehi',
-    lastMsg: 'Sapo arritem',
-    date: new Date('2022-09-06T10:22:00'),
-  },
-]
+import { SocketContext } from '../../pages'
 
 const Chat = ({ chat }) => {
   const { name, lastMsg, date } = chat
@@ -39,15 +22,15 @@ Chat.propTypes = {
   chat: PropTypes.object,
 }
 
-export const ChatList = ({ selectContact }) => {
-  // return history.map((chat, i) => <Chat key={i} chat={chat} />)
-  const [list, setList] = useState(history)
+export const ChatList = () => {
+  const { contacts, setSelectedContact } = useContext(SocketContext)
+  const [list, setList] = useState(contacts)
   useEffect(() => {
-    // setDisplayList(patients)
-  }, [])
+    setList(contacts)
+  }, [contacts])
   const onSearch = q => {
-    if (!q) return setList(history)
-    setList(history.filter(({ name }) => name.toLowerCase().includes(q.toLowerCase())))
+    if (!q) return setList(contacts)
+    setList(contacts.filter(({ name }) => name.toLowerCase().includes(q.toLowerCase())))
   }
   const header = (
     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -64,20 +47,17 @@ export const ChatList = ({ selectContact }) => {
       dataSource={list}
       header={header}
       renderItem={item => {
-        const initials = item.name
-          .split(' ')
-          .map(s => s[0])
-          .join('')
+        const initials = item.name[0] + item.lastName[0]
         return (
-          <List.Item onClick={() => selectContact(item)} extra={moment(item.date).format('L')}>
-            <List.Item.Meta avatar={<Avatar>{initials}</Avatar>} title={item.name} description={item.lastMsg} />
+          <List.Item onClick={() => setSelectedContact(item)} extra={moment(item.date).format('L')}>
+            <List.Item.Meta
+              avatar={<Avatar>{initials}</Avatar>}
+              title={item.name + ' ' + item.lastName}
+              description={item.lastMsg}
+            />
           </List.Item>
         )
       }}
     />
   )
-}
-
-ChatList.propTypes = {
-  selectContact: PropTypes.func,
 }

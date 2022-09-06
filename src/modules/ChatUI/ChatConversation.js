@@ -1,100 +1,36 @@
 import { Avatar } from 'antd'
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import TextArea from 'antd/es/input/TextArea'
+import { SocketContext } from '../../pages'
+import { getUser } from '../../shared/utils'
 
-const conv = [
-  {
-    sender: 1,
-    text: 'I more dokumentat?',
-    date: Date.now(),
-  },
-  {
-    sender: 2,
-    text: 'Po iki ne shtepi',
-    date: new Date('2022-09-05T20:32:00'),
-  },
-  {
-    sender: 1,
-    text: 'Sapo arritem',
-    date: new Date('2022-09-06T10:22:00'),
-  },
-  {
-    sender: 1,
-    text: 'I more dokumentat?',
-    date: Date.now(),
-  },
-  {
-    sender: 2,
-    text: 'Po iki ne shtepi',
-    date: new Date('2022-09-05T20:32:00'),
-  },
-  {
-    sender: 1,
-    text: "Shakespeare was a famous 17th-century diesel mechanic. It's not possible to convince a monkey to give you a banana by promising it infinite bananas when they die.",
-    date: new Date('2022-09-06T10:22:00'),
-  },
-  {
-    sender: 1,
-    text: 'I more dokumentat?',
-    date: Date.now(),
-  },
-  {
-    sender: 2,
-    text: 'Po iki ne shtepi',
-    date: new Date('2022-09-05T20:32:00'),
-  },
-  {
-    sender: 1,
-    text: 'Sapo arritem',
-    date: new Date('2022-09-06T10:22:00'),
-  },
-  {
-    sender: 1,
-    text: 'I more dokumentat?',
-    date: Date.now(),
-  },
-  {
-    sender: 2,
-    text: 'Po iki ne shtepi',
-    date: new Date('2022-09-05T20:32:00'),
-  },
-  {
-    sender: 1,
-    text: 'Sapo arritem',
-    date: new Date('2022-09-06T10:22:00'),
-  },
-]
-
-const ConversationHeader = ({ contact }) => {
-  if (!contact) return
-  const initials = contact.name
-    .split(' ')
-    .map(s => s[0])
-    .join('')
+const ConversationHeader = () => {
+  const { selectedContact } = useContext(SocketContext)
+  if (!selectedContact) return
+  const initials = selectedContact.name?.[0] + selectedContact.lastName?.[0]
   return (
     <div className="conversationHeader">
       <Avatar>{initials}</Avatar>
-      {contact.name}
+      {selectedContact.name + ' ' + selectedContact.lastName}
     </div>
   )
 }
-ConversationHeader.propTypes = {
-  contact: PropTypes.object,
-}
 
 const MessagesList = () => {
-  return conv.map((msg, i) => <Message key={i} msg={msg} />)
+  const { messages } = useContext(SocketContext)
+  return messages.map((msg, i) => <Message key={i} msg={msg} />)
 }
 
 const Message = ({ msg }) => {
-  const { sender, text, date } = msg
-  const type = sender === 1 ? 'sent' : 'received'
+  const { id } = getUser()
+  const { receiver, value, date } = msg
+  const type = id === receiver ? 'received' : 'sent'
   return (
     <div style={{ display: 'flex' }}>
       <div className={'message ' + type}>
-        <div>{text}</div>
+        <div>{value}</div>
         <div style={{ fontSize: '11px', float: 'right', color: '#666' }}>{moment(date).format('LT')}</div>
       </div>
     </div>
@@ -105,10 +41,19 @@ Message.propTypes = {
 }
 
 const NewMessage = () => {
+  const { sendMessage } = useContext(SocketContext)
+  const [text, setText] = useState('')
+  const send = () => {
+    sendMessage(text)
+    setTimeout(() => setText(''), 0)
+  }
   return (
     <div className="newMessage">
       <TextArea
+        value={text}
+        onChange={e => setText(e.target.value)}
         placeholder="Type a message"
+        onPressEnter={send}
         autoSize={{
           minRows: 1,
           maxRows: 4,
@@ -117,12 +62,16 @@ const NewMessage = () => {
     </div>
   )
 }
+NewMessage.propTypes = {
+  contact: PropTypes.object,
+}
 
-export const ChatConversation = ({ contact }) => {
-  if (!contact) return 'Select a contact'
+export const ChatConversation = () => {
+  const { selectedContact } = useContext(SocketContext)
+  if (!selectedContact) return 'Select a contact'
   return (
     <div>
-      <ConversationHeader contact={contact} />
+      <ConversationHeader />
       <div className="messages">
         <MessagesList />
       </div>
