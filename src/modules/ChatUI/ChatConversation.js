@@ -32,7 +32,7 @@ const conv = [
   },
   {
     sender: 1,
-    text: 'Sapo arritem',
+    text: "Shakespeare was a famous 17th-century diesel mechanic. It's not possible to convince a monkey to give you a banana by promising it infinite bananas when they die.",
     date: new Date('2022-09-06T10:22:00'),
   },
   {

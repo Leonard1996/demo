@@ -27,26 +27,29 @@
 
 .chatConversation > div .messages {
     flex-grow: 1;
-    background: #e3e3e3;
+    background: #ddd;
     padding: 10px;
-    height: 0px;
+    height: 0;
     overflow: auto;
 }
 
 .chatConversation > div .messages .message {
-    background: #ccc;
+    /*background: #ccc;*/
     margin-bottom: 5px;
     padding: 5px;
     border-radius: 10px;
+    max-width: 90%;
+    background: #f9f9f9;
 }
 
 .chatConversation > div .messages .message.sent {
     margin-left: auto;
+    background: rgb(154 119 207 / 58%);
 }
 
 .chatConversation > div .newMessage {
     padding: 7px;
-    background: #e3e3e3;
+    background: #ddd;
 }
 
 .chatConversation > div .newMessage textarea {
