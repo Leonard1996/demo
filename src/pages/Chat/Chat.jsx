@@ -6,6 +6,7 @@ import io from 'socket.io-client'
 import './style.css'
 import { getToken, getUser } from '../../shared/utils'
 import { getMyTherapist, getPatients } from '../../services'
+import axios from 'axios'
 
 export const SocketContext = createContext({})
 
@@ -27,12 +28,23 @@ export const Chat = () => {
   }
 
   useEffect(() => {
-    user.role === 'patient'
-      ? getMyTherapist().then(d => setContacts([d.data || {}]))
-      : getPatients().then(d => setContacts(d.data))
+    const getContacts = async () => {
+      const contacts =
+        user.role === 'patient'
+          ? await getMyTherapist().then(d => [d.data || {}])
+          : await getPatients().then(d => d.data)
+      setContacts(contacts)
+      for (const contact of contacts) {
+        const room = user.role === 'patient' ? `${user.id}-${contact.id}` : `${contact.id}-${user.id}`
+        contact.lastMsg = await axios(`http://localhost:4999/history?room=${room}`).then(r => r.data || {})
+      }
+    }
+
+    getContacts().catch(e => console.error(e))
+
     socket = io('http://localhost:4999', {
-      auth: {
-        token: getToken(),
+      extraHeaders: {
+        Authorization: getToken(),
       },
     })
     socket.on('connect', () => {
@@ -51,16 +63,20 @@ export const Chat = () => {
       socket.emit('requestHistory', selectedContact.id)
     })
     socket.on('loadHistory', messages => {
-      console.log(messages)
+      delete messages.latest
       setMessagesList(
         Object.values(messages).sort((firstMessage, secondMessage) => firstMessage.date - secondMessage.date),
       )
     })
-    socket.on('newMessage', function (message) {
-      console.log(message)
-      console.log(messagesList)
-      const m = [...messagesList, message]
-      setMessagesList(m)
+    socket.on('newMessage', message => {
+      setMessagesList([...messagesList, message])
+
+      // const contactId = user.role === 'patient' ? `${user.id}-${contact.id}` : `${contact.id}-${user.id}`
+      const contactId = user.role === 'patient' ? room.split('-')[1] : room.split('-')[0]
+      const contact = contacts.filter(({ id }) => +id === +contactId)
+      if (!contact[0]) return
+      contact[0].lastMsg = message
+      setContacts(contacts)
     })
     return () => {
       socket.off('roomCreated')

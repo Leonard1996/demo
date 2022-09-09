@@ -1,5 +1,5 @@
 import { Avatar } from 'antd'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import TextArea from 'antd/es/input/TextArea'
@@ -20,7 +20,21 @@ const ConversationHeader = () => {
 
 const MessagesList = () => {
   const { messages } = useContext(SocketContext)
-  return messages.map((msg, i) => <Message key={i} msg={msg} />)
+  const bottomRef = useRef(null)
+  const list = messages.map((msg, i) => <Message key={i} msg={msg} />)
+  const scrollToBottom = () => {
+    bottomRef.current?.scrollIntoView()
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+  return (
+    <div className="messages">
+      {list}
+      <div ref={bottomRef} />
+    </div>
+  )
 }
 
 const Message = ({ msg }) => {
@@ -72,9 +86,7 @@ export const ChatConversation = () => {
   return (
     <div>
       <ConversationHeader />
-      <div className="messages">
-        <MessagesList />
-      </div>
+      <MessagesList />
       <NewMessage />
     </div>
   )

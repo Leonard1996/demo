@@ -49,11 +49,11 @@ export const ChatList = () => {
       renderItem={item => {
         const initials = item.name[0] + item.lastName[0]
         return (
-          <List.Item onClick={() => setSelectedContact(item)} extra={moment(item.date).format('L')}>
+          <List.Item onClick={() => setSelectedContact(item)} extra={moment(item.lastMsg?.date).format('LT')}>
             <List.Item.Meta
               avatar={<Avatar>{initials}</Avatar>}
               title={item.name + ' ' + item.lastName}
-              description={item.lastMsg}
+              description={item.lastMsg?.value}
             />
           </List.Item>
         )
