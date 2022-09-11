@@ -27,17 +27,26 @@ export const Chat = () => {
     socket.emit('createMessage', msg)
   }
 
+  const clearSeenStatus = messages => {
+    let seen = false
+    messages.reverse().forEach(msg => {
+      if (seen) return delete msg.seen
+      if (msg.seen) seen = true
+    })
+    return messages.reverse()
+  }
+
   useEffect(() => {
     const getContacts = async () => {
       const contacts =
         user.role === 'patient'
           ? await getMyTherapist().then(d => [d.data || {}])
           : await getPatients().then(d => d.data)
-      setContacts(contacts)
       for (const contact of contacts) {
         const room = user.role === 'patient' ? `${user.id}-${contact.id}` : `${contact.id}-${user.id}`
-        contact.lastMsg = await axios(`http://localhost:4999/history?room=${room}`).then(r => r.data || {})
+        contact.lastMsg = await axios(`http://localhost:4999/history?room=${room}`).then(r => r.data)
       }
+      setContacts(contacts)
     }
 
     getContacts().catch(e => console.error(e))
@@ -64,19 +73,28 @@ export const Chat = () => {
     })
     socket.on('loadHistory', messages => {
       delete messages.latest
-      setMessagesList(
-        Object.values(messages).sort((firstMessage, secondMessage) => firstMessage.date - secondMessage.date),
-      )
+      let mList = Object.values(messages).sort((firstMessage, secondMessage) => firstMessage.date - secondMessage.date)
+      mList = clearSeenStatus(mList)
+      setMessagesList(mList)
     })
     socket.on('newMessage', message => {
-      setMessagesList([...messagesList, message])
-
-      // const contactId = user.role === 'patient' ? `${user.id}-${contact.id}` : `${contact.id}-${user.id}`
+      setMessagesList(messagesList => [...messagesList, message])
       const contactId = user.role === 'patient' ? room.split('-')[1] : room.split('-')[0]
       const contact = contacts.filter(({ id }) => +id === +contactId)
       if (!contact[0]) return
       contact[0].lastMsg = message
       setContacts(contacts)
+
+      if (user.id === message.receiver) socket.emit('seen', { ...message, seen: 1 })
+    })
+    socket.on('notifySeen', message => {
+      setMessagesList(messagesList => {
+        messagesList.forEach(msg => {
+          if (msg.date === message.date) msg.seen = 1
+        })
+        const mList = clearSeenStatus(messagesList)
+        return [...mList]
+      })
     })
     return () => {
       socket.off('roomCreated')

@@ -4,6 +4,7 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 import Search from 'antd/es/input/Search'
 import { SocketContext } from '../../pages'
+import { getUser } from '../../shared/utils'
 
 const Chat = ({ chat }) => {
   const { name, lastMsg, date } = chat
@@ -23,6 +24,7 @@ Chat.propTypes = {
 }
 
 export const ChatList = () => {
+  const user = getUser()
   const { contacts, setSelectedContact } = useContext(SocketContext)
   const [list, setList] = useState(contacts)
   useEffect(() => {
@@ -48,12 +50,13 @@ export const ChatList = () => {
       header={header}
       renderItem={item => {
         const initials = item.name[0] + item.lastName[0]
+        const prefix = item.lastMsg ? (+item.lastMsg.receiver !== +user.id ? 'You: ' : '') : ''
         return (
           <List.Item onClick={() => setSelectedContact(item)} extra={moment(item.lastMsg?.date).format('LT')}>
             <List.Item.Meta
               avatar={<Avatar>{initials}</Avatar>}
               title={item.name + ' ' + item.lastName}
-              description={item.lastMsg?.value}
+              description={prefix + (item.lastMsg?.value || '')}
             />
           </List.Item>
         )

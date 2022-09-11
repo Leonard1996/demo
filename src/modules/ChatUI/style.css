@@ -42,9 +42,13 @@
     background: #f9f9f9;
 }
 
+.chatConversation > div .messages .message .not-seen {
+    color: #008cff;
+}
+
 .chatConversation > div .messages .message.sent {
     margin-left: auto;
-    background: rgb(154 119 207 / 58%);
+    background: rgb(155 119 207 / 56%);
 }
 
 .chatConversation > div .newMessage {

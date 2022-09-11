@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import TextArea from 'antd/es/input/TextArea'
 import { SocketContext } from '../../pages'
 import { getUser } from '../../shared/utils'
+import { CheckCircleTwoTone } from '@ant-design/icons'
 
 const ConversationHeader = () => {
   const { selectedContact } = useContext(SocketContext)
@@ -39,13 +40,18 @@ const MessagesList = () => {
 
 const Message = ({ msg }) => {
   const { id } = getUser()
-  const { receiver, value, date } = msg
+  const { receiver, value, date, seen = 0 } = msg
   const type = id === receiver ? 'received' : 'sent'
+  // const sent = id !== receiver ? <CheckOutlined /> : ''
+  const sent = id !== receiver && seen ? <CheckCircleTwoTone /> : ''
   return (
     <div style={{ display: 'flex' }}>
       <div className={'message ' + type}>
         <div>{value}</div>
-        <div style={{ fontSize: '11px', float: 'right', color: '#666' }}>{moment(date).format('LT')}</div>
+        <div style={{ fontSize: '11px', float: 'right', color: '#666' }}>
+          {moment(date).format('LT')}
+          <span style={{ marginLeft: '4px' }}>{sent}</span>
+        </div>
       </div>
     </div>
   )
