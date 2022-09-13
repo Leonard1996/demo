@@ -4,7 +4,7 @@ import { Content } from 'antd/es/layout/layout'
 import { HeaderMenu, SideMenu } from '../../modules'
 import './style.css'
 import { getMyTherapist } from '../../services'
-import { getUser } from '../../shared/utils'
+import { getUser, ROLES } from '../../shared/utils'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 
@@ -27,7 +27,7 @@ export const MyTherapist = () => {
   const user = getUser()
   const { role } = user
   useEffect(() => {
-    if (role === 'patient') {
+    if (role === ROLES.PATIENT) {
       getMyTherapist().then(d => setData(d.data || {}))
     } else {
       setData({ ...user, ...user.therapist })
@@ -36,7 +36,7 @@ export const MyTherapist = () => {
   const { details: { type, cover_letter, birthday, experiences = '' } = {} } = data
   const { name, lastName } = data
   const experiencesList = experiences.split(',').map((exp, i) => <div key={i}>{exp}</div>)
-  const intro = role === 'doctor' ? <div className="intr">La mia scheda visibile ai pazienti</div> : ''
+  const intro = role === ROLES.DOCTOR ? <div className="intr">La mia scheda visibile ai pazienti</div> : ''
 
   return (
     <Layout style={{ height: '100vh' }}>
@@ -67,7 +67,7 @@ export const MyTherapist = () => {
               </Space>
             </Col>
           </Row>
-          {role === 'doctor' && <Contacts {...data.details} />}
+          {role === ROLES.DOCTOR && <Contacts {...data.details} />}
         </Content>
       </Layout>
     </Layout>

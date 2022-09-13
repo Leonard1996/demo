@@ -15,7 +15,9 @@ const Navigator = () => {
             path={route.path}
             element={
               route.protected ? (
-                <PrivateRoute pageName={route.name}>{route.element}</PrivateRoute>
+                <PrivateRoute requiredRole={route.role} pageName={route.name}>
+                  {route.element}
+                </PrivateRoute>
               ) : (
                 <PublicRoute>{route.element}</PublicRoute>
               )

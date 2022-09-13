@@ -1,7 +1,7 @@
 import { Button, Col, Divider, Form, Input, Layout, message, Modal, Radio, Row, Space, Tooltip } from 'antd'
 import React, { useState } from 'react'
 import { Content } from 'antd/es/layout/layout'
-import { getUser, setGlobalUser } from '../../shared/utils'
+import { getUser, ROLES, setGlobalUser } from '../../shared/utils'
 import { HeaderMenu, SideMenu } from '../../modules'
 import moment from 'moment'
 
@@ -15,7 +15,7 @@ import { updateProfile } from '../../services'
 export const Profile = () => {
   const [user, setUser] = useState(getUser() || {})
   const { role } = user
-  if (role === 'doctor') return <MyTherapist />
+  if (role === ROLES.DOCTOR) return <MyTherapist />
   const {
     name,
     lastName,

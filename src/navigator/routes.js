@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  Admin,
   ChangePassword,
   Chat,
   Consent,
@@ -9,12 +10,14 @@ import {
   MyOrders,
   MyPatients,
   MyTherapist,
+  Products,
   Profile,
   Register,
   RegisterTherapist,
   Report,
   Schedule,
 } from '../pages'
+import { ROLES } from '../shared/utils'
 
 export const paths = Object.freeze({
   LOGIN: '/login',
@@ -65,30 +68,35 @@ export const routes = [
     name: 'My Orders',
     path: '/my-orders',
     protected: true,
+    role: ROLES.PATIENT,
     element: <MyOrders />,
   },
   {
     name: 'My Therapist',
     path: '/my-therapist',
     protected: true,
+    role: ROLES.PATIENT,
     element: <MyTherapist />,
   },
   {
     name: 'My Schedule',
     path: '/schedule',
     protected: true,
+    role: ROLES.DOCTOR,
     element: <Schedule />,
   },
   {
     name: 'My Reports',
     path: '/reports',
     protected: true,
+    role: ROLES.DOCTOR,
     element: <Report />,
   },
   {
     name: 'My Patients',
     path: '/my-patients',
     protected: true,
+    role: ROLES.DOCTOR,
     element: <MyPatients />,
   },
   {
@@ -108,5 +116,19 @@ export const routes = [
     path: '/chat',
     protected: true,
     element: <Chat />,
+  },
+  {
+    name: 'Admin',
+    path: '/admin',
+    protected: true,
+    role: ROLES.ADMIN,
+    element: <Admin />,
+  },
+  {
+    name: 'Products',
+    path: '/products',
+    protected: true,
+    role: ROLES.ADMIN,
+    element: <Products />,
   },
 ]

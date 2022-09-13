@@ -4,7 +4,7 @@ import { Content } from 'antd/es/layout/layout'
 import { ChatUI, HeaderMenu, SideMenu } from '../../modules'
 import io from 'socket.io-client'
 import './style.css'
-import { getToken, getUser } from '../../shared/utils'
+import { getToken, getUser, ROLES } from '../../shared/utils'
 import { getMyTherapist, getPatients } from '../../services'
 import axios from 'axios'
 
@@ -39,11 +39,11 @@ export const Chat = () => {
   useEffect(() => {
     const getContacts = async () => {
       const contacts =
-        user.role === 'patient'
+        user.role === ROLES.PATIENT
           ? await getMyTherapist().then(d => [d.data || {}])
           : await getPatients().then(d => d.data)
       for (const contact of contacts) {
-        const room = user.role === 'patient' ? `${user.id}-${contact.id}` : `${contact.id}-${user.id}`
+        const room = user.role === ROLES.PATIENT ? `${user.id}-${contact.id}` : `${contact.id}-${user.id}`
         contact.lastMsg = await axios(`http://localhost:4999/history?room=${room}`).then(r => r.data)
       }
       setContacts(contacts)
@@ -66,7 +66,7 @@ export const Chat = () => {
 
   useEffect(() => {
     if (!connected) return
-    const room = user.role === 'patient' ? `${user.id}-${selectedContact.id}` : `${selectedContact.id}-${user.id}`
+    const room = user.role === ROLES.PATIENT ? `${user.id}-${selectedContact.id}` : `${selectedContact.id}-${user.id}`
     socket.emit('create', room)
     socket.on('roomCreated', () => {
       socket.emit('requestHistory', selectedContact.id)
@@ -79,7 +79,7 @@ export const Chat = () => {
     })
     socket.on('newMessage', message => {
       setMessagesList(messagesList => [...messagesList, message])
-      const contactId = user.role === 'patient' ? room.split('-')[1] : room.split('-')[0]
+      const contactId = user.role === ROLES.PATIENT ? room.split('-')[1] : room.split('-')[0]
       const contact = contacts.filter(({ id }) => +id === +contactId)
       if (!contact[0]) return
       contact[0].lastMsg = message

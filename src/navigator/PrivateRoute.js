@@ -1,36 +1,23 @@
 import React from 'react'
 
-import { isLoggedIn } from '../shared/utils'
+import { getUser, isLoggedIn } from '../shared/utils'
 import { Navigate, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-const PrivateRoute = ({ children }) => {
-  // let navigate = useNavigate()
+const PrivateRoute = ({ requiredRole, children }) => {
   let location = useLocation()
-
-  // React.useEffect(() => {
-  //   const token = getToken()
-  //   if (token === null) {
-  //     axios.defaults.headers.common.Authorization = ''
-  //     localStorage.clear()
-  //     navigate('/login')
-  //   } else {
-  //     navigate(location.pathname)
-  //   }
-  // }, [location.pathname, navigate])
-
   if (!isLoggedIn()) {
     return <Navigate to={'/login'} state={{ from: location }} />
   }
-  //
-  // if (isLoggedIn()) {
-  //   return <Navigate to={'/not-found'} state={{ from: location }} />
-  // }
-
+  if (requiredRole) {
+    const { role } = getUser()
+    if (role !== requiredRole) return <Navigate to={'/'} state={{ from: location }} />
+  }
   return <>{children}</>
 }
 
 PrivateRoute.propTypes = {
+  requiredRole: PropTypes.string,
   children: PropTypes.element,
 }
 

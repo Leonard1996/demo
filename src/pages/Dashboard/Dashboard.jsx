@@ -5,6 +5,7 @@ import { HeaderMenu, NextSession, SideMenu } from '../../modules'
 import { getNextSession } from '../../services'
 import { getUser } from '../../shared/utils'
 import { BuyOptions } from '../../modules/BuyOptions/BuyOptions'
+import { confirmSession } from '../../services/session'
 // import { Footer, Header } from 'antd/es/layout/layout'
 // import Sider from 'antd/es/layout/Sider'
 // import { UserOutlined, LockOutlined, QuestionOutlined } from '@ant-design/icons'
@@ -21,6 +22,11 @@ export const Dashboard = () => {
     ? 'Acquista nuovi crediti per le tue prossime sedute!'
     : "I tuoi crediti non sono sufficienti per confermare la tua prossima seduta. Seleziona il servizio e procedi all'acquisto per confermare."
 
+  const confirm = async () => {
+    await confirmSession(nextSession.id)
+    getNextSession().then(d => setNextSession(d))
+  }
+
   const { Content } = Layout
   return (
     <Layout style={{ height: '100vh' }}>
@@ -30,7 +36,7 @@ export const Dashboard = () => {
         <Content className="dashboard">
           <Row style={{ paddingTop: '150px', paddingLeft: '250px', textAlign: 'start' }} align="middle">
             <Col flex="640px">
-              {nextSession && <NextSession style={{ textAlign: 'start' }} session={nextSession} />}
+              {nextSession && <NextSession style={{ textAlign: 'start' }} session={nextSession} confirm={confirm} />}
             </Col>
           </Row>
           <Row style={{ paddingTop: '50px', paddingLeft: '250px', textAlign: 'start' }} align="middle">
