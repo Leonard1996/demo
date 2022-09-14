@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './style.css'
-import { Col, Layout, Row, Table } from 'antd'
+import { Badge, Button, Col, DatePicker, Form, Input, Layout, message, Modal, Radio, Row, Table } from 'antd'
 import { HeaderMenu, SideMenu } from '../../modules'
 import moment from 'moment'
+import { createProduct, getProducts } from '../../services'
 
 const columns = [
   {
@@ -48,53 +49,38 @@ const columns = [
   },
   {
     title: 'Taxes',
-    dataIndex: 'taxes',
+    dataIndex: 'tax',
     width: 20,
-    sorter: (a, b) => a.taxes - b.taxes,
+    sorter: (a, b) => a.tax - b.tax,
   },
   {
     title: 'Status',
     dataIndex: 'status',
-    width: 2,
+    width: 120,
+    filters: [
+      {
+        text: 'Active',
+        value: 1,
+      },
+      {
+        text: 'Inactive',
+        value: 0,
+      },
+    ],
+    onFilter: (value, record) => +record.status === value,
     sorter: (a, b) => a.status - b.status,
-  },
-]
-const data = [
-  {
-    key: '1',
-    name: 'Gsessione',
-    typeOfSession: 'single',
-    typeOfProduct: 'standard',
-    numberOfSessions: 1,
-    from: Date.now(),
-    until: Date.now(),
-    price: '50 EUR',
-    taxes: '0%',
-    status: 1,
-  },
-  {
-    key: '2',
-    name: 'Asessione copia',
-    typeOfSession: 'couple',
-    typeOfProduct: 'standard',
-    numberOfSessions: 1,
-    from: Date.now(),
-    until: Date.now(),
-    price: '60 EUR',
-    taxes: '0%',
-    status: 1,
-  },
-  {
-    key: '3',
-    name: 'Pacheto 5 sesioni',
-    typeOfSession: 'single',
-    typeOfProduct: 'gift card',
-    numberOfSessions: 5,
-    from: Date.now(),
-    until: Date.now(),
-    price: '260 EUR',
-    taxes: '0%',
-    status: 1,
+    render: text =>
+      +text ? (
+        <>
+          <Badge status="success" />
+          Active
+        </>
+      ) : (
+        <>
+          <Badge status="default" />
+          Inactive
+        </>
+      ),
   },
 ]
 
@@ -103,15 +89,185 @@ export const Products = () => {
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra)
   }
+  const [createModal, setCreateModal] = useState(false)
+  const [products, setProducts] = useState([])
+  useEffect(() => {
+    getProducts().then(d => setProducts(d))
+  }, [])
+
+  // eslint-disable-next-line no-unused-vars
+  const handleOk = async data => {
+    console.log(data)
+    setLoading(true)
+    const { error, msg, product } = await createProduct(data)
+    if (error) {
+      return message.error(msg)
+    }
+    console.log(product)
+    message.success('Product created!')
+    getProducts().then(d => setProducts(d))
+    setLoading(false)
+    setCreateModal(false)
+  }
+
+  const handleCancel = () => {
+    setCreateModal(false)
+  }
+
+  const [loading, setLoading] = useState(false)
   return (
     <Layout style={{ height: '100vh' }}>
       <HeaderMenu />
       <Layout style={{ marginTop: '120px', padding: '0 50px' }}>
         <SideMenu />
         <Content className="dashboard">
+          <Modal
+            footer={[
+              <Button key="back" onClick={handleCancel}>
+                Cancel
+              </Button>,
+              <Button
+                form="createProductForm"
+                htmlType="submit"
+                key="submit"
+                type="primary"
+                loading={loading}
+                // onClick={handleOk}
+              >
+                Submit
+              </Button>,
+            ]}
+            title="Create Product"
+            visible={createModal}
+            onOk={handleOk}
+            onCancel={handleCancel}
+          >
+            <Form
+              id="createProductForm"
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              initialValues={{ typeOfProduct: 'standard', typeOfSession: 'single', status: '1' }}
+              onFinish={handleOk}
+              onFinishFailed={() => {}}
+              autoComplete="off"
+              requiredMark={false}
+            >
+              <Form.Item
+                label="Product Name"
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input name',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Type of Product" name="typeOfProduct">
+                <Radio.Group>
+                  <Radio.Button value="standard">Standard</Radio.Button>
+                  <Radio.Button value="gift-card">Gift Card</Radio.Button>
+                </Radio.Group>
+              </Form.Item>
+
+              <Form.Item label="Type of Session" name="typeOfSession">
+                <Radio.Group>
+                  <Radio.Button value="single">Single</Radio.Button>
+                  <Radio.Button value="couple">Couple</Radio.Button>
+                </Radio.Group>
+              </Form.Item>
+
+              <Form.Item
+                label="Number of Sessions"
+                name="numberOfSessions"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input number of sessions',
+                  },
+                ]}
+              >
+                <Input placeholder="1,2,N" />
+              </Form.Item>
+
+              <Form.Item
+                name="from"
+                label="Validity From"
+                hasFeedback
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please select start',
+                  },
+                ]}
+              >
+                <DatePicker style={{ width: '100%' }} />
+              </Form.Item>
+
+              <Form.Item
+                name="until"
+                label="Validity To"
+                hasFeedback
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please select end',
+                  },
+                ]}
+              >
+                <DatePicker style={{ width: '100%' }} />
+              </Form.Item>
+
+              <Form.Item label="Price" name="price">
+                <Input
+                  addonAfter="€"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please input price',
+                    },
+                  ]}
+                />
+              </Form.Item>
+
+              <Form.Item label="Taxes" name="tax">
+                <Input
+                  addonAfter="%"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please input tax',
+                    },
+                  ]}
+                />
+              </Form.Item>
+
+              <Form.Item label="Status" name="status">
+                <Radio.Group>
+                  <Radio.Button value="1">Active</Radio.Button>
+                  <Radio.Button value="0">Inactive</Radio.Button>
+                </Radio.Group>
+              </Form.Item>
+            </Form>
+          </Modal>
           <Row style={{ paddingTop: '50px', paddingLeft: '100px', textAlign: 'start' }} align="middle">
             <Col flex="auto">
-              <Table columns={columns} dataSource={data} onChange={onChange} />
+              <h2>Catalogo Prodotti</h2>
+            </Col>
+          </Row>
+          <Row style={{ paddingLeft: '100px', textAlign: 'end' }} align="middle">
+            <Col flex="auto">
+              <Button onClick={() => setCreateModal(true)} type="primary">
+                Create Product
+              </Button>
+            </Col>
+          </Row>
+          <Row style={{ paddingTop: '20px', paddingLeft: '100px', textAlign: 'start' }} align="middle">
+            <Col flex="auto">
+              <Table columns={columns} dataSource={products} onChange={onChange} />
             </Col>
           </Row>
         </Content>

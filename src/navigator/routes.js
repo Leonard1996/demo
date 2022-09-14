@@ -15,6 +15,7 @@ import {
   Register,
   RegisterTherapist,
   Report,
+  RTC,
   Schedule,
 } from '../pages'
 import { ROLES } from '../shared/utils'
@@ -130,5 +131,11 @@ export const routes = [
     protected: true,
     role: ROLES.ADMIN,
     element: <Products />,
+  },
+  {
+    name: 'RTC',
+    path: '/rtc',
+    protected: true,
+    element: <RTC />,
   },
 ]

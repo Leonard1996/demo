@@ -92,7 +92,7 @@ const DayTimeSlots = ({ day, events, addEvent, patients }) => {
       setVisible(false)
     }
     const patientsOptions = patients.map((p, i) => (
-      <Select.Option key={i} value={p.userId}>
+      <Select.Option key={i} value={p.id}>
         {p.name} {p.lastName}
       </Select.Option>
     ))

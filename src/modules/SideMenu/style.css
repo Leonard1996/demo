@@ -9,7 +9,7 @@
 .side-menu .ant-layout-sider-children {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
 }
 
 .side-menu .item {
