@@ -1,91 +1,108 @@
 import React, { useEffect, useState } from 'react'
 import './style.css'
-import { Badge, Button, Col, DatePicker, Form, Input, Layout, message, Modal, Radio, Row, Table } from 'antd'
+// eslint-disable-next-line no-unused-vars
+import { Badge, Button, Col, DatePicker, Form, Input, Layout, message, Modal, Radio, Row, Space, Table } from 'antd'
 import { HeaderMenu, SideMenu } from '../../modules'
 import moment from 'moment'
 import { createProduct, getProducts } from '../../services'
 
-const columns = [
-  {
-    title: 'Product Name',
-    dataIndex: 'name',
-    defaultSortOrder: 'ascend',
-    sorter: (a, b) => a.name.localeCompare(b.name),
-  },
-  {
-    title: 'Type of Session',
-    dataIndex: 'typeOfSession',
-    width: 20,
-    sorter: (a, b) => a.typeOfSession.localeCompare(b.typeOfSession),
-  },
-  {
-    title: 'Type of Product',
-    dataIndex: 'typeOfProduct',
-    width: 20,
-    sorter: (a, b) => a.typeOfProduct.localeCompare(b.typeOfProduct),
-  },
-  {
-    title: 'Nr. of Sessions',
-    dataIndex: 'numberOfSessions',
-    width: 20,
-    sorter: (a, b) => a.numberOfSessions - b.numberOfSessions,
-  },
-  {
-    title: 'Validity from',
-    dataIndex: 'from',
-    sorter: (a, b) => a.from - b.from,
-    render: text => <>{moment(text).format('L')}</>,
-  },
-  {
-    title: 'Validity to',
-    dataIndex: 'until',
-    sorter: (a, b) => a.until - b.until,
-    render: text => <>{moment(text).format('L')}</>,
-  },
-  {
-    title: 'Price',
-    dataIndex: 'price',
-    sorter: (a, b) => a.price - b.price,
-  },
-  {
-    title: 'Taxes',
-    dataIndex: 'tax',
-    width: 20,
-    sorter: (a, b) => a.tax - b.tax,
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    width: 120,
-    filters: [
-      {
-        text: 'Active',
-        value: 1,
-      },
-      {
-        text: 'Inactive',
-        value: 0,
-      },
-    ],
-    onFilter: (value, record) => +record.status === value,
-    sorter: (a, b) => a.status - b.status,
-    render: text =>
-      +text ? (
-        <>
-          <Badge status="success" />
-          Active
-        </>
-      ) : (
-        <>
-          <Badge status="default" />
-          Inactive
-        </>
-      ),
-  },
-]
-
 export const Products = () => {
+  const columns = [
+    {
+      title: 'Product Name',
+      dataIndex: 'name',
+      defaultSortOrder: 'ascend',
+      sorter: (a, b) => a.name.localeCompare(b.name),
+    },
+    {
+      title: 'Type of Session',
+      dataIndex: 'typeOfSession',
+      width: 20,
+      sorter: (a, b) => a.typeOfSession.localeCompare(b.typeOfSession),
+    },
+    // {
+    //   title: 'Type of Product',
+    //   dataIndex: 'typeOfProduct',
+    //   width: 20,
+    //   sorter: (a, b) => a.typeOfProduct.localeCompare(b.typeOfProduct),
+    // },
+    {
+      title: 'Nr. of Sessions',
+      dataIndex: 'numberOfSessions',
+      width: 20,
+      sorter: (a, b) => a.numberOfSessions - b.numberOfSessions,
+    },
+    {
+      title: 'Validity from',
+      dataIndex: 'from',
+      sorter: (a, b) => a.from - b.from,
+      render: text => <>{moment(text).format('L')}</>,
+    },
+    {
+      title: 'Validity to',
+      dataIndex: 'until',
+      sorter: (a, b) => a.until - b.until,
+      render: text => <>{moment(text).format('L')}</>,
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      sorter: (a, b) => a.price - b.price,
+    },
+    {
+      title: 'Taxes',
+      dataIndex: 'tax',
+      width: 20,
+      sorter: (a, b) => a.tax - b.tax,
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      width: 120,
+      filters: [
+        {
+          text: 'Active',
+          value: 1,
+        },
+        {
+          text: 'Inactive',
+          value: 0,
+        },
+      ],
+      onFilter: (value, record) => +record.status === value,
+      sorter: (a, b) => a.status - b.status,
+      render: text =>
+        +text ? (
+          <>
+            <Badge status="success" />
+            Active
+          </>
+        ) : (
+          <>
+            <Badge status="default" />
+            Inactive
+          </>
+        ),
+    },
+    {
+      title: 'Action',
+      dataIndex: 'operation',
+      key: 'operation',
+      width: 2,
+      render: (_, record) => (
+        <Space size="middle">
+          <a onClick={() => handleEdit(record)} style={{ color: '#9a77cf' }}>
+            Edit
+          </a>
+          <a onClick={() => handleClone(record)} style={{ color: '#9a77cf' }}>
+            Clone
+          </a>
+        </Space>
+      ),
+    },
+  ]
   const { Content } = Layout
+  const [form] = Form.useForm()
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra)
   }
@@ -95,15 +112,31 @@ export const Products = () => {
     getProducts().then(d => setProducts(d))
   }, [])
 
-  // eslint-disable-next-line no-unused-vars
+  const handleEdit = data => {
+    delete data.createdAt
+    delete data.updatedAt
+    data.from = moment(data.from)
+    data.until = moment(data.until)
+    form.setFieldsValue(data)
+    setCreateModal(true)
+  }
+
+  const handleClone = data => {
+    delete data.id
+    delete data.createdAt
+    delete data.updatedAt
+    data.from = moment(data.from)
+    data.until = moment(data.until)
+    form.setFieldsValue(data)
+    setCreateModal(true)
+  }
+
   const handleOk = async data => {
-    console.log(data)
     setLoading(true)
-    const { error, msg, product } = await createProduct(data)
+    const { error, msg } = await createProduct(data)
     if (error) {
       return message.error(msg)
     }
-    console.log(product)
     message.success('Product created!')
     getProducts().then(d => setProducts(d))
     setLoading(false)
@@ -111,6 +144,7 @@ export const Products = () => {
   }
 
   const handleCancel = () => {
+    form.resetFields()
     setCreateModal(false)
   }
 
@@ -143,11 +177,12 @@ export const Products = () => {
             onCancel={handleCancel}
           >
             <Form
+              form={form}
               id="createProductForm"
               name="basic"
               labelCol={{ span: 8 }}
               wrapperCol={{ span: 16 }}
-              initialValues={{ typeOfProduct: 'standard', typeOfSession: 'single', status: '1' }}
+              initialValues={{ typeOfProduct: 'standard', typeOfSession: 'single', status: 1 }}
               onFinish={handleOk}
               onFinishFailed={() => {}}
               autoComplete="off"
@@ -247,9 +282,13 @@ export const Products = () => {
 
               <Form.Item label="Status" name="status">
                 <Radio.Group>
-                  <Radio.Button value="1">Active</Radio.Button>
-                  <Radio.Button value="0">Inactive</Radio.Button>
+                  <Radio.Button value={1}>Active</Radio.Button>
+                  <Radio.Button value={0}>Inactive</Radio.Button>
                 </Radio.Group>
+              </Form.Item>
+
+              <Form.Item label="id" name="id" hidden={true}>
+                <Input />
               </Form.Item>
             </Form>
           </Modal>
