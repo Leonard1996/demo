@@ -7,12 +7,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import AgoraUIKit, { layout } from 'agora-react-uikit'
 import { getUser } from '../../shared/utils'
+import { doneSession } from '../../services'
 
 export const RTC = () => {
   const navigate = useNavigate()
   const { state } = useLocation()
   if (!state?.RTCToken) return navigate('/')
-  const { RTCToken } = state
+  const { RTCToken, sessionId } = state
   console.log(state, RTCToken)
   return (
     <Layout style={{ height: '100vh' }}>
@@ -22,10 +23,7 @@ export const RTC = () => {
         <Content className="rtc">
           <Row style={{ paddingTop: '55px', paddingLeft: '100px', height: '100%' }}>
             <Col flex="auto" style={{ display: 'flex', justifyContent: 'space-between' }}>
-              {/*<div>*/}
-              {/*<h1 className="heading">Agora RTC NG SDK React Wrapper</h1>*/}
-              <AgoraVideo RTCToken={RTCToken} />
-              {/*</div>*/}
+              <AgoraVideo RTCToken={RTCToken} sessionId={sessionId} />
             </Col>
           </Row>
         </Content>
@@ -34,18 +32,17 @@ export const RTC = () => {
   )
 }
 
-const AgoraVideo = ({ RTCToken }) => {
+const AgoraVideo = ({ RTCToken, sessionId }) => {
   const navigate = useNavigate()
-  // const [videoCall, setVideoCall] = useState(true)
   const rtcProps = {
     appId: 'c79b07fb26554e3bbf457935c0e6f21a',
-    channel: 'psiqo', // your agora channel
-    token: RTCToken, // use null or skip if using app in testing mode
+    channel: 'psiqo',
+    token: RTCToken,
     layout: layout.grid,
   }
   const callbacks = {
-    EndCall: () => {
-      // setVideoCall(false)
+    EndCall: async () => {
+      if (sessionId) await doneSession(sessionId)
       navigate('/')
     },
   }
@@ -59,4 +56,5 @@ const AgoraVideo = ({ RTCToken }) => {
 
 AgoraVideo.propTypes = {
   RTCToken: PropTypes.string,
+  sessionId: Promise.any,
 }

@@ -25,7 +25,7 @@ export const Schedule = () => {
 
   const openRTC = async () => {
     const RTCToken = await getRtcToken(nextSession)
-    if (RTCToken) navigate('/rtc', { state: { RTCToken } })
+    if (RTCToken) navigate('/rtc', { state: { RTCToken, sessionId: nextSession.id } })
   }
 
   const next = () => setWeek(week + 1)

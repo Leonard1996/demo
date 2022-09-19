@@ -6,11 +6,7 @@ import { getNextSession, confirmSession, getRtcToken } from '../../services'
 import { getUser } from '../../shared/utils'
 import { BuyOptions } from '../../modules/BuyOptions/BuyOptions'
 import { useNavigate } from 'react-router-dom'
-// import { Footer, Header } from 'antd/es/layout/layout'
-// import Sider from 'antd/es/layout/Sider'
-// import { UserOutlined, LockOutlined, QuestionOutlined } from '@ant-design/icons'
-
-// import CopyRight from '../../shared/components/CopyRight/CopyRight'
+// import { useNavigate } from 'react-router-dom'
 
 export const Dashboard = () => {
   const [nextSession, setNextSession] = useState()
