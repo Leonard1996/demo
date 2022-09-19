@@ -4,9 +4,11 @@ import { HeaderMenu, NextSession, SideMenu, WeeklySchedule } from '../../modules
 import { Layout, message } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import moment from 'moment'
-import { createSession, getPatients, getSessions } from '../../services'
+import { createSession, getPatients, getRtcToken, getSessions } from '../../services'
+import { useNavigate } from 'react-router-dom'
 
 export const Schedule = () => {
+  const navigate = useNavigate()
   const [week, setWeek] = useState(moment().week())
   const [events, setEvents] = useState([])
   const [patients, setPatients] = useState([])
@@ -20,6 +22,12 @@ export const Schedule = () => {
       setNextSession({ ...d.nextConfirmedSession, isConfirmed: 1 })
     })
   }, [week])
+
+  const openRTC = async () => {
+    const RTCToken = await getRtcToken(nextSession)
+    if (RTCToken) navigate('/rtc', { state: { RTCToken } })
+  }
+
   const next = () => setWeek(week + 1)
   const prev = () => setWeek(week - 1)
   const addEvent = async value => {
@@ -50,7 +58,7 @@ export const Schedule = () => {
       <Layout style={{ marginTop: '120px', padding: '0 50px' }}>
         <SideMenu />
         <Content className="schedule" style={{ paddingTop: '55px', paddingLeft: '150px', paddingRight: '150px' }}>
-          {nextSession && <NextSession session={nextSession} />}
+          {nextSession && <NextSession session={nextSession} openRTC={openRTC} />}
           <WeeklySchedule week={week} events={events} next={next} prev={prev} patients={patients} addEvent={addEvent} />
         </Content>
       </Layout>

@@ -11,3 +11,12 @@ export const confirmSession = async id => {
       return []
     })
 }
+
+export const getRtcToken = async ({ id, link }) => {
+  return await axios
+    .get(`sessions/${id}/verify/${link}?channelName=psiqo`)
+    .then(response => response.data.RTCToken)
+    .catch(e => {
+      message.error(e.response?.data?.error?.message || 'Something went wrong!')
+    })
+}

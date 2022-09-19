@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import './style.css'
 import { Button, Col, Layout, Row } from 'antd'
 import { HeaderMenu, NextSession, SideMenu } from '../../modules'
-import { getNextSession, confirmSession } from '../../services'
+import { getNextSession, confirmSession, getRtcToken } from '../../services'
 import { getUser } from '../../shared/utils'
 import { BuyOptions } from '../../modules/BuyOptions/BuyOptions'
+import { useNavigate } from 'react-router-dom'
 // import { Footer, Header } from 'antd/es/layout/layout'
 // import Sider from 'antd/es/layout/Sider'
 // import { UserOutlined, LockOutlined, QuestionOutlined } from '@ant-design/icons'
@@ -13,6 +14,7 @@ import { BuyOptions } from '../../modules/BuyOptions/BuyOptions'
 
 export const Dashboard = () => {
   const [nextSession, setNextSession] = useState()
+  const navigate = useNavigate()
   useEffect(() => {
     getNextSession().then(d => setNextSession(d))
   }, [])
@@ -26,6 +28,11 @@ export const Dashboard = () => {
     getNextSession().then(d => setNextSession(d))
   }
 
+  const openRTC = async () => {
+    const RTCToken = await getRtcToken(nextSession)
+    if (RTCToken) navigate('/rtc', { state: { RTCToken } })
+  }
+
   const { Content } = Layout
   return (
     <Layout style={{ height: '100vh' }}>
@@ -35,7 +42,9 @@ export const Dashboard = () => {
         <Content className="dashboard">
           <Row style={{ paddingTop: '150px', paddingLeft: '250px', textAlign: 'start' }} align="middle">
             <Col flex="640px">
-              {nextSession && <NextSession style={{ textAlign: 'start' }} session={nextSession} confirm={confirm} />}
+              {nextSession && (
+                <NextSession style={{ textAlign: 'start' }} session={nextSession} confirm={confirm} openRTC={openRTC} />
+              )}
             </Col>
           </Row>
           <Row style={{ paddingTop: '50px', paddingLeft: '250px', textAlign: 'start' }} align="middle">

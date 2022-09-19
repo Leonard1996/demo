@@ -2,7 +2,6 @@ import React from 'react'
 import { Button, Col, Layout, Row, message, Upload } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import { HeaderMenu, SideMenu } from '../../modules'
-import axios from 'axios'
 import { getToken, getUser } from '../../shared/utils'
 import { getMe } from '../../services'
 import { useNavigate } from 'react-router-dom'
@@ -33,21 +32,23 @@ export const Consent = () => {
   }
 
   const handleDownload = async () => {
-    axios.get('http://localhost:5002/users/consent', { responseType: 'blob' }).then(response => {
-      // create file link in browser's memory
-      const href = URL.createObjectURL(response.data)
-
-      // create "a" HTLM element with href to file & click
-      const link = document.createElement('a')
-      link.href = href
-      link.setAttribute('download', 'consent.pdf') //or any other extension
-      document.body.appendChild(link)
-      link.click()
-
-      // clean up "a" element & remove ObjectURL
-      document.body.removeChild(link)
-      URL.revokeObjectURL(href)
-    })
+    window.open('http://localhost:8080/consent.pdf', 'blank')
+    // axios.get('http://localhost:5002/users/consent').then(response => {
+    //   // create file link in browser's memory
+    //   window.open('http://localhost:8080/consent.pdf', 'blank')
+    //   const href = URL.createObjectURL(response.data)
+    //
+    //   // create "a" HTLM element with href to file & click
+    //   const link = document.createElement('a')
+    //   link.href = href
+    //   // link.setAttribute('download', 'consent.pdf') //or any other extension
+    //   document.body.appendChild(link)
+    //   link.click()
+    //
+    //   // clean up "a" element & remove ObjectURL
+    //   document.body.removeChild(link)
+    //   URL.revokeObjectURL(href)
+    // })
     // console.log(data)
     // window.open(data, '_blank', {})
   }
@@ -65,10 +66,10 @@ export const Consent = () => {
             <Col style={{ textAlign: 'start' }} flex="740px">
               {/*<Space direction="vertical">*/}
               <p style={{ marginBottom: '10px' }}>
-                SCARICA E COMPILA IL PDF DEL CONSENSO INFORMATO PER PARTECIPARE ALLE SEDUTE CON IL TUO PSICOTERAPEUTA
+                MOSTRA E COMPILA IL PDF DEL CONSENSO INFORMATO PER PARTECIPARE ALLE SEDUTE CON IL TUO PSICOTERAPEUTA
               </p>
               <Button style={{ marginBottom: '30px' }} type="primary" onClick={handleDownload}>
-                DOWNLOAD
+                MOSTRA
               </Button>
               <p style={{ marginBottom: '10px' }}>CARICA IL PDF DEL CONSENSO INFORMATO DA TE COMPILATO.</p>
               <Upload {...props}>
@@ -78,7 +79,7 @@ export const Consent = () => {
               </Upload>
 
               <p style={{ marginBottom: '10px' }}>
-                SCARICA IL PDF DEL CONSENSO INFORMATO FIRMATO DAL TUO PSICOTERAPEUTA
+                MOSTRA IL PDF DEL CONSENSO INFORMATO FIRMATO DAL TUO PSICOTERAPEUTA
               </p>
               <Button
                 style={{ marginBottom: '30px' }}
@@ -86,7 +87,7 @@ export const Consent = () => {
                 disabled={!consent}
                 onClick={handleSignedDownload}
               >
-                DOWNLOAD
+                MOSTRA
               </Button>
               {/*</Space>*/}
             </Col>
