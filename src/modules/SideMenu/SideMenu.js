@@ -23,7 +23,7 @@ const items = {
     { name: 'Sedute fatte', path: '/reports' },
     { name: 'I miei pazienti', path: '/my-patients' },
     { name: 'Informazioni personali', type: 'label' },
-    { name: 'La mia scheda', path: '/my-therapist' },
+    { name: 'La mia scheda', path: '/me' },
     { name: 'Modifica password', path: '/change-password' },
     { name: 'Contatta il team PSIQO', type: 'label' },
     { name: 'Chat', path: '/chat' },

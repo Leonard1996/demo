@@ -4,11 +4,14 @@ import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { getPatientDetails } from '../../services'
 
-export const Patient = ({ patient = {} }) => {
-  const [d, setD] = useState({})
+export const Patient = ({ patient }) => {
+  const [details, setDetails] = useState({})
   useEffect(() => {
-    getPatientDetails(patient.id).then(d => setD(d.data))
-    console.log(d)
+    if (patient)
+      getPatientDetails(patient.id).then(({ nextSessions, numberOfSessions: { numberOfSessions }, patientDetails }) =>
+        setDetails({ nextSessions, numberOfSessions, patientDetails }),
+      )
+    console.log(details)
   }, [patient])
   if (!patient)
     return (
@@ -16,17 +19,13 @@ export const Patient = ({ patient = {} }) => {
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       </Card>
     )
+  const { name, lastName, birthday, gender, isSingle, credit } = patient
+  const { nextSessions, numberOfSessions, patientDetails = { patient: { details: {} } } } = details
   const {
-    name,
-    lastName,
-    birthday,
-    gender,
-    isSingle,
-    credit,
-    sessions = 0,
-    nextSession = 'N/A',
-    details: { question_1, question_2, question_3, question_4 } = {},
-  } = patient
+    patient: {
+      details: { question_1, question_2, question_3, question_4 },
+    },
+  } = patientDetails
   return (
     <Card title="Profilo di paziente" style={{ textAlign: 'start', fontSize: '16px' }}>
       <Row>
@@ -42,9 +41,9 @@ export const Patient = ({ patient = {} }) => {
           <div>Crediti: {credit}</div>
         </Col>
         <Col span={12}>
-          <div>Sedute già effetuate: {sessions}</div>
+          <div>Sedute già effetuate: {numberOfSessions}</div>
           <div>Prossime sedute:</div>
-          <div>{nextSession}</div>
+          <div>{nextSessions ? moment(nextSessions.startTime).format('L') : ''}</div>
         </Col>
       </Row>
       <Divider style={{ margin: '10px 0' }} />

@@ -12,7 +12,7 @@ export const getPatients = async () => {
 export const getPatientDetails = async id => {
   return await axios
     .get(`/sessions/patients/${id}`)
-    .then(response => ({ error: false, data: response.data.patients }))
+    .then(response => response.data)
     .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
 }
 

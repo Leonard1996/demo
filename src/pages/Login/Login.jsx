@@ -7,19 +7,17 @@ import { Layout, Row, Col, message } from 'antd'
 
 import { login } from '../../services'
 
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import { HeaderMenu, LoginForm } from '../../modules'
 
 export const Login = () => {
   const { Content } = Layout
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const onFinish = async values => {
     const { error, msg } = await login(values)
-    if (!error) {
-      return navigate('/')
-    }
-    message.error(msg)
+    if (error) return message.error(msg)
+    location.reload()
   }
   return (
     <Layout style={{ height: '100vh' }} className="LoginLayout">

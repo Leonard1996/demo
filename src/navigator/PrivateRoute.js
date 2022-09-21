@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { getUser, isLoggedIn } from '../shared/utils'
 import { Navigate, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { getMe } from '../services'
 
 const PrivateRoute = ({ requiredRole, children }) => {
+  useEffect(() => {
+    getMe().then()
+  }, [])
   let location = useLocation()
   if (!isLoggedIn()) {
     return <Navigate to={'/login'} state={{ from: location }} />
