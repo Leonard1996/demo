@@ -1,83 +1,112 @@
-import { Badge, Button, Col, DatePicker, Form, Input, Layout, message, Modal, Radio, Row, Table } from 'antd'
+import {
+  Badge,
+  Button,
+  // Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Layout,
+  Menu,
+  message,
+  Modal,
+  Radio,
+  Row,
+  Table,
+  Dropdown,
+  Space,
+  Checkbox,
+} from 'antd'
 import React, { useEffect, useState } from 'react'
 import { HeaderMenu, SideMenu } from '../../modules'
 
 import './style.css'
 import { createPromoCode, getAllPatients } from '../../services'
+import moment from 'moment'
 
 export const AllPatients = () => {
-  const columns = [
-    {
+  const [open, setOpen] = useState(false)
+  const [columns, setColumns] = useState([])
+  const [selectedColumns, setSelectedColumns] = useState([
+    'name',
+    'lastName',
+    'email',
+    'isSingle',
+    'doctor',
+    'freeTrial',
+    'credit',
+    'doneSessions',
+    'doneOrders',
+  ])
+  const handleOpenChange = flag => {
+    setOpen(flag)
+  }
+  const availableColumns = {
+    name: {
       title: 'Nome',
       dataIndex: 'name',
       defaultSortOrder: 'ascend',
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
-    {
+    lastName: {
       title: 'Cognome',
       dataIndex: 'lastName',
       defaultSortOrder: 'ascend',
       sorter: (a, b) => a.lastName.localeCompare(b.lastName),
     },
-    {
+    email: {
       title: 'Email',
       dataIndex: 'email',
     },
-    {
+    isSingle: {
       title: 'Tipologia',
       dataIndex: 'isSingle',
       render: text => (+text ? 'Singolo' : 'Coppia'),
     },
-    {
+    doctor: {
       title: 'Terapeuta Assegnato',
       dataIndex: 'doctor',
     },
-    {
+    freeTrial: {
       title: 'Free Trial',
       dataIndex: 'freeTrial',
     },
-    {
+    solved: {
       title: 'Risolvo',
       dataIndex: 'solved',
       render: text => (+text ? 'Si' : 'No'),
     },
-    {
+    credit: {
       title: 'Crediti',
       dataIndex: 'credit',
       width: 20,
       sorter: (a, b) => a.credit - b.credit,
     },
-    {
+    doneSessions: {
       title: 'Sedute effettuate',
       dataIndex: 'doneSessions',
       width: 20,
       sorter: (a, b) => a.doneSessions - b.doneSessions,
     },
-    {
+    doneOrders: {
       title: 'Nr Ordini effettuati',
       dataIndex: 'doneOrders',
       width: 20,
       sorter: (a, b) => a.doneOrders - b.doneOrders,
     },
-    {
-      title: 'Rate',
-      dataIndex: 'rate',
-      width: 20,
-      sorter: (a, b) => a.rate - b.rate,
+    nextConfirmedSession: {
+      title: 'Prossima Seduta Confermata',
+      dataIndex: 'nextConfirmedSession',
+      sorter: (a, b) => a.nextConfirmedSession - b.nextConfirmedSession,
+      render: text => <>{text ? moment(text).format('LT') : ''}</>,
     },
-    {
-      title: 'Totale sessioni',
-      dataIndex: 'numberOfSessions',
-      width: 20,
-      sorter: (a, b) => a.numberOfSessions - b.numberOfSessions,
+    nextScheduledSession: {
+      title: 'Prossima Seduta da Confermare',
+      dataIndex: 'nextScheduledSession',
+      sorter: (a, b) => a.nextScheduledSession - b.nextScheduledSession,
+      render: text => <>{text ? moment(text).format('LT') : ''}</>,
     },
-    {
-      title: 'Revenues sessioni pagate',
-      dataIndex: 'totalMoneyEarned',
-      width: 20,
-      sorter: (a, b) => a.totalMoneyEarned - b.totalMoneyEarned,
-    },
-    {
+    isActive: {
       title: 'Status',
       dataIndex: 'isActive',
       width: 120,
@@ -106,7 +135,11 @@ export const AllPatients = () => {
           </>
         ),
     },
-    {
+  }
+
+  useEffect(() => {
+    let c = selectedColumns.map(k => availableColumns[k])
+    c.push({
       title: 'Action',
       dataIndex: 'operation',
       key: 'operation',
@@ -116,8 +149,138 @@ export const AllPatients = () => {
           Edit
         </a>
       ),
-    },
-  ]
+    })
+    setColumns(c)
+  }, [selectedColumns])
+
+  const menu = () => {
+    const onChange = value => {
+      setSelectedColumns(value)
+    }
+    const options = Object.keys(availableColumns).map(key => {
+      return (
+        <div key={key}>
+          <Checkbox value={key}>{availableColumns[key].title}</Checkbox>
+        </div>
+      )
+    })
+    return (
+      <Menu>
+        <Space direction="vertical">
+          <Checkbox.Group defaultValue={selectedColumns} onChange={onChange}>
+            {options}
+          </Checkbox.Group>
+        </Space>
+      </Menu>
+    )
+  }
+
+  // const columns = [
+  //   {
+  //     title: 'Nome',
+  //     dataIndex: 'name',
+  //     defaultSortOrder: 'ascend',
+  //     sorter: (a, b) => a.name.localeCompare(b.name),
+  //   },
+  //   {
+  //     title: 'Cognome',
+  //     dataIndex: 'lastName',
+  //     defaultSortOrder: 'ascend',
+  //     sorter: (a, b) => a.lastName.localeCompare(b.lastName),
+  //   },
+  //   {
+  //     title: 'Email',
+  //     dataIndex: 'email',
+  //   },
+  //   {
+  //     title: 'Tipologia',
+  //     dataIndex: 'isSingle',
+  //     render: text => (+text ? 'Singolo' : 'Coppia'),
+  //   },
+  //   {
+  //     title: 'Terapeuta Assegnato',
+  //     dataIndex: 'doctor',
+  //   },
+  //   {
+  //     title: 'Free Trial',
+  //     dataIndex: 'freeTrial',
+  //   },
+  //   {
+  //     title: 'Risolvo',
+  //     dataIndex: 'solved',
+  //     render: text => (+text ? 'Si' : 'No'),
+  //   },
+  //   {
+  //     title: 'Crediti',
+  //     dataIndex: 'credit',
+  //     width: 20,
+  //     sorter: (a, b) => a.credit - b.credit,
+  //   },
+  //   {
+  //     title: 'Sedute effettuate',
+  //     dataIndex: 'doneSessions',
+  //     width: 20,
+  //     sorter: (a, b) => a.doneSessions - b.doneSessions,
+  //   },
+  //   {
+  //     title: 'Nr Ordini effettuati',
+  //     dataIndex: 'doneOrders',
+  //     width: 20,
+  //     sorter: (a, b) => a.doneOrders - b.doneOrders,
+  //   },
+  //   {
+  //     title: 'Prossima Seduta Confermata',
+  //     dataIndex: 'nextConfirmedSession',
+  //     sorter: (a, b) => a.nextConfirmedSession - b.nextConfirmedSession,
+  //     render: text => <>{moment(text).format('LT')}</>,
+  //   },
+  //   {
+  //     title: 'Prossima Seduta da Confermare',
+  //     dataIndex: 'nextScheduledSession',
+  //     sorter: (a, b) => a.nextScheduledSession - b.nextScheduledSession,
+  //     render: text => <>{moment(text).format('LT')}</>,
+  //   },
+  //   {
+  //     title: 'Status',
+  //     dataIndex: 'isActive',
+  //     width: 120,
+  //     filters: [
+  //       {
+  //         text: 'Active',
+  //         value: 1,
+  //       },
+  //       {
+  //         text: 'Inactive',
+  //         value: 0,
+  //       },
+  //     ],
+  //     onFilter: (value, record) => +record.isActive === value,
+  //     sorter: (a, b) => a.isActive - b.isActive,
+  //     render: text =>
+  //       +text ? (
+  //         <>
+  //           <Badge status="success" />
+  //           Attivo
+  //         </>
+  //       ) : (
+  //         <>
+  //           <Badge status="default" />
+  //           Registrato
+  //         </>
+  //       ),
+  //   },
+  //   {
+  //     title: 'Action',
+  //     dataIndex: 'operation',
+  //     key: 'operation',
+  //     width: 2,
+  //     render: (_, record) => (
+  //       <a onClick={() => handleEdit(record)} style={{ color: '#9a77cf' }}>
+  //         Edit
+  //       </a>
+  //     ),
+  //   },
+  // ]
   const { Content } = Layout
   const [form] = Form.useForm()
   const onChange = (pagination, filters, sorter, extra) => {
@@ -285,6 +448,15 @@ export const AllPatients = () => {
           <Row style={{ paddingTop: '50px', paddingLeft: '100px', textAlign: 'start' }} align="middle">
             <Col flex="auto">
               <h2>Pazienti</h2>
+            </Col>
+          </Row>
+          <Row style={{ paddingLeft: '100px', textAlign: 'end' }} align="middle">
+            <Col flex="auto">
+              <Dropdown overlay={menu} trigger={['click']} onOpenChange={handleOpenChange} open={open}>
+                <a onClick={e => e.preventDefault()}>
+                  <Button type="primary">Modifica Colonne</Button>
+                </a>
+              </Dropdown>
             </Col>
           </Row>
           <Row style={{ paddingTop: '20px', paddingLeft: '100px', textAlign: 'start' }} align="middle">
