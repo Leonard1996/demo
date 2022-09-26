@@ -106,7 +106,7 @@ export const BuyOptions = () => {
         <h2>Final Price: {finalPrice} €</h2>
         <PayPalScriptProvider
           options={{
-            'client-id': 'AVloMapCBzuHktn8wyVtsbONRzTPsPJGrUIlEMn65kvURxlOIQBOW-mnR9xcDhDxYF4yediu8OjSDgvf',
+            'client-id': 'AcC39cCJzGxC_mBH80rBLVpSaE5idkl__iUKCW5G7Ob9g2O1BRyYpqAbdEHTMg4ZJWIHzRlMwOkB5w2Z',
           }}
         >
           <PayPalButtons

@@ -21,6 +21,7 @@ import {
   Report,
   RTC,
   Schedule,
+  ValidateUser,
 } from '../pages'
 import { ROLES } from '../shared/utils'
 
@@ -169,5 +170,10 @@ export const routes = [
     protected: true,
     role: ROLES.ADMIN,
     element: <AllPatients />,
+  },
+  {
+    name: 'ValidateUser',
+    path: '/validate-user',
+    element: <ValidateUser />,
   },
 ]

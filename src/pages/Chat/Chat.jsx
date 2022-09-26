@@ -5,7 +5,7 @@ import { ChatUI, HeaderMenu, SideMenu } from '../../modules'
 import io from 'socket.io-client'
 import './style.css'
 import { getToken, getUser, ROLES } from '../../shared/utils'
-import { getMyTherapist, getPatients } from '../../services'
+import { getAllUsers, getMyTherapist, getPatients } from '../../services'
 import axios from 'axios'
 
 export const SocketContext = createContext({})
@@ -24,6 +24,7 @@ export const Chat = () => {
       value,
       receiver: selectedContact.id,
     }
+    console.log(msg)
     socket.emit('createMessage', msg)
   }
 
@@ -38,20 +39,22 @@ export const Chat = () => {
 
   useEffect(() => {
     const getContacts = async () => {
-      const contacts =
-        user.role === ROLES.PATIENT
-          ? await getMyTherapist().then(d => [d.data || {}])
-          : await getPatients().then(d => d.data)
+      let contacts = []
+      if (user.role === ROLES.PATIENT) contacts = await getMyTherapist().then(d => [d.data || {}])
+      else if (user.role === ROLES.DOCTOR) contacts = await getPatients().then(d => d.data)
+      else contacts = await getAllUsers().then(d => d.data)
       for (const contact of contacts) {
         const room = user.role === ROLES.PATIENT ? `${user.id}-${contact.id}` : `${contact.id}-${user.id}`
-        contact.lastMsg = await axios(`http://localhost:4999/history?room=${room}`).then(r => r.data)
+        contact.lastMsg = await axios(
+          `http://ec2-34-244-164-93.eu-west-1.compute.amazonaws.com:4999/history?room=${room}`,
+        ).then(r => r.data)
       }
       setContacts(contacts)
     }
 
     getContacts().catch(e => console.error(e))
 
-    socket = io('http://localhost:4999', {
+    socket = io('http://ec2-34-244-164-93.eu-west-1.compute.amazonaws.com:4999', {
       extraHeaders: {
         Authorization: getToken(),
       },
@@ -78,6 +81,7 @@ export const Chat = () => {
       setMessagesList(mList)
     })
     socket.on('newMessage', message => {
+      console.log(message)
       setMessagesList(messagesList => [...messagesList, message])
       const contactId = user.role === ROLES.PATIENT ? room.split('-')[1] : room.split('-')[0]
       const contact = contacts.filter(({ id }) => +id === +contactId)

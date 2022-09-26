@@ -11,7 +11,7 @@ export const Consent = () => {
   const props = {
     showUploadList: false,
     name: 'consent',
-    action: 'http://localhost:5002/patients/consent',
+    action: 'http://ec2-34-244-164-93.eu-west-1.compute.amazonaws.com:4500/patients/consent',
     headers: {
       authorization: `Bearer ${getToken()}`,
     },

@@ -6,7 +6,7 @@ import App from './App'
 import axios from 'axios'
 import { getToken } from './shared/utils'
 
-axios.defaults.baseURL = 'http://localhost:5002'
+axios.defaults.baseURL = 'http://ec2-34-244-164-93.eu-west-1.compute.amazonaws.com:4500'
 axios.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 //

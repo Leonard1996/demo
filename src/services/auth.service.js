@@ -68,3 +68,10 @@ export const getMe = async () => {
     })
     .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
 }
+
+export const validateUser = async data => {
+  return await axios
+    .post('/validate', data)
+    .then(response => ({ error: false, msg: response.data.message }))
+    .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
+}

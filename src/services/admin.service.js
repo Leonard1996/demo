@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { message } from 'antd'
+import { ROLES } from '../shared/utils'
 
 export const getProducts = async () => {
   return await axios
@@ -132,9 +133,19 @@ export const getAllPatients = async () => {
       return []
     })
   patients.forEach(patient => {
-    const { userAsPatient, latestDoctor: { doctor: { name, lastName } } = {} } = patient
+    const { userAsPatient, latestDoctor: { doctor: { name, lastName } = {} } = {} } = patient
     patient.doctor = `${name} ${lastName}`
     patient.freeTrial = userAsPatient.freeTrial
   })
   return patients
+}
+
+export const getAllUsers = async () => {
+  return await axios
+    .get(`users`)
+    .then(response => ({ error: false, data: response.data.users.filter(u => u.role === ROLES.PATIENT) }))
+    .catch(e => {
+      message.error(e.response?.data?.error?.message || 'Something went wrong!')
+      return []
+    })
 }
