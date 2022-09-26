@@ -100,3 +100,41 @@ export const deletePromoCode = async id => {
       return []
     })
 }
+
+export const getAllDoctors = async () => {
+  const docs = await axios
+    .get(`users/doctors-statistics`)
+    .then(response => response.data.statistics)
+    .catch(e => {
+      message.error(e.response?.data?.error?.message || 'Something went wrong!')
+      return []
+    })
+  docs.forEach(doc => {
+    const { therapist } = doc
+    doc.rate = +(therapist.rate || 0)
+    doc.rate = doc.rate.toFixed(2)
+    const {
+      totalSessionsDoneAndMoneyEarned: { numberOfSessions = 0, totalMoneyEarned },
+    } = doc
+    doc.totalPatients = doc.patients?.length || 0
+    doc.numberOfSessions = numberOfSessions
+    doc.totalMoneyEarned = totalMoneyEarned || 0
+  })
+  return docs
+}
+
+export const getAllPatients = async () => {
+  const patients = await axios
+    .get(`users/patients-statistics`)
+    .then(response => response.data.statistics)
+    .catch(e => {
+      message.error(e.response?.data?.error?.message || 'Something went wrong!')
+      return []
+    })
+  patients.forEach(patient => {
+    const { userAsPatient, latestDoctor: { doctor: { name, lastName } } = {} } = patient
+    patient.doctor = `${name} ${lastName}`
+    patient.freeTrial = userAsPatient.freeTrial
+  })
+  return patients
+}

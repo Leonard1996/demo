@@ -1,6 +1,8 @@
 import React from 'react'
 import {
   Admin,
+  AllDoctors,
+  AllPatients,
   ChangePassword,
   Chat,
   Consent,
@@ -153,5 +155,19 @@ export const routes = [
     path: '/rtc',
     protected: true,
     element: <RTC />,
+  },
+  {
+    name: 'AllDoctors',
+    path: '/all-doctors',
+    protected: true,
+    role: ROLES.ADMIN,
+    element: <AllDoctors />,
+  },
+  {
+    name: 'AllPatients',
+    path: '/all-patients',
+    protected: true,
+    role: ROLES.ADMIN,
+    element: <AllPatients />,
   },
 ]
