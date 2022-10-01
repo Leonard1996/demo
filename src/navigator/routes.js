@@ -2,6 +2,7 @@ import React from 'react'
 import {
   Admin,
   AllDoctors,
+  AllOrders,
   AllPatients,
   ChangePassword,
   Chat,
@@ -170,6 +171,13 @@ export const routes = [
     protected: true,
     role: ROLES.ADMIN,
     element: <AllPatients />,
+  },
+  {
+    name: 'AllOrders',
+    path: '/vendite',
+    protected: true,
+    role: ROLES.ADMIN,
+    element: <AllOrders />,
   },
   {
     name: 'ValidateUser',

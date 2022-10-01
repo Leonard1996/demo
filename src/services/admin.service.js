@@ -133,8 +133,8 @@ export const getAllPatients = async () => {
       return []
     })
   patients.forEach(patient => {
-    const { userAsPatient, latestDoctor: { doctor: { name, lastName } = {} } = {} } = patient
-    patient.doctor = `${name} ${lastName}`
+    const { userAsPatient, latestDoctor: { doctor } = {} } = patient
+    if (doctor) patient.doctor = `${doctor.name} ${doctor.lastName}`
     patient.freeTrial = userAsPatient.freeTrial
   })
   return patients
@@ -144,6 +144,54 @@ export const getAllUsers = async () => {
   return await axios
     .get(`users`)
     .then(response => ({ error: false, data: response.data.users.filter(u => u.role === ROLES.PATIENT) }))
+    .catch(e => {
+      message.error(e.response?.data?.error?.message || 'Something went wrong!')
+      return []
+    })
+}
+
+export const assignDoctor = async data => {
+  return await axios
+    .post(`patients-doctors`, data)
+    .then(() => ({ error: false }))
+    .catch(e => {
+      message.error(e.response?.data?.error?.message || 'Something went wrong!')
+      return []
+    })
+}
+
+export const updateDoctor = async data => {
+  const { id, ...rest } = data
+  return await axios
+    .patch(`users/doctors/${id}`, rest)
+    .then(() => ({ error: false }))
+    .catch(e => {
+      message.error(e.response?.data?.error?.message || 'Something went wrong!')
+      return []
+    })
+}
+
+export const getPatientDoctors = async patientId => {
+  return await axios
+    .get(`users/${patientId}/associates`)
+    .then(response => response.data.associates)
+    .catch(e => {
+      message.error(e.response?.data?.error?.message || 'Something went wrong!')
+      return []
+    })
+}
+
+export const getAllOrders = async () => {
+  return await axios
+    .get(`orders/all`)
+    .then(response => response.data.orders)
+    .then(orders => {
+      orders.forEach(r => {
+        r.name = r.user?.name + ' ' + r.user?.lastName
+        r.email = r.user?.email
+      })
+      return orders
+    })
     .catch(e => {
       message.error(e.response?.data?.error?.message || 'Something went wrong!')
       return []

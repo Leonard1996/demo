@@ -47,3 +47,13 @@ export const createOrder = async (orderId, productId, price, promoCode = '', gif
       message.error(e.response?.data?.error?.message || 'Something went wrong!')
     })
 }
+
+export const getOrders = async () => {
+  return await axios
+    .get(`orders`)
+    .then(response => response.data.orders)
+    .catch(e => {
+      message.error(e.response?.data?.error?.message || 'Something went wrong!')
+      return []
+    })
+}

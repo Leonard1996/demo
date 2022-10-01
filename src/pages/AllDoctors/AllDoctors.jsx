@@ -1,9 +1,9 @@
-import { Badge, Button, Col, DatePicker, Form, Input, Layout, message, Modal, Radio, Row, Table } from 'antd'
+import { Badge, Button, Col, Form, Input, Layout, message, Modal, Row, Table } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { HeaderMenu, SideMenu } from '../../modules'
 
 import './style.css'
-import { createPromoCode, getAllDoctors } from '../../services'
+import { getAllDoctors, updateDoctor } from '../../services'
 
 export const AllDoctors = () => {
   const columns = [
@@ -114,12 +114,13 @@ export const AllDoctors = () => {
 
   const handleOk = async data => {
     setLoading(true)
-    const { error, msg } = await createPromoCode(data)
+    const { error, msg } = await updateDoctor(data)
     if (error) {
       return message.error(msg)
     }
-    message.success('Promo Code created!')
+    message.success('Doctor updated!')
     // getPromoCodes().then(d => setPromoCodes(d))
+    getAllDoctors().then(d => setDoctors(d))
     setLoading(false)
     setCreateModal(false)
   }
@@ -152,7 +153,7 @@ export const AllDoctors = () => {
                 Submit
               </Button>,
             ]}
-            title="Create Product"
+            title="Modifica Terapeuta"
             visible={createModal}
             onOk={handleOk}
             onCancel={handleCancel}
@@ -170,7 +171,7 @@ export const AllDoctors = () => {
               requiredMark={false}
             >
               <Form.Item
-                label="Name"
+                label="Nome"
                 name="name"
                 rules={[
                   {
@@ -181,76 +182,29 @@ export const AllDoctors = () => {
               >
                 <Input />
               </Form.Item>
-
-              <Form.Item label="Type" name="type">
-                <Radio.Group>
-                  <Radio.Button value="standard">Standard</Radio.Button>
-                  <Radio.Button value="welcome">Welcome Promo</Radio.Button>
-                </Radio.Group>
-              </Form.Item>
-
               <Form.Item
-                label="Number of Sessions"
-                name="numberOfSessions"
+                label="Cognome"
+                name="lastName"
                 rules={[
                   {
                     required: true,
-                    message: 'Please input number of sessions',
+                    message: 'Please input name',
                   },
                 ]}
               >
-                <Input placeholder="1,2,N" />
-              </Form.Item>
-
-              <Form.Item label="Flat Discount" name="flatDiscount">
                 <Input />
               </Form.Item>
-
-              <Form.Item label="Percentage Discount" name="percentageDiscount">
-                <Input addonAfter="%" />
-              </Form.Item>
-
               <Form.Item
-                name="from"
-                label="Validity From"
-                hasFeedback
+                label="Rate"
+                name="rate"
                 rules={[
                   {
                     required: true,
-                    message: 'Please select start',
+                    message: 'Please input name',
                   },
                 ]}
               >
-                <DatePicker style={{ width: '100%' }} />
-              </Form.Item>
-
-              <Form.Item
-                name="until"
-                label="Validity To"
-                hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please select end',
-                  },
-                ]}
-              >
-                <DatePicker style={{ width: '100%' }} />
-              </Form.Item>
-
-              <Form.Item label="Usability" name="usability">
                 <Input />
-              </Form.Item>
-
-              <Form.Item label="User" name="userId">
-                <Input />
-              </Form.Item>
-
-              <Form.Item label="Status" name="status">
-                <Radio.Group>
-                  <Radio.Button value={1}>Active</Radio.Button>
-                  <Radio.Button value={0}>Inactive</Radio.Button>
-                </Radio.Group>
               </Form.Item>
 
               <Form.Item label="id" name="id" hidden={true}>
