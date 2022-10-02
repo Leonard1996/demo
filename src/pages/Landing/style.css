@@ -1,5 +1,5 @@
 .landingMain {
-    background: url("../../assets/images/landing.jpeg") center;
+    background: url("https://psiqo-fe-images.s3.eu-central-1.amazonaws.com/landing.jpeg") center;
     background-size: cover;
     flex-grow: 1;
     padding: 100px;
