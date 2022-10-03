@@ -32,7 +32,7 @@ export const Consent = () => {
   }
 
   const handleDownload = async () => {
-    window.open('http://localhost:8080/consent.pdf', 'blank')
+    window.open('http://ec2-34-244-164-93.eu-west-1.compute.amazonaws.com:4500/consent.pdf', 'blank')
     // axios.get('http://localhost:5002/users/consent').then(response => {
     //   // create file link in browser's memory
     //   window.open('http://localhost:8080/consent.pdf', 'blank')

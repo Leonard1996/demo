@@ -2,7 +2,6 @@ import React from 'react'
 import { Button, Checkbox, Form, Progress, Radio, Select, Space } from 'antd'
 import PropTypes from 'prop-types'
 import TextArea from 'antd/es/input/TextArea'
-import { Link } from 'react-router-dom'
 
 const Step4Form = ({ next, prev, percentage, formData }) => {
   return (
@@ -205,8 +204,12 @@ const Step4Form = ({ next, prev, percentage, formData }) => {
           ]}
         >
           <div className="acceptConditions">
-            <Link to="/informativa-privacy">Informativa privacy</Link>-
-            <Link to="/termini-e-condizioni">Termini e condizioni</Link>
+            <a href="https://www.psiqo.com/informativa-privacy/" target="_blank" rel="noreferrer">
+              Informativa privacy
+            </a>
+            <a href="https://www.psiqo.com/termini-e-condizioni/" target="_blank" rel="noreferrer">
+              Termini e condizioni
+            </a>
           </div>
           <Checkbox.Group>
             <Space direction="vertical">

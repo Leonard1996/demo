@@ -40,7 +40,7 @@ export const Chat = () => {
   useEffect(() => {
     const getContacts = async () => {
       let contacts = []
-      if (user.role === ROLES.PATIENT) contacts = await getMyTherapist().then(d => [d.data || {}])
+      if (user.role === ROLES.PATIENT) contacts = await getMyTherapist().then(d => [d.data] || [])
       else if (user.role === ROLES.DOCTOR) contacts = await getPatients().then(d => d.data)
       else contacts = await getAllUsers().then(d => d.data)
       for (const contact of contacts) {
