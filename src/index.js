@@ -5,8 +5,22 @@ import App from './App'
 // import reportWebVitals from './reportWebVitals'
 import axios from 'axios'
 import { getToken } from './shared/utils'
+import { createBrowserHistory } from 'history'
+
+const replaceHashPath = () => {
+  const history = createBrowserHistory()
+  const hash = history.location.hash
+  if (hash) {
+    const path = hash.replace(/^#/, '')
+    if (path) {
+      history.replace(path)
+    }
+  }
+}
+replaceHashPath()
 
 axios.defaults.baseURL = 'http://ec2-34-244-164-93.eu-west-1.compute.amazonaws.com:4500'
+// axios.defaults.baseURL = 'http://localhost:5002'
 axios.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 //
@@ -19,7 +33,6 @@ import { createRoot } from 'react-dom/client'
 //   </React.StrictMode>,
 // )
 //
-
 const root = createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>

@@ -1,4 +1,4 @@
-import { Badge, Button, Col, Form, Input, Layout, message, Modal, Row, Table } from 'antd'
+import { Badge, Button, Col, Form, Input, Layout, message, Modal, Row, Table, Radio } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { HeaderMenu, SideMenu } from '../../modules'
 
@@ -114,6 +114,7 @@ export const AllDoctors = () => {
 
   const handleOk = async data => {
     setLoading(true)
+    console.log({ data })
     const { error, msg } = await updateDoctor(data)
     if (error) {
       return message.error(msg)
@@ -209,6 +210,24 @@ export const AllDoctors = () => {
 
               <Form.Item label="id" name="id" hidden={true}>
                 <Input />
+              </Form.Item>
+              <Form.Item
+                label="Modify activity"
+                name="isActive"
+                // rules={[
+                //   {
+                //     required: true,
+                //     defaultField
+                //     message: 'Please input name',
+                //   },
+                // ]}
+              >
+                {/* <Input /> */}
+                {/* <Radio.Group onChange={onChange} value={doc}> */}
+                <Radio.Group defaultValue={form.getFieldValue('isActive')}>
+                  <Radio value={1}>Activate</Radio>
+                  <Radio value={0}>Deactivate</Radio>
+                </Radio.Group>
               </Form.Item>
             </Form>
           </Modal>
