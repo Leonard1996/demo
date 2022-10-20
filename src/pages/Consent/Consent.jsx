@@ -11,6 +11,7 @@ export const Consent = () => {
   const props = {
     showUploadList: false,
     name: 'consent',
+    // eslint-disable-next-line no-undef
     action: `${process.env.REACT_APP_API_URL}/patients/consent`,
     headers: {
       authorization: `Bearer ${getToken()}`,
@@ -32,6 +33,7 @@ export const Consent = () => {
   }
 
   const handleDownload = async () => {
+    // eslint-disable-next-line no-undef
     window.open(`${process.env.REACT_APP_API_URL}/consent.pdf`, 'blank')
   }
   const handleSignedDownload = async () => {

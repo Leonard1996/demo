@@ -26,6 +26,7 @@ export const Patient = ({ patient }) => {
   const props = {
     showUploadList: false,
     name: 'consent',
+    // eslint-disable-next-line no-undef
     action: `${process.env.REACT_APP_API_URL}/patients-doctors/consent/${patient.id}`,
     headers: {
       authorization: `Bearer ${getToken()}`,

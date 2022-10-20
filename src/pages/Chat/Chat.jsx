@@ -45,6 +45,7 @@ export const Chat = () => {
       else contacts = await getAllUsers().then(d => d.data)
       for (const contact of contacts) {
         const room = user.role === ROLES.PATIENT ? `${user.id}-${contact.id}` : `${contact.id}-${user.id}`
+        // eslint-disable-next-line no-undef
         contact.lastMsg = await axios(`${process.env.REACT_APP_CHAT_URL}/history?room=${room}`).then(r => r.data)
       }
       setContacts(contacts)
@@ -52,6 +53,7 @@ export const Chat = () => {
 
     getContacts().catch(e => console.error(e))
 
+    // eslint-disable-next-line no-undef
     socket = io(process.env.REACT_APP_CHAT_URL, {
       extraHeaders: {
         Authorization: getToken(),

@@ -19,6 +19,7 @@ const replaceHashPath = () => {
 }
 replaceHashPath()
 
+// eslint-disable-next-line no-undef
 axios.defaults.baseURL = process.env.REACT_APP_API_URL
 axios.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`
 axios.defaults.headers.post['Content-Type'] = 'application/json'
