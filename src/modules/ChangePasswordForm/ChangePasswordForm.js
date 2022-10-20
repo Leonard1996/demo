@@ -16,7 +16,7 @@ export const ChangePasswordForm = ({ onFinish, onFinishFailed }) => {
     >
       <Form.Item
         label="VECCHIA PASSWORD"
-        name="password"
+        name="oldPassword"
         rules={[{ required: true, message: 'Please input your password!' }]}
       >
         <Input.Password />

@@ -103,6 +103,16 @@ export const deletePromoCode = async id => {
 }
 
 export const getAllDoctors = async () => {
+  return await axios
+    .get(`users/doctors`)
+    .then(response => response.data.doctors)
+    .catch(e => {
+      message.error(e.response?.data?.error?.message || 'Something went wrong!')
+      return []
+    })
+}
+
+export const getAllDoctorsStatistics = async () => {
   const docs = await axios
     .get(`users/doctors-statistics`)
     .then(response => response.data.statistics)
@@ -135,7 +145,15 @@ export const getAllPatients = async () => {
   patients.forEach(patient => {
     const { userAsPatient, latestDoctor: { doctor } = {} } = patient
     if (doctor) patient.doctor = `${doctor.name} ${doctor.lastName}`
+    const { details, ...rest } = userAsPatient
+    for (const k in rest) {
+      patient[k] = rest[k]
+    }
+    for (const k in details) {
+      patient[k] = details[k]
+    }
     patient.freeTrial = userAsPatient.freeTrial
+    console.log(patient)
   })
   return patients
 }

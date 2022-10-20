@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { HeaderMenu, SideMenu } from '../../modules'
 
 import './style.css'
-import { getAllDoctors, updateDoctor } from '../../services'
+import { getAllDoctorsStatistics, updateDoctor } from '../../services'
 
 export const AllDoctors = () => {
   const columns = [
@@ -102,7 +102,7 @@ export const AllDoctors = () => {
   const [createModal, setCreateModal] = useState(false)
   const [doctors, setDoctors] = useState([])
   useEffect(() => {
-    getAllDoctors().then(d => setDoctors(d))
+    getAllDoctorsStatistics().then(d => setDoctors(d))
   }, [])
 
   const handleEdit = data => {
@@ -121,7 +121,7 @@ export const AllDoctors = () => {
     }
     message.success('Doctor updated!')
     // getPromoCodes().then(d => setPromoCodes(d))
-    getAllDoctors().then(d => setDoctors(d))
+    getAllDoctorsStatistics().then(d => setDoctors(d))
     setLoading(false)
     setCreateModal(false)
   }

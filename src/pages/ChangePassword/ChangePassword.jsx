@@ -14,10 +14,11 @@ export const ChangePassword = () => {
 
   const onFinish = async values => {
     const { error, msg } = await updateProfile(values)
-    if (!error) {
-      return navigate('/')
-    }
-    message.error(msg)
+    if (error) return message.error(msg)
+    message.success(msg)
+    setTimeout(() => {
+      navigate('/')
+    }, 1000)
   }
   return (
     <Layout style={{ height: '100vh' }}>

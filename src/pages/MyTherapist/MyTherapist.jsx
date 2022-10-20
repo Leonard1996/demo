@@ -54,7 +54,7 @@ export const MyTherapist = () => {
                 <div className="name">
                   Dott. {name} {lastName}
                 </div>
-                <div className="birthday">Etá: {moment().diff(birthday, 'years')}</div>
+                <div className="birthday">Età: {moment().diff(birthday, 'years')}</div>
                 <Divider style={{ margin: '10px 0' }} />
                 <div className="type">Approccio {type}</div>
                 <Divider style={{ margin: '10px 0' }} />

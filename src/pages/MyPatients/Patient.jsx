@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
-import { Button, Card, Col, Divider, Empty, Row } from 'antd'
+import { Button, Card, Col, Divider, Empty, message, Row, Upload } from 'antd'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { getPatientDetails } from '../../services'
+import { getToken } from '../../shared/utils'
 
 export const Patient = ({ patient }) => {
   const [details, setDetails] = useState({})
@@ -11,7 +12,6 @@ export const Patient = ({ patient }) => {
       getPatientDetails(patient.id).then(({ nextSessions, numberOfSessions: { numberOfSessions }, patientDetails }) =>
         setDetails({ nextSessions, numberOfSessions, patientDetails }),
       )
-    console.log(details)
   }, [patient])
   if (!patient)
     return (
@@ -19,8 +19,36 @@ export const Patient = ({ patient }) => {
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       </Card>
     )
+
+  const openConsent = async consent => {
+    window.open(consent)
+  }
+  const props = {
+    showUploadList: false,
+    name: 'consent',
+    action: `${process.env.REACT_APP_API_URL}/patients-doctors/consent/${patient.id}`,
+    headers: {
+      authorization: `Bearer ${getToken()}`,
+    },
+
+    async onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList)
+      }
+
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`)
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`)
+      }
+    },
+  }
+
   const { name, lastName, birthday, gender, isSingle, credit } = patient
   const { nextSessions, numberOfSessions, patientDetails = { patient: { details: {} } } } = details
+  const {
+    patient: { consent },
+  } = patientDetails
   const {
     patient: {
       details: { question_1, question_2, question_3, question_4 },
@@ -35,7 +63,7 @@ export const Patient = ({ patient }) => {
             <span style={{ textTransform: 'capitalize' }}>{lastName}</span>
           </div>
           <div>{moment(birthday).format('l')}</div>
-          <div>Etá: {moment().diff(birthday, 'years')} anni</div>
+          <div>Età: {moment().diff(birthday, 'years')} anni</div>
           <div>{gender}</div>
           <div>{isSingle ? 'SINGOLO' : 'COPIA'}</div>
           <div>Crediti: {credit}</div>
@@ -49,18 +77,20 @@ export const Patient = ({ patient }) => {
       <Divider style={{ margin: '10px 0' }} />
       <Row>
         <Col>
-          <div>CONSESO INFORMATO</div>
+          <div>CONSENSO INFORMATO</div>
           <div>
-            Scarica conseso informato compilato del paziente
-            <Button style={{ padding: '0 5px' }} type="text">
+            Scarica consenso informato compilato dal paziente
+            <Button onClick={() => openConsent(consent)} style={{ padding: '0 5px' }} type="text" disabled={!consent}>
               [DOWNLOAD]
             </Button>
           </div>
           <div>
-            Carica conseso informato controfirmato
-            <Button style={{ padding: '0 5px' }} type="text">
-              [UPLOAD]
-            </Button>
+            Carica consenso informato controfimato
+            <Upload {...props}>
+              <Button style={{ marginBottom: '30px' }} disabled={!consent} type="text">
+                [UPLOAD]
+              </Button>
+            </Upload>
           </div>
         </Col>
       </Row>

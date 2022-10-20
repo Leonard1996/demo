@@ -16,7 +16,7 @@ const DayHeader = ({ day }) => {
   const isToday = moment(day).isSame(moment(), 'day') ? { color: '#9a77cf' } : {}
   return (
     <div style={{ display: 'flex' }}>
-      <div style={{ fontSize: '50px', display: 'flex', alignItems: 'center', height: '45px', ...isToday }}>
+      <div style={{ fontSize: '45px', display: 'flex', alignItems: 'center', height: '45px', ...isToday }}>
         <span>{day.format('D')}</span>
       </div>
       <div
@@ -43,10 +43,10 @@ DayHeader.propTypes = {
 }
 
 const DayTimeSlots = ({ day, events, addEvent, patients }) => {
-  const startTime = moment(day).hour(9).minutes(0).seconds(0)
-  const times = Array(16)
+  const startTime = moment(day).hour(0).minutes(0).seconds(0)
+  const times = Array(24)
     .fill(0)
-    .map(() => ({ startTime: startTime.add(1, 'second').clone(), endTime: startTime.add(1799, 'seconds').clone() }))
+    .map(() => ({ startTime: startTime.add(1, 'second').clone(), endTime: startTime.add(3599, 'seconds').clone() }))
   const slots = times.map(({ startTime: sStart, endTime: sEnd }, i) => {
     const hasEvent = events.filter(
       ({ startTime: eStart, endTime: eEnd }) => moment(eStart) < moment(sEnd) && moment(eEnd) > moment(sStart),
@@ -231,10 +231,10 @@ WeekDays.propTypes = {
 }
 
 const Labels = () => {
-  const startTime = moment().hour(9).minutes(0).seconds(0)
-  const times = Array(17)
+  const startTime = moment().hour(0).minutes(0).seconds(0)
+  const times = Array(25)
     .fill(0)
-    .map(() => ({ startTime: startTime.add(1, 'second').clone(), endTime: startTime.add(1799, 'seconds').clone() }))
+    .map(() => ({ startTime: startTime.add(1, 'second').clone(), endTime: startTime.add(3599, 'seconds').clone() }))
   const labels = times.map((slot, i) => (
     <div key={i} style={style.labelSlot}>
       {slot.startTime.format('LT')}
@@ -258,7 +258,7 @@ export const WeeklySchedule = ({ week, events = [], next, prev, patients, addEve
         </Button>
         <Button onClick={next} type="text">
           {' '}
-          SETTIMANA SUCCESSIVO
+          SETTIMANA SUCCESSIVA
           <RightOutlined />
         </Button>
       </div>

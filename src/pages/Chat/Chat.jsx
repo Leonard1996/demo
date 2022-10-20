@@ -45,16 +45,14 @@ export const Chat = () => {
       else contacts = await getAllUsers().then(d => d.data)
       for (const contact of contacts) {
         const room = user.role === ROLES.PATIENT ? `${user.id}-${contact.id}` : `${contact.id}-${user.id}`
-        contact.lastMsg = await axios(
-          `http://ec2-34-244-164-93.eu-west-1.compute.amazonaws.com:4999/history?room=${room}`,
-        ).then(r => r.data)
+        contact.lastMsg = await axios(`${process.env.REACT_APP_CHAT_URL}/history?room=${room}`).then(r => r.data)
       }
       setContacts(contacts)
     }
 
     getContacts().catch(e => console.error(e))
 
-    socket = io('http://ec2-34-244-164-93.eu-west-1.compute.amazonaws.com:4999', {
+    socket = io(process.env.REACT_APP_CHAT_URL, {
       extraHeaders: {
         Authorization: getToken(),
       },

@@ -13,7 +13,7 @@ const items = {
     { name: 'Informazioni personali', type: 'label' },
     { name: 'Il mio profilo', path: '/me' },
     { name: 'Le mie fatture', path: '/my-orders' },
-    { name: 'Conseso Informato', path: '/consent' },
+    { name: 'Consenso Informato', path: '/consent' },
     { name: 'Modifica password', path: '/change-password' },
     { name: 'Contatta il team PSIQO', type: 'label' },
     { name: 'Chat', path: '/chat' },

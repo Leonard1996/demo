@@ -11,7 +11,7 @@ export const Consent = () => {
   const props = {
     showUploadList: false,
     name: 'consent',
-    action: 'http://ec2-34-244-164-93.eu-west-1.compute.amazonaws.com:4500/patients/consent',
+    action: `${process.env.REACT_APP_API_URL}/patients/consent`,
     headers: {
       authorization: `Bearer ${getToken()}`,
     },
@@ -32,25 +32,7 @@ export const Consent = () => {
   }
 
   const handleDownload = async () => {
-    window.open('http://ec2-34-244-164-93.eu-west-1.compute.amazonaws.com:4500/consent.pdf', 'blank')
-    // axios.get('http://localhost:5002/users/consent').then(response => {
-    //   // create file link in browser's memory
-    //   window.open('http://localhost:8080/consent.pdf', 'blank')
-    //   const href = URL.createObjectURL(response.data)
-    //
-    //   // create "a" HTLM element with href to file & click
-    //   const link = document.createElement('a')
-    //   link.href = href
-    //   // link.setAttribute('download', 'consent.pdf') //or any other extension
-    //   document.body.appendChild(link)
-    //   link.click()
-    //
-    //   // clean up "a" element & remove ObjectURL
-    //   document.body.removeChild(link)
-    //   URL.revokeObjectURL(href)
-    // })
-    // console.log(data)
-    // window.open(data, '_blank', {})
+    window.open(`${process.env.REACT_APP_API_URL}/consent.pdf`, 'blank')
   }
   const handleSignedDownload = async () => {
     window.open(consent)

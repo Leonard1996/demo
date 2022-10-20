@@ -19,7 +19,9 @@ export const Schedule = () => {
   useEffect(() => {
     getSessions(moment().week(week).month() + 1).then(d => {
       setEvents(d.agenda)
-      setNextSession({ ...d.nextConfirmedSession, isConfirmed: 1 })
+      if (d.nextConfirmedSession) {
+        setNextSession({ ...d.nextConfirmedSession, isConfirmed: 1 })
+      }
     })
   }, [week])
 
@@ -57,7 +59,7 @@ export const Schedule = () => {
       <HeaderMenu />
       <Layout style={{ marginTop: '120px', padding: '0 50px' }}>
         <SideMenu />
-        <Content className="schedule" style={{ paddingTop: '55px', paddingLeft: '150px', paddingRight: '150px' }}>
+        <Content className="schedule" style={{ paddingTop: '55px', paddingLeft: '150px' }}>
           {nextSession && <NextSession session={nextSession} openRTC={openRTC} />}
           <WeeklySchedule week={week} events={events} next={next} prev={prev} patients={patients} addEvent={addEvent} />
         </Content>

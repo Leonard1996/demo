@@ -81,7 +81,7 @@ export const AllPatients = () => {
       dataIndex: 'freeTrial',
     },
     solved: {
-      title: 'Risolvo',
+      title: 'Risolto',
       dataIndex: 'solved',
       render: text => (+text ? 'Si' : 'No'),
     },
@@ -107,13 +107,94 @@ export const AllPatients = () => {
       title: 'Prossima Seduta Confermata',
       dataIndex: 'nextConfirmedSession',
       sorter: (a, b) => a.nextConfirmedSession - b.nextConfirmedSession,
-      render: text => <>{text ? moment(text).format('LT') : ''}</>,
+      render: text => <>{text ? moment(text).format('LLL') : ''}</>,
     },
     nextScheduledSession: {
       title: 'Prossima Seduta da Confermare',
       dataIndex: 'nextScheduledSession',
       sorter: (a, b) => a.nextScheduledSession - b.nextScheduledSession,
-      render: text => <>{text ? moment(text).format('LT') : ''}</>,
+      render: text => <>{text ? moment(text).format('LLL') : ''}</>,
+    },
+    birthday: {
+      title: 'Data di nascita',
+      dataIndex: 'birthday',
+      sorter: (a, b) => a.birthday - b.birthday,
+      width: 120,
+      render: text => <>{text ? moment(text).format('L') : ''}</>,
+    },
+    age: {
+      title: 'Età',
+      dataIndex: 'birthday',
+      sorter: (a, b) => a.birthday - b.birthday,
+      render: text => <>{text ? moment().diff(text, 'years') : ''}</>,
+    },
+    phone: {
+      title: 'Tel.',
+      dataIndex: 'phone',
+    },
+    city: {
+      title: 'Città',
+      dataIndex: 'city',
+    },
+    address: {
+      title: 'Indrizzo',
+      dataIndex: 'address',
+    },
+    zip: {
+      title: 'Codice Fiscale',
+      dataIndex: 'zip',
+    },
+    createdAt: {
+      title: 'Data registrazione',
+      dataIndex: 'createdAt',
+      sorter: (a, b) => a.createdAt - b.createdAt,
+      render: text => <>{text ? moment(text).format('L') : ''}</>,
+    },
+    lastDoneSession: {
+      title: 'Ultima Seduta Effettuata',
+      dataIndex: 'lastDoneSession',
+      sorter: (a, b) => a.lastDoneSession - b.lastDoneSession,
+      render: text => <>{text ? moment(text).format('LLL') : ''}</>,
+    },
+    lastOrderDone: {
+      title: 'Ultimo Ordine Effettuato',
+      dataIndex: 'lastOrderDone',
+      sorter: (a, b) => a.lastOrderDone - b.lastOrderDone,
+      render: text => <>{text ? moment(text).format('LLL') : ''}</>,
+    },
+    totalPurchasedSessions: {
+      title: 'Totale Sedute Acquistate',
+      dataIndex: 'totalPurchasedSessions',
+    },
+    totalSingleSessionsPurchased: {
+      title: 'Totale Singole Sedute Acquistate',
+      dataIndex: 'totalSingleSessionsPurchased',
+    },
+    totalMultipleSessionsPurchased: {
+      title: 'Totale Pacchetti Acquistate',
+      dataIndex: 'totalMultipleSessionsPurchased',
+    },
+    giftCardsPurchased: {
+      title: 'Gift Cards Acquistate',
+      dataIndex: 'giftCardsPurchased',
+    },
+    revenue: {
+      title: 'Revenues',
+      dataIndex: 'revenue',
+      render: text => <>{text ? text.gross : ''}</>,
+    },
+    cost: {
+      title: 'Costo',
+      dataIndex: 'cost',
+    },
+    hasUsedPromoCode: {
+      title: 'Codici Sconto Usati',
+      dataIndex: 'hasUsedPromoCode',
+    },
+    newsletter: {
+      title: 'Newsletter',
+      dataIndex: 'newsletter',
+      render: text => (+text ? 'Si' : 'No'),
     },
     isActive: {
       title: 'Status',
@@ -241,7 +322,7 @@ export const AllPatients = () => {
             </Col>
           </Row>
           <Row style={{ paddingTop: '20px', paddingLeft: '100px', textAlign: 'start' }} align="middle">
-            <Col flex="auto">
+            <Col flex="auto" style={{ whiteSpace: 'nowrap' }}>
               <Table
                 columns={columns}
                 dataSource={patients}
@@ -264,12 +345,7 @@ const DetailsModal = ({ detailsModal, detailsModalClose, details = {} }) => {
     name,
     lastName,
     birthday,
-    address,
-    zip,
-    city,
     email,
-    phoneNr,
-    newsletter,
     isSingle,
     createdAt,
     isActive,
@@ -277,7 +353,7 @@ const DetailsModal = ({ detailsModal, detailsModalClose, details = {} }) => {
     solved,
     latestDoctor: { doctor = {} } = {},
   } = details
-  const { freeTrial, consent } = userAsPatient
+  const { freeTrial, consent, newsletter, details: { address, zip, city, phone } = {} } = userAsPatient
   const [doctors, setDoctors] = useState([])
   useEffect(() => {
     if (details.id) getPatientDoctors(details.id).then(d => setDoctors(d))
@@ -302,11 +378,11 @@ const DetailsModal = ({ detailsModal, detailsModalClose, details = {} }) => {
               {name} {lastName}
             </div>
             <div>Email: {email}</div>
-            <div>Numero di telefono: {phoneNr}</div>
+            <div>Numero di telefono: {phone}</div>
             <Divider style={{ margin: '10px 0' }} />
             <div style={{ fontWeight: 'bold' }}>Dati Anagrafici</div>
             <div className="birthday">Data di nascita: {moment(birthday).format('l')}</div>
-            <div>Etá: {moment().diff(birthday, 'years')} anni</div>
+            <div>Età: {moment().diff(birthday, 'years')} anni</div>
             <Divider style={{ margin: '10px 0' }} />
             <div className="payment-details">
               <div style={{ fontWeight: 'bold' }}>Dati di fatturazione</div>
@@ -317,10 +393,8 @@ const DetailsModal = ({ detailsModal, detailsModalClose, details = {} }) => {
             <Divider style={{ margin: '10px 0' }} />
             <div style={{ fontWeight: 'bold' }}>Preferenze</div>
             <div className="newsletter">Newsletter: {newsletter ? 'SI' : 'NO'}</div>
-            <div className="email">Email: {email}</div>
-            <div className="phone">Tel: {phoneNr}</div>
-            <Divider style={{ margin: '10px 0' }} />
-            <div className="newsletter">Newsletter: {newsletter ? 'SI' : 'NO'}</div>
+            {/*<Divider style={{ margin: '10px 0' }} />*/}
+            {/*<div className="newsletter">Newsletter: {+newsletter ? 'SI' : 'NO'}</div>*/}
           </Space>
         </Col>
         <Col span={8} style={{ textAlign: 'start' }}>
@@ -373,13 +447,13 @@ const DetailsModal = ({ detailsModal, detailsModalClose, details = {} }) => {
             <div>Ordini effettuati: {details.doneOrders}</div>
             <Divider style={{ margin: '10px 0' }} />
             <div>Totale sedute acquistate: {details.totalPurchasedSessions}</div>
-            <div>Totale singolo sedute acquistate: {details.totalSingleSessionsPurchased?.amount}</div>
-            <div>Totale pacchetti acquistate: {details.totalMultipleSessionsPurchased?.amount}</div>
+            <div>Totale singolo sedute acquistate: {details.totalSingleSessionsPurchased}</div>
+            <div>Totale pacchetti acquistate: {details.totalMultipleSessionsPurchased}</div>
             <Divider style={{ margin: '10px 0' }} />
-            <div>Gift cards acquistate: {details.giftCardsPurchased?.amount}</div>
+            <div>Gift cards acquistate: {details.giftCardsPurchased}</div>
             <div>Codici sconto utilizzati: {details.hasUsedPromoCode}</div>
             <Divider style={{ margin: '10px 0' }} />
-            <div>Costo: {details.cost?.amount}</div>
+            <div>Costo: {details.cost}</div>
           </Space>
         </Col>
       </Row>
@@ -395,10 +469,11 @@ DetailsModal.propTypes = {
 const AssignModal = ({ assignModal, assignDoctorModal, assignModalClose }) => {
   const [doctors, setDoctors] = useState([])
   useEffect(() => {
+    if (!assignModal) return
     getAllDoctors().then(d => {
       setDoctors(d)
     })
-  }, [])
+  }, [assignModal])
   const doctorOptions = doctors.map((p, i) => (
     <Select.Option key={i} value={p.id}>
       {p.name} {p.lastName}
