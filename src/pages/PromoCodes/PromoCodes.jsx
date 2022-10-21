@@ -9,56 +9,56 @@ import { createPromoCode, deletePromoCode, getPromoCodes } from '../../services'
 export const PromoCodes = () => {
   const columns = [
     {
-      title: 'Name',
+      title: 'Nome',
       dataIndex: 'name',
       defaultSortOrder: 'ascend',
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-      title: 'Type',
+      title: 'Tipo',
       dataIndex: 'type',
       sorter: (a, b) => a.type.localeCompare(b.type),
     },
     {
-      title: 'Nr. of Sessions',
+      title: 'N. di sessioni',
       dataIndex: 'numberOfSessions',
       width: 20,
       sorter: (a, b) => a.numberOfSessions - b.numberOfSessions,
     },
     {
-      title: 'Flat Discount',
+      title: 'Sconto fisso',
       dataIndex: 'flatDiscount',
       width: 20,
       sorter: (a, b) => a.flatDiscount - b.flatDiscount,
     },
     {
-      title: 'Percentage Discount',
+      title: 'Sconto percentuale',
       dataIndex: 'percentageDiscount',
       width: 20,
       sorter: (a, b) => a.percentageDiscount - b.percentageDiscount,
     },
     {
-      title: 'Validity from',
+      title: 'Validità da',
       dataIndex: 'from',
       sorter: (a, b) => a.from - b.from,
       render: text => <>{moment(text).format('L')}</>,
     },
     {
-      title: 'Validity to',
+      title: 'Validità a',
       dataIndex: 'until',
       sorter: (a, b) => a.until - b.until,
       render: text => <>{moment(text).format('L')}</>,
     },
     {
-      title: 'Usability',
+      title: 'Usabilità',
       dataIndex: 'usability',
     },
     {
-      title: 'Code',
+      title: 'Codice',
       dataIndex: 'code',
     },
     {
-      title: 'User',
+      title: 'Utente',
       dataIndex: 'user',
       sorter: (a, b) => a.user.localeCompare(b.user),
     },
@@ -92,17 +92,17 @@ export const PromoCodes = () => {
         ),
     },
     {
-      title: 'Action',
+      title: 'Azione',
       dataIndex: 'operation',
       key: 'operation',
       width: 2,
       render: (_, record) => (
         <Space size="0">
           <a onClick={() => handleEdit(record)} style={{ color: '#9a77cf' }}>
-            Edit
+            Modifica
           </a>
           <a onClick={() => handleDelete(record.id)} style={{ color: '#9a77cf' }}>
-            Delete
+            Elimina
           </a>
         </Space>
       ),
@@ -167,7 +167,7 @@ export const PromoCodes = () => {
           <Modal
             footer={[
               <Button key="back" onClick={handleCancel}>
-                Cancel
+                Cancella
               </Button>,
               <Button
                 form="createProductForm"
@@ -177,10 +177,10 @@ export const PromoCodes = () => {
                 loading={loading}
                 // onClick={handleOk}
               >
-                Submit
+                Crea
               </Button>,
             ]}
-            title="Create Product"
+            title="Crea Promo Codice"
             visible={createModal}
             onOk={handleOk}
             onCancel={handleCancel}
@@ -198,7 +198,7 @@ export const PromoCodes = () => {
               requiredMark={false}
             >
               <Form.Item
-                label="Name"
+                label="Nome"
                 name="name"
                 rules={[
                   {
@@ -213,12 +213,12 @@ export const PromoCodes = () => {
               <Form.Item label="Type" name="type">
                 <Radio.Group>
                   <Radio.Button value="standard">Standard</Radio.Button>
-                  <Radio.Button value="welcome">Welcome Promo</Radio.Button>
+                  <Radio.Button value="welcome">Promo di benvenuto</Radio.Button>
                 </Radio.Group>
               </Form.Item>
 
               <Form.Item
-                label="Number of Sessions"
+                label="Numero di sessioni"
                 name="numberOfSessions"
                 rules={[
                   {
@@ -230,17 +230,17 @@ export const PromoCodes = () => {
                 <Input placeholder="1,2,N" />
               </Form.Item>
 
-              <Form.Item label="Flat Discount" name="flatDiscount">
+              <Form.Item label="Sconto fisso" name="flatDiscount">
                 <Input />
               </Form.Item>
 
-              <Form.Item label="Percentage Discount" name="percentageDiscount">
+              <Form.Item label="Sconto percentuale" name="percentageDiscount">
                 <Input addonAfter="%" />
               </Form.Item>
 
               <Form.Item
                 name="from"
-                label="Validity From"
+                label="Validità da"
                 hasFeedback
                 rules={[
                   {
@@ -254,7 +254,7 @@ export const PromoCodes = () => {
 
               <Form.Item
                 name="until"
-                label="Validity To"
+                label="Validità a"
                 hasFeedback
                 rules={[
                   {
@@ -266,11 +266,11 @@ export const PromoCodes = () => {
                 <DatePicker style={{ width: '100%' }} />
               </Form.Item>
 
-              <Form.Item label="Usability" name="usability">
+              <Form.Item label="Usabilità" name="usability">
                 <Input />
               </Form.Item>
 
-              <Form.Item label="User" name="userId">
+              <Form.Item label="Utente" name="userId">
                 <Input />
               </Form.Item>
 
@@ -294,7 +294,7 @@ export const PromoCodes = () => {
           <Row style={{ paddingLeft: '100px', textAlign: 'end' }} align="middle">
             <Col flex="auto">
               <Button onClick={() => setCreateModal(true)} type="primary">
-                Create Promo Codes
+                Crea Promo Code
               </Button>
             </Col>
           </Row>

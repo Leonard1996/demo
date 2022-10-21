@@ -9,44 +9,44 @@ import { createGiftCard, deleteGiftCard, getGiftCards } from '../../services'
 export const GiftCards = () => {
   const columns = [
     {
-      title: 'Code',
+      title: 'Codice',
       dataIndex: 'code',
       defaultSortOrder: 'ascend',
       sorter: (a, b) => a.code.localeCompare(b.code),
     },
     {
-      title: 'Price',
+      title: 'Prezzo',
       dataIndex: 'price',
       sorter: (a, b) => a.price - b.price,
     },
     {
-      title: 'Validity from',
+      title: 'Validità da',
       dataIndex: 'from',
       sorter: (a, b) => a.from - b.from,
       render: text => <>{moment(text).format('L')}</>,
     },
     {
-      title: 'Validity to',
+      title: 'Validità a',
       dataIndex: 'until',
       sorter: (a, b) => a.until - b.until,
       render: text => <>{moment(text).format('L')}</>,
     },
     {
-      title: 'Redemption',
+      title: 'Riscattare',
       dataIndex: 'redemptionDate',
       width: 20,
       sorter: (a, b) => a.redemptionDate - b.redemptionDate,
       render: text => <>{text ? moment(text).format('L') : ''}</>,
     },
     {
-      title: 'Action',
+      title: 'Azione',
       dataIndex: 'operation',
       key: 'operation',
       width: 2,
       render: (_, record) => (
         <Space size="middle">
           <a onClick={() => handleDelete(record.id)} style={{ color: '#9a77cf' }}>
-            Delete
+            Elimina
           </a>
         </Space>
       ),
@@ -99,7 +99,7 @@ export const GiftCards = () => {
           <Modal
             footer={[
               <Button key="back" onClick={handleCancel}>
-                Cancel
+                Cancella
               </Button>,
               <Button
                 form="createProductForm"
@@ -109,10 +109,10 @@ export const GiftCards = () => {
                 loading={loading}
                 // onClick={handleOk}
               >
-                Submit
+                Crea
               </Button>,
             ]}
-            title="Create Product"
+            title="Crea Gift Card"
             visible={createModal}
             onOk={handleOk}
             onCancel={handleCancel}
@@ -129,7 +129,7 @@ export const GiftCards = () => {
               autoComplete="off"
               requiredMark={false}
             >
-              <Form.Item label="Price" name="price">
+              <Form.Item label="Prezzo" name="price">
                 <Input
                   addonAfter="€"
                   rules={[
@@ -143,7 +143,7 @@ export const GiftCards = () => {
 
               <Form.Item
                 name="from"
-                label="Validity From"
+                label="Validità da"
                 hasFeedback
                 rules={[
                   {
@@ -157,7 +157,7 @@ export const GiftCards = () => {
 
               <Form.Item
                 name="until"
-                label="Validity To"
+                label="Validità a"
                 hasFeedback
                 rules={[
                   {
@@ -178,7 +178,7 @@ export const GiftCards = () => {
           <Row style={{ paddingLeft: '100px', textAlign: 'end' }} align="middle">
             <Col flex="auto">
               <Button onClick={() => setCreateModal(true)} type="primary">
-                Create Gift Card
+                Crea Gift Card
               </Button>
             </Col>
           </Row>

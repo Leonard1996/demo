@@ -122,12 +122,30 @@ export const getAllDoctorsStatistics = async () => {
     })
   docs.forEach(doc => {
     const { therapist } = doc
+    const { details, ...restTh } = therapist
+    for (const k in restTh) {
+      doc[k] = restTh[k]
+    }
+    for (const k in details) {
+      doc[k] = details[k]
+    }
     doc.rate = +(therapist.rate || 0)
     doc.rate = doc.rate.toFixed(2)
     const {
       totalSessionsDoneAndMoneyEarned: { numberOfSessions = 0, totalMoneyEarned },
     } = doc
+    doc.totalPatientsActive = 0
+    doc.totalPatientsInactive = 0
+    doc.totalPatientsSolved = 0
+    if (doc.patients) {
+      doc.patients.forEach(p => {
+        const { isActive, solved } = p.patient
+        solved && doc.totalPatientsSolved++
+        isActive ? doc.totalPatientsActive++ : doc.totalPatientsInactive++
+      })
+    }
     doc.totalPatients = doc.patients?.length || 0
+
     doc.numberOfSessions = numberOfSessions
     doc.totalMoneyEarned = totalMoneyEarned || 0
   })

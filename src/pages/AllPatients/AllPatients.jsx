@@ -233,17 +233,6 @@ export const AllPatients = () => {
 
   useEffect(() => {
     let c = selectedColumns.map(k => availableColumns[k])
-    // c.push({
-    //   title: 'Action',
-    //   dataIndex: 'operation',
-    //   key: 'operation',
-    //   width: 2,
-    //   render: (_, record) => (
-    //     <a onClick={() => handleEdit(record)} style={{ color: '#9a77cf' }}>
-    //       Edit
-    //     </a>
-    //   ),
-    // })
     setColumns(c)
   }, [selectedColumns])
 

@@ -9,13 +9,13 @@ import { createProduct, getProducts } from '../../services'
 export const Products = () => {
   const columns = [
     {
-      title: 'Product Name',
+      title: 'Nome prodotto',
       dataIndex: 'name',
       defaultSortOrder: 'ascend',
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-      title: 'Type of Session',
+      title: 'Tipo di sessione',
       dataIndex: 'typeOfSession',
       width: 20,
       sorter: (a, b) => a.typeOfSession.localeCompare(b.typeOfSession),
@@ -27,30 +27,30 @@ export const Products = () => {
     //   sorter: (a, b) => a.typeOfProduct.localeCompare(b.typeOfProduct),
     // },
     {
-      title: 'Nr. of Sessions',
+      title: 'N. di sessioni',
       dataIndex: 'numberOfSessions',
       width: 20,
       sorter: (a, b) => a.numberOfSessions - b.numberOfSessions,
     },
     {
-      title: 'Validity from',
+      title: 'Validità da',
       dataIndex: 'from',
       sorter: (a, b) => a.from - b.from,
       render: text => <>{moment(text).format('L')}</>,
     },
     {
-      title: 'Validity to',
+      title: 'Validità a',
       dataIndex: 'until',
       sorter: (a, b) => a.until - b.until,
       render: text => <>{moment(text).format('L')}</>,
     },
     {
-      title: 'Price',
+      title: 'Prezzo',
       dataIndex: 'price',
       sorter: (a, b) => a.price - b.price,
     },
     {
-      title: 'Taxes',
+      title: 'Aliquota',
       dataIndex: 'tax',
       width: 20,
       sorter: (a, b) => a.tax - b.tax,
@@ -85,17 +85,17 @@ export const Products = () => {
         ),
     },
     {
-      title: 'Action',
+      title: 'Azione',
       dataIndex: 'operation',
       key: 'operation',
       width: 2,
       render: (_, record) => (
         <Space size="middle">
           <a onClick={() => handleEdit(record)} style={{ color: '#9a77cf' }}>
-            Edit
+            Modifica
           </a>
           <a onClick={() => handleClone(record)} style={{ color: '#9a77cf' }}>
-            Clone
+            Clona
           </a>
         </Space>
       ),
@@ -158,7 +158,7 @@ export const Products = () => {
           <Modal
             footer={[
               <Button key="back" onClick={handleCancel}>
-                Cancel
+                Cancella
               </Button>,
               <Button
                 form="createProductForm"
@@ -168,10 +168,10 @@ export const Products = () => {
                 loading={loading}
                 // onClick={handleOk}
               >
-                Submit
+                Crea
               </Button>,
             ]}
-            title="Create Product"
+            title="Crea Prodotto"
             visible={createModal}
             onOk={handleOk}
             onCancel={handleCancel}
@@ -189,7 +189,7 @@ export const Products = () => {
               requiredMark={false}
             >
               <Form.Item
-                label="Product Name"
+                label="Nome prodotto"
                 name="name"
                 rules={[
                   {
@@ -201,22 +201,22 @@ export const Products = () => {
                 <Input />
               </Form.Item>
 
-              <Form.Item label="Type of Product" name="typeOfProduct">
-                <Radio.Group>
-                  <Radio.Button value="standard">Standard</Radio.Button>
-                  <Radio.Button value="gift-card">Gift Card</Radio.Button>
-                </Radio.Group>
-              </Form.Item>
+              {/*<Form.Item label="Type of Product" name="typeOfProduct">*/}
+              {/*  <Radio.Group>*/}
+              {/*    <Radio.Button value="standard">Standard</Radio.Button>*/}
+              {/*    <Radio.Button value="gift-card">Gift Card</Radio.Button>*/}
+              {/*  </Radio.Group>*/}
+              {/*</Form.Item>*/}
 
-              <Form.Item label="Type of Session" name="typeOfSession">
+              <Form.Item label="Tipo di sessione" name="typeOfSession">
                 <Radio.Group>
-                  <Radio.Button value="single">Single</Radio.Button>
-                  <Radio.Button value="couple">Couple</Radio.Button>
+                  <Radio.Button value="single">Singola</Radio.Button>
+                  <Radio.Button value="couple">Copia</Radio.Button>
                 </Radio.Group>
               </Form.Item>
 
               <Form.Item
-                label="Number of Sessions"
+                label="Numero di sessioni"
                 name="numberOfSessions"
                 rules={[
                   {
@@ -230,7 +230,7 @@ export const Products = () => {
 
               <Form.Item
                 name="from"
-                label="Validity From"
+                label="Validità da"
                 hasFeedback
                 rules={[
                   {
@@ -244,7 +244,7 @@ export const Products = () => {
 
               <Form.Item
                 name="until"
-                label="Validity To"
+                label="Validità a"
                 hasFeedback
                 rules={[
                   {
@@ -256,7 +256,7 @@ export const Products = () => {
                 <DatePicker style={{ width: '100%' }} />
               </Form.Item>
 
-              <Form.Item label="Price" name="price">
+              <Form.Item label="Prezzo" name="price">
                 <Input
                   addonAfter="€"
                   rules={[
@@ -268,7 +268,7 @@ export const Products = () => {
                 />
               </Form.Item>
 
-              <Form.Item label="Taxes" name="tax">
+              <Form.Item label="Aliquota" name="tax">
                 <Input
                   addonAfter="%"
                   rules={[
@@ -282,8 +282,8 @@ export const Products = () => {
 
               <Form.Item label="Status" name="status">
                 <Radio.Group>
-                  <Radio.Button value={1}>Active</Radio.Button>
-                  <Radio.Button value={0}>Inactive</Radio.Button>
+                  <Radio.Button value={1}>Attivo</Radio.Button>
+                  <Radio.Button value={0}>Inattivo</Radio.Button>
                 </Radio.Group>
               </Form.Item>
 
@@ -300,7 +300,7 @@ export const Products = () => {
           <Row style={{ paddingLeft: '100px', textAlign: 'end' }} align="middle">
             <Col flex="auto">
               <Button onClick={() => setCreateModal(true)} type="primary">
-                Create Product
+                Crea Prodotto
               </Button>
             </Col>
           </Row>
