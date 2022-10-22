@@ -58,3 +58,10 @@ export const createSession = async value => {
     .then(response => ({ error: false, msg: response.data.message }))
     .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
 }
+
+export const addNote = async (patientId, value) => {
+  return await axios
+    .patch(`/patients/${patientId}`, value)
+    .then(response => ({ error: false, msg: response.data.message }))
+    .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
+}
