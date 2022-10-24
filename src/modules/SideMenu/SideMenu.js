@@ -39,6 +39,17 @@ const items = {
     { name: '', type: 'label' },
     { name: 'Chat', path: '/chat' },
   ],
+  [ROLES.SUBADMIN]: [
+    { name: 'Pazienti', path: '/all-patients' },
+    { name: 'Terapeuti', path: '/all-doctors' },
+    { name: 'Ordine', type: 'label' },
+    { name: 'Catalogo Prodotti', path: '/products' },
+    { name: 'Promo Code', path: '/promo-codes' },
+    { name: 'Gift Card', path: '/gift-cards' },
+    { name: 'Vendite', path: '/vendite' },
+    { name: '', type: 'label' },
+    { name: 'Chat', path: '/chat' },
+  ],
 }
 
 export const SideMenu = () => {

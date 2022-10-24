@@ -23,6 +23,7 @@ import './style.css'
 import { getAllDoctorsStatistics, updateDoctor } from '../../services'
 import moment from 'moment'
 import PropTypes from 'prop-types'
+import { getUser, ROLES } from '../../shared/utils'
 
 export const AllDoctors = () => {
   const availableColumns = {
@@ -174,6 +175,7 @@ export const AllDoctors = () => {
 
   const [createModal, setCreateModal] = useState(false)
   const [doctors, setDoctors] = useState([])
+  const { role } = getUser()
   useEffect(() => {
     getAllDoctorsStatistics().then(d => setDoctors(d))
   }, [])
@@ -317,39 +319,32 @@ export const AllDoctors = () => {
               >
                 <Input />
               </Form.Item>
-              <Form.Item
-                label="Rate"
-                name="rate"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input name',
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
+              {role === ROLES.ADMIN && (
+                <Form.Item
+                  label="Rate"
+                  name="rate"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please input name',
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              )}
+
+              {role === ROLES.ADMIN && (
+                <Form.Item label="Modify activity" name="isActive">
+                  <Radio.Group defaultValue={form.getFieldValue('isActive')}>
+                    <Radio value={1}>Activate</Radio>
+                    <Radio value={0}>Deactivate</Radio>
+                  </Radio.Group>
+                </Form.Item>
+              )}
 
               <Form.Item label="id" name="id" hidden={true}>
                 <Input />
-              </Form.Item>
-              <Form.Item
-                label="Modify activity"
-                name="isActive"
-                // rules={[
-                //   {
-                //     required: true,
-                //     defaultField
-                //     message: 'Please input name',
-                //   },
-                // ]}
-              >
-                {/* <Input /> */}
-                {/* <Radio.Group onChange={onChange} value={doc}> */}
-                <Radio.Group defaultValue={form.getFieldValue('isActive')}>
-                  <Radio value={1}>Activate</Radio>
-                  <Radio value={0}>Deactivate</Radio>
-                </Radio.Group>
               </Form.Item>
             </Form>
           </Modal>
@@ -398,6 +393,7 @@ const DetailsModal = ({ detailsModal, detailsModalClose, details = {} }) => {
   ) : (
     <></>
   )
+  const { role } = getUser()
   return (
     <Modal
       width={1200}
@@ -420,7 +416,7 @@ const DetailsModal = ({ detailsModal, detailsModalClose, details = {} }) => {
             <div>Numero di telefono: {details.phone}</div>
             <Divider style={{ margin: '10px 0' }} />
             <div style={{ fontWeight: 'bold' }}>Dati Anagrafici</div>
-            <div className="birthday">Data di nascita: {moment(birthday).format('l')}</div>
+            {role === ROLES.ADMIN && <div className="birthday">Data di nascita: {moment(birthday).format('l')}</div>}
             <div>Età: {moment().diff(birthday, 'years')} anni</div>
             <div>Genere: {details.gender}</div>
             <Divider style={{ margin: '10px 0' }} />
@@ -446,11 +442,11 @@ const DetailsModal = ({ detailsModal, detailsModalClose, details = {} }) => {
             <div>{details.type}</div>
             <Divider style={{ margin: '10px 0' }} />
             <div style={{ fontWeight: 'bold' }}>Contratto</div>
-            <div>Data inizio: {moment(createdAt).format('l')}</div>
+            {role === ROLES.ADMIN && <div>Data inizio: {moment(createdAt).format('l')}</div>}
             <div>Status: {isActive ? 'Attivo' : 'Inattivo'}</div>
             <Divider style={{ margin: '10px 0' }} />
-            <div style={{ fontWeight: 'bold' }}>Costi</div>
-            <div>Rate: {details.rate}</div>
+            {role === ROLES.ADMIN && <div style={{ fontWeight: 'bold' }}>Costi</div>}
+            {role === ROLES.ADMIN && <div>Rate: {details.rate}</div>}
             <Divider style={{ margin: '10px 0' }} />
             <div style={{ fontWeight: 'bold' }}>Statistiche</div>
             <div>Totale Sessioni: {details.numberOfSessions}</div>

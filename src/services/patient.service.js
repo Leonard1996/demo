@@ -57,3 +57,10 @@ export const getOrders = async () => {
       return []
     })
 }
+
+export const getAdmins = async () => {
+  return await axios
+    .get('/users/admins')
+    .then(response => response.data.admins)
+    .catch(e => ({ error: true, msg: e.response?.data?.error?.message || 'Something went wrong!' }))
+}

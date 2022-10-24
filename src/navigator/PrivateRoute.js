@@ -15,7 +15,7 @@ const PrivateRoute = ({ requiredRole, children }) => {
   }
   if (requiredRole) {
     const { role } = getUser()
-    if (role !== requiredRole) return <Navigate to={'/'} state={{ from: location }} />
+    if (!requiredRole.includes(role)) return <Navigate to={'/'} state={{ from: location }} />
   }
   return <>{children}</>
 }

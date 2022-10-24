@@ -22,6 +22,7 @@ import { assignDoctor, getAllDoctors, getAllPatients, getPatientDoctors } from '
 
 import './style.css'
 import { Content } from 'antd/es/layout/layout'
+import { getUser, ROLES } from '../../shared/utils'
 
 export const AllPatients = () => {
   const [patients, setPatients] = useState([])
@@ -348,6 +349,7 @@ const DetailsModal = ({ detailsModal, detailsModalClose, details = {} }) => {
     if (details.id) getPatientDoctors(details.id).then(d => setDoctors(d))
   }, [details])
   const docs = doctors.map(doc => `${doc.name} ${doc.lastName}`)
+  const { role } = getUser()
   return (
     <Modal
       width={1200}
@@ -375,13 +377,13 @@ const DetailsModal = ({ detailsModal, detailsModalClose, details = {} }) => {
             <Divider style={{ margin: '10px 0' }} />
             <div className="payment-details">
               <div style={{ fontWeight: 'bold' }}>Dati di fatturazione</div>
-              <div>Address: {address}</div>
-              <div>ZIP: {zip}</div>
+              {role === ROLES.ADMIN && <div>Address: {address}</div>}
+              {role === ROLES.ADMIN && <div>ZIP: {zip}</div>}
               <div>City: {city}</div>
             </div>
             <Divider style={{ margin: '10px 0' }} />
-            <div style={{ fontWeight: 'bold' }}>Preferenze</div>
-            <div className="newsletter">Newsletter: {newsletter ? 'SI' : 'NO'}</div>
+            {role === ROLES.ADMIN && <div style={{ fontWeight: 'bold' }}>Preferenze</div>}
+            {role === ROLES.ADMIN && <div className="newsletter">Newsletter: {newsletter ? 'SI' : 'NO'}</div>}
             {/*<Divider style={{ margin: '10px 0' }} />*/}
             {/*<div className="newsletter">Newsletter: {+newsletter ? 'SI' : 'NO'}</div>*/}
           </Space>
@@ -428,23 +430,25 @@ const DetailsModal = ({ detailsModal, detailsModalClose, details = {} }) => {
             </div>
           </Space>
         </Col>
-        <Col span={8} style={{ textAlign: 'start' }}>
-          <Space size={10} direction="vertical">
-            <div>Revenues: {details.revenue?.gross}</div>
-            <div>Crediti: {details.credit}</div>
-            <Divider style={{ margin: '10px 0' }} />
-            <div>Ordini effettuati: {details.doneOrders}</div>
-            <Divider style={{ margin: '10px 0' }} />
-            <div>Totale sedute acquistate: {details.totalPurchasedSessions}</div>
-            <div>Totale singolo sedute acquistate: {details.totalSingleSessionsPurchased}</div>
-            <div>Totale pacchetti acquistate: {details.totalMultipleSessionsPurchased}</div>
-            <Divider style={{ margin: '10px 0' }} />
-            <div>Gift cards acquistate: {details.giftCardsPurchased}</div>
-            <div>Codici sconto utilizzati: {details.hasUsedPromoCode}</div>
-            <Divider style={{ margin: '10px 0' }} />
-            <div>Costo: {details.cost}</div>
-          </Space>
-        </Col>
+        {role === ROLES.ADMIN && (
+          <Col span={8} style={{ textAlign: 'start' }}>
+            <Space size={10} direction="vertical">
+              <div>Revenues: {details.revenue?.gross}</div>
+              <div>Crediti: {details.credit}</div>
+              <Divider style={{ margin: '10px 0' }} />
+              <div>Ordini effettuati: {details.doneOrders}</div>
+              <Divider style={{ margin: '10px 0' }} />
+              <div>Totale sedute acquistate: {details.totalPurchasedSessions}</div>
+              <div>Totale singolo sedute acquistate: {details.totalSingleSessionsPurchased}</div>
+              <div>Totale pacchetti acquistate: {details.totalMultipleSessionsPurchased}</div>
+              <Divider style={{ margin: '10px 0' }} />
+              <div>Gift cards acquistate: {details.giftCardsPurchased}</div>
+              <div>Codici sconto utilizzati: {details.hasUsedPromoCode}</div>
+              <Divider style={{ margin: '10px 0' }} />
+              <div>Costo: {details.cost}</div>
+            </Space>
+          </Col>
+        )}
       </Row>
     </Modal>
   )

@@ -9,7 +9,7 @@ const PublicRoute = ({ children }) => {
   if (isLoggedIn()) {
     const { role } = getUser()
     if (role === ROLES.DOCTOR) return <Navigate to={'/schedule'} state={{ from: location }} />
-    if (role === ROLES.ADMIN) return <Navigate to={'/admin'} state={{ from: location }} />
+    if (role === ROLES.ADMIN || role === ROLES.SUBADMIN) return <Navigate to={'/admin'} state={{ from: location }} />
     return <Navigate to={'/dashboard'} state={{ from: location }} />
   }
 

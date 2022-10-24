@@ -5,7 +5,7 @@ import { ChatUI, HeaderMenu, SideMenu } from '../../modules'
 import io from 'socket.io-client'
 import './style.css'
 import { getToken, getUser, ROLES } from '../../shared/utils'
-import { getAllUsers, getMyTherapist, getPatients } from '../../services'
+import { getAdmins, getAllUsers, getMyTherapist, getPatients } from '../../services'
 import axios from 'axios'
 
 export const SocketContext = createContext({})
@@ -40,8 +40,11 @@ export const Chat = () => {
   useEffect(() => {
     const getContacts = async () => {
       let contacts = []
-      if (user.role === ROLES.PATIENT) contacts = await getMyTherapist().then(d => [d.data] || [])
-      else if (user.role === ROLES.DOCTOR) contacts = await getPatients().then(d => d.data)
+      if (user.role === ROLES.PATIENT) {
+        const therapist = await getMyTherapist().then(d => d.data)
+        const admins = await getAdmins()
+        contacts = [therapist, ...admins]
+      } else if (user.role === ROLES.DOCTOR) contacts = await getPatients().then(d => d.data)
       else contacts = await getAllUsers().then(d => d.data)
       for (const contact of contacts) {
         const room = user.role === ROLES.PATIENT ? `${user.id}-${contact.id}` : `${contact.id}-${user.id}`
