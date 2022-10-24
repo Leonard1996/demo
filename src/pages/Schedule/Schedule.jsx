@@ -19,7 +19,7 @@ export const Schedule = () => {
   useEffect(() => {
     getSessions(moment().week(week).month() + 1).then(d => {
       setEvents(d.agenda)
-      if (d.nextConfirmedSession) {
+      if (d.nextConfirmedSession && moment(d.nextConfirmedSession.endTime) > moment()) {
         setNextSession({ ...d.nextConfirmedSession, isConfirmed: 1 })
       }
     })

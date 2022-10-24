@@ -232,7 +232,7 @@ WeekDays.propTypes = {
 
 const Labels = () => {
   const startTime = moment().hour(0).minutes(0).seconds(0)
-  const times = Array(25)
+  const times = Array(24 + 1)
     .fill(0)
     .map(() => ({ startTime: startTime.add(1, 'second').clone(), endTime: startTime.add(3599, 'seconds').clone() }))
   const labels = times.map((slot, i) => (
