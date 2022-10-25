@@ -13,6 +13,7 @@ import {
   Checkbox,
   Select,
   Divider,
+  message,
 } from 'antd'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
@@ -23,9 +24,11 @@ import { assignDoctor, getAllDoctors, getAllPatients, getPatientDoctors } from '
 import './style.css'
 import { Content } from 'antd/es/layout/layout'
 import { getUser, ROLES } from '../../shared/utils'
+import { CSVLink } from 'react-csv'
 
 export const AllPatients = () => {
   const [patients, setPatients] = useState([])
+  const [patientsCSV, setPatientsCSV] = useState([])
   const [open, setOpen] = useState(false)
   const [columns, setColumns] = useState([])
 
@@ -229,7 +232,20 @@ export const AllPatients = () => {
   }
 
   useEffect(() => {
-    getAllPatients().then(d => setPatients(d))
+    getAllPatients().then(d => {
+      setPatients(d)
+      d.forEach(p => {
+        delete p.patientProfile
+        delete p.userAsPatient
+        delete p.latestDoctor
+        delete p.notes
+        for (const k in p.revenue) {
+          p[k] = p.revenue[k]
+        }
+        delete p.revenue
+      })
+      setPatientsCSV(d)
+    })
   }, [])
 
   useEffect(() => {
@@ -309,6 +325,17 @@ export const AllPatients = () => {
                   <Button type="primary">Modifica Colonne</Button>
                 </a>
               </Dropdown>
+            </Col>
+            <Col>
+              <CSVLink
+                filename={'Pazienti.csv'}
+                data={patientsCSV}
+                onClick={() => {
+                  message.success('The file is downloading')
+                }}
+              >
+                <Button type="default">Esporta CSV</Button>
+              </CSVLink>
             </Col>
           </Row>
           <Row style={{ paddingTop: '20px', paddingLeft: '100px', textAlign: 'start' }} align="middle">

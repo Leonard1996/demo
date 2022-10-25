@@ -24,6 +24,7 @@ import { getAllDoctorsStatistics, updateDoctor } from '../../services'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import { getUser, ROLES } from '../../shared/utils'
+import { CSVLink } from 'react-csv'
 
 export const AllDoctors = () => {
   const availableColumns = {
@@ -175,9 +176,22 @@ export const AllDoctors = () => {
 
   const [createModal, setCreateModal] = useState(false)
   const [doctors, setDoctors] = useState([])
+  const [doctorsCSV, setDoctorsCSV] = useState([])
   const { role } = getUser()
   useEffect(() => {
-    getAllDoctorsStatistics().then(d => setDoctors(d))
+    getAllDoctorsStatistics().then(d => {
+      setDoctors(d)
+      d.forEach(t => {
+        delete t.patientProfile
+        delete t.therapist
+        delete t.patients
+        for (const k in t.totalSessionsDoneAndMoneyEarned) {
+          t[k] = t.totalSessionsDoneAndMoneyEarned[k]
+        }
+        delete t.totalSessionsDoneAndMoneyEarned
+      })
+      setDoctorsCSV(d)
+    })
   }, [])
 
   useEffect(() => {
@@ -360,6 +374,17 @@ export const AllDoctors = () => {
                   <Button type="primary">Modifica Colonne</Button>
                 </a>
               </Dropdown>
+            </Col>
+            <Col>
+              <CSVLink
+                filename={'Terapeuti.csv'}
+                data={doctorsCSV}
+                onClick={() => {
+                  message.success('The file is downloading')
+                }}
+              >
+                <Button type="default">Esporta CSV</Button>
+              </CSVLink>
             </Col>
           </Row>
           <Row style={{ paddingTop: '20px', paddingLeft: '100px', textAlign: 'start' }} align="middle">
