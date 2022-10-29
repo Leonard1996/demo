@@ -19,7 +19,7 @@ const IntroText = (
     <br />
     Perché lavorare con noi:
     <br />
-    Ci occupiamo di tutto noi, perché tu possa concentrarti solo su ciò che è importante: i tuoi pazienti e il to
+    Ci occupiamo di tutto noi, perché tu possa concentrarti solo su ciò che è importante: i tuoi pazienti e il tuo
     lavoro.
     <br />
     Gestiamo la tua agenda in base alle disponibilità che ci vorrai e potrai fornire. <br />

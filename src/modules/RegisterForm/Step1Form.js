@@ -29,45 +29,58 @@ const Step1Form = ({ next, percentage, formData }) => {
         colon={false}
         preserve={true}
       >
-        <Form.Item label="Come ti chiami?" name="name" rules={[{ required: true, message: 'Please input your name!' }]}>
+        <Form.Item
+          label="Come ti chiami?"
+          name="name"
+          rules={[{ required: true, message: 'Per favore inserisci il tuo nome!' }]}
+        >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="Il tou cognome?"
+          label="Il tuo cognome?"
           name="lastName"
-          rules={[{ required: true, message: 'Please input your lastName!' }]}
+          rules={[{ required: true, message: 'Per favore inserisci il tuo cognome!' }]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
           name="birthday"
-          label="Quanti anni hai?"
-          tooltip="Per poter accedere ai servizi di PSIQO, devi essere maggiorenne"
+          label="La tua data di nascita?"
+          tooltip="Formato: Giorno-Mese-Anno"
           hasFeedback
           rules={[
             {
               required: true,
-              message: 'Please select age!',
+              message: 'Per poter accedere ai servizi di PSIQO, devi essere maggiorenne!',
             },
           ]}
         >
-          <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} defaultPickerValue={defaultPickerValue} />
-          {/*<Select placeholder="Please select your age">{ages}</Select>*/}
+          <DatePicker
+            placeholder="Selezionare data"
+            format="DD-MM-YYYY"
+            style={{ width: '100%' }}
+            disabledDate={disabledDate}
+            defaultPickerValue={defaultPickerValue}
+          />
         </Form.Item>
 
-        <Form.Item label="La tua email?" name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
+        <Form.Item
+          label="La tua email?"
+          name="email"
+          rules={[{ required: true, message: 'Per favore inserisci la tua email!' }]}
+        >
           <Input />
         </Form.Item>
 
         <Form.Item
           name="phone"
-          label="Il tou numero di telefono?"
+          label="Il tuo numero di telefono?"
           rules={[
             {
               required: true,
-              message: 'Please input your phone number!',
+              message: 'Per favore inserisci il tuo numero di telefono!',
             },
           ]}
         >
@@ -80,9 +93,9 @@ const Step1Form = ({ next, percentage, formData }) => {
         </Form.Item>
 
         <Form.Item
-          label="Il tuo password?"
+          label="La tua password?"
           name="password"
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          rules={[{ required: true, message: 'Per favore inserisci la tua password!' }]}
         >
           <Input.Password />
         </Form.Item>
@@ -94,7 +107,7 @@ const Step1Form = ({ next, percentage, formData }) => {
           rules={[
             {
               required: true,
-              message: 'Please confirm your password!',
+              message: 'Si prega di confermare la password!',
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
@@ -102,7 +115,7 @@ const Step1Form = ({ next, percentage, formData }) => {
                   return Promise.resolve()
                 }
 
-                return Promise.reject(new Error('The two passwords that you entered do not match!'))
+                return Promise.reject(new Error('Le due password che hai inserito non corrispondono!'))
               },
             }),
           ]}

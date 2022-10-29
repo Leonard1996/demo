@@ -1,22 +1,45 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Checkbox, Col, DatePicker, Form, Input, Radio, Row, Select, Upload } from 'antd'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import TextArea from 'antd/es/input/TextArea'
 import { PrefixSelector } from '../../shared/components'
+import { COUNTRY_REGIONS } from '../../shared/utils'
+import { UploadOutlined } from '@ant-design/icons'
 
 export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
+  const [country, setCountry] = useState('Italy')
+  const [regionOptions, setRegionOptions] = useState([])
+  useEffect(() => {
+    const regions = COUNTRY_REGIONS.filter(c => c.countryName === country)[0].regions
+    setRegionOptions(
+      regions.map(reg => (
+        <Select.Option key={reg.name} value={reg.name}>
+          {reg.name}
+        </Select.Option>
+      )),
+    )
+  }, [country])
   const disabledDate = current => {
     return current && current > moment().subtract(18, 'years').endOf('day')
   }
   const defaultPickerValue = moment().subtract(18, 'years')
 
-  const dummyReq = async ({ file, onSuccess }) => {
+  const [showUpload, setShowUpload] = useState(true)
+
+  const dummyReq = async ({ onSuccess }) => {
     setTimeout(() => {
       onSuccess('ok')
-      console.log(file)
     })
   }
+  const fileUploadChanges = async ({ fileList }) => {
+    fileList.length === 0 ? setShowUpload(true) : setShowUpload(false)
+  }
+  const stateOptions = COUNTRY_REGIONS.map(country => (
+    <Select.Option key={country.countryName} value={country.countryName}>
+      {country.countryName}
+    </Select.Option>
+  ))
   return (
     <Form
       name="basic"
@@ -24,18 +47,22 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
       labelAlign={'left'}
       labelWrap={true}
       wrapperCol={{ span: 16 }}
-      initialValues={{ remember: true }}
+      initialValues={{ remember: true, prefix: '+39' }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
       requiredMark={false}
       colon={false}
     >
-      <Form.Item label="NOME" name="name" rules={[{ required: true, message: 'Please input your name!' }]}>
+      <Form.Item label="NOME" name="name" rules={[{ required: true, message: 'Per favore inserisci il tuo nome!' }]}>
         <Input />
       </Form.Item>
 
-      <Form.Item label="COGNOME" name="lastName" rules={[{ required: true, message: 'Please input your surname!' }]}>
+      <Form.Item
+        label="COGNOME"
+        name="lastName"
+        rules={[{ required: true, message: 'Per favore inserisci il tuo cognome!' }]}
+      >
         <Input />
       </Form.Item>
 
@@ -45,7 +72,7 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         rules={[
           {
             required: true,
-            message: 'Please input your phone number!',
+            message: 'Per favore inserisci il tuo numero di telefono!',
           },
         ]}
       >
@@ -60,9 +87,15 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
       <Form.Item
         label="DATA DI NASCITA"
         name="birthday"
-        rules={[{ required: true, message: 'Please input your birthday!' }]}
+        rules={[{ required: true, message: 'Per favore inserisci il tuo data di nascita!' }]}
       >
-        <DatePicker disabledDate={disabledDate} defaultPickerValue={defaultPickerValue} />
+        <DatePicker
+          placeholder="Selezionare data"
+          format="DD-MM-YYYY"
+          style={{ width: '100%' }}
+          disabledDate={disabledDate}
+          defaultPickerValue={defaultPickerValue}
+        />
       </Form.Item>
 
       <Form.Item
@@ -71,7 +104,7 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         rules={[
           {
             required: true,
-            message: 'Please pick an item!',
+            message: 'Per favore scegli un articolo!',
           },
         ]}
       >
@@ -83,16 +116,16 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
 
       <Form.Item
         name="type"
-        label="APPROCIO TERAPEUTICO"
+        label="APPROCCIO TERAPEUTICO"
         hasFeedback
         rules={[
           {
             required: true,
-            message: 'Please select a type!',
+            message: 'Per favore scegli un articolo!',
           },
         ]}
       >
-        <Select placeholder="Please select a type">
+        <Select placeholder="Seleziona la tipologia">
           <Select.Option value="COGNITIVO-COMPORTAMENTALE">APPROCCIO COGNITIVO-COMPORTAMENTALE</Select.Option>
           <Select.Option value="SISTEMICO">APPROCCIO SISTEMICO</Select.Option>
           <Select.Option value="PSICODINAMICO">APPROCCIO PSICODINAMICO</Select.Option>
@@ -108,13 +141,12 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         rules={[
           {
             required: true,
-            message: 'Please select your state!',
+            message: 'Per favore seleziona il tuo paese!',
           },
         ]}
       >
-        <Select placeholder="Please select a type">
-          <Select.Option value="italia">ITALIA</Select.Option>
-          <Select.Option value="altro">ALTRO</Select.Option>
+        <Select onSelect={setCountry} placeholder="Seleziona la tipologia">
+          {stateOptions}
         </Select>
       </Form.Item>
 
@@ -125,14 +157,11 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         rules={[
           {
             required: true,
-            message: 'Please select your state!',
+            message: 'Per favore seleziona la province!',
           },
         ]}
       >
-        <Select placeholder="Please select a province">
-          <Select.Option value="piemonte">PIEMONTE</Select.Option>
-          <Select.Option value="toscana">TOSCANA</Select.Option>
-        </Select>
+        <Select placeholder="Seleziona la province">{regionOptions}</Select>
       </Form.Item>
 
       <Form.Item
@@ -141,7 +170,7 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         rules={[
           {
             required: true,
-            message: 'Please pick an item!',
+            message: 'Per favore scegli un articolo!',
           },
         ]}
       >
@@ -157,7 +186,7 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         rules={[
           {
             required: true,
-            message: 'Please pick an item!',
+            message: 'Per favore scegli un articolo!',
           },
         ]}
       >
@@ -173,7 +202,7 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         rules={[
           {
             required: true,
-            message: 'Please pick an item!',
+            message: 'Per favore scegli un articolo!',
           },
         ]}
       >
@@ -189,7 +218,7 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         rules={[
           {
             required: true,
-            message: 'Please pick an item!',
+            message: 'Per favore scegli un articolo!',
           },
         ]}
       >
@@ -205,7 +234,7 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         rules={[
           {
             required: true,
-            message: 'Please pick an item!',
+            message: 'Per favore scegli un articolo!',
           },
         ]}
       >
@@ -263,7 +292,7 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
             </Col>
 
             <Col span={12}>
-              <Checkbox value="PROBLEMI DICOPPIA">PROBLEMI DICOPPIA</Checkbox>
+              <Checkbox value="PROBLEMI DI COPPIA">PROBLEMI DI COPPIA</Checkbox>
             </Col>
             <Col span={12}>
               <Checkbox value="ALTRO">
@@ -284,8 +313,9 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
       </Form.Item>
 
       <Form.Item label="CARICA IL TUO CV" name="cv" valuePropName="fileCV">
-        <Upload customRequest={dummyReq} listType="text">
-          <Input />
+        <Upload onChange={fileUploadChanges} multiple={false} customRequest={dummyReq} listType="text">
+          {/*<Input />*/}
+          {showUpload && <Button icon={<UploadOutlined />}>Clic per caricare</Button>}
         </Upload>
       </Form.Item>
 
@@ -293,11 +323,15 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         <TextArea rows={4} />
       </Form.Item>
 
-      <Form.Item label="EMAIL" name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
+      <Form.Item label="EMAIL" name="email" rules={[{ required: true, message: 'Per favore inserisci la tua email!' }]}>
         <Input />
       </Form.Item>
 
-      <Form.Item label="PASSWORD" name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
+      <Form.Item
+        label="PASSWORD"
+        name="password"
+        rules={[{ required: true, message: 'Per favore inserisci la tua password!' }]}
+      >
         <Input.Password />
       </Form.Item>
 
@@ -308,7 +342,7 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
         rules={[
           {
             required: true,
-            message: 'Please confirm your password!',
+            message: 'Si prega di confermare la password!',
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
@@ -316,7 +350,7 @@ export const RegisterTherapistForm = ({ onFinish, onFinishFailed }) => {
                 return Promise.resolve()
               }
 
-              return Promise.reject(new Error('The two passwords that you entered do not match!'))
+              return Promise.reject(new Error('Le due password che hai inserito non corrispondono!'))
             },
           }),
         ]}
