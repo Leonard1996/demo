@@ -15,7 +15,7 @@ export const Landing = () => {
         <Row style={{ height: '800px' }}>
           <Col flex="auto" style={{ display: 'flex' }}>
             <div className="landingMain">
-              <Image src="/images/white-logo.png" preview={false} />
+              <Image src="https://psiqo-fe-images.s3.eu-central-1.amazonaws.com/white-logo.png" preview={false} />
               <div style={{ fontSize: '50px', fontWeight: 'bold', marginTop: '20px' }}>Passa alla terapia online!</div>
               <div style={{ fontSize: '25px' }}>
                 Raggiungi il tuo benessere mentale, con PSIQO: il servizio di consulenza psicologica 100% online, che ti
