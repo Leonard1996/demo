@@ -61,7 +61,6 @@ export const Chat = () => {
       extraHeaders: {
         Authorization: getToken(),
       },
-      path: '/chat/socket.io',
     })
     socket.on('connect', () => {
       setConnected(true)
