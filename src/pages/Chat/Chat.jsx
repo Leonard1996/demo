@@ -1,5 +1,5 @@
 import { Layout } from 'antd'
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useRef, useState } from 'react'
 import { Content } from 'antd/es/layout/layout'
 import { ChatUI, HeaderMenu, SideMenu } from '../../modules'
 import io from 'socket.io-client'
@@ -9,14 +9,13 @@ import { getAdmins, getAllUsers, getMyTherapist, getPatients } from '../../servi
 import axios from 'axios'
 
 export const SocketContext = createContext({})
-
-let socket
 export const Chat = () => {
   const user = getUser()
-  const [connected, setConnected] = useState(false)
   const [contacts, setContacts] = useState([])
   const [selectedContact, setSelectedContact] = useState()
   const [messagesList, setMessagesList] = useState([])
+
+  const socketRef = useRef(null)
 
   const sendMessage = value => {
     if (!selectedContact) return
@@ -24,8 +23,7 @@ export const Chat = () => {
       value,
       receiver: selectedContact.id,
     }
-    console.log(msg)
-    socket.emit('createMessage', msg)
+    socketRef.current.emit('createMessage', msg)
   }
 
   const clearSeenStatus = messages => {
@@ -44,69 +42,60 @@ export const Chat = () => {
         const therapist = await getMyTherapist().then(d => d.data)
         const admins = await getAdmins()
         contacts = [...admins].concat(therapist ?? [])
-      } else if (user.role === ROLES.DOCTOR) contacts = await getPatients().then(d => d.data)
-      else contacts = await getAllUsers().then(d => d.data)
+      } else if (user.role === ROLES.DOCTOR) {
+        const patients = await getPatients().then(d => d.data)
+        const admins = await getAdmins()
+        contacts = [...patients, ...admins]
+      } else contacts = await getAllUsers().then(d => d.data)
       for (const contact of contacts) {
-        const room = user.role === ROLES.PATIENT ? `${user.id}-${contact.id}` : `${contact.id}-${user.id}`
+        const room = user.role === ROLES.DOCTOR ? `${contact.id}-${user.id}` : `${user.id}-${contact.id}`
         // eslint-disable-next-line no-undef
         contact.lastMsg = await axios(`${process.env.REACT_APP_CHAT_URL}/history?room=${room}`).then(r => r.data)
       }
       setContacts(contacts)
     }
-
     getContacts().catch(e => console.error(e))
+  }, [])
 
+  useEffect(() => {
+    if (!selectedContact) return
+    const room = user.role === ROLES.DOCTOR ? `${selectedContact.id}-${user.id}` : `${user.id}-${selectedContact.id}`
     // eslint-disable-next-line no-undef
-    socket = io(process.env.REACT_APP_CHAT_URL, {
+    socketRef.current = io(process.env.REACT_APP_CHAT_URL, {
       extraHeaders: {
         Authorization: getToken(),
       },
     })
-    socket.on('connect', () => {
-      setConnected(true)
+    socketRef.current.emit('create', room)
+    socketRef.current.on('roomCreated', () => {
+      socketRef.current.emit('requestHistory', selectedContact.id)
     })
-    return () => {
-      socket.off('connect')
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!connected) return
-    const room = user.role === ROLES.PATIENT ? `${user.id}-${selectedContact.id}` : `${selectedContact.id}-${user.id}`
-    socket.emit('create', room)
-    socket.on('roomCreated', () => {
-      socket.emit('requestHistory', selectedContact.id)
+    socketRef.current.on('newMessage', message => {
+      setMessagesList(messagesList => [...messagesList, message])
+      const contactId = user.role === ROLES.DOCTOR ? room.split('-')[0] : room.split('-')[1]
+      const contact = contacts.filter(({ id }) => +id === +contactId)
+      if (!contact[0]) return
+      contact[0].lastMsg = message
+      setContacts(contacts)
+      if (user.id === message.receiver) socketRef.current.emit('seen', { ...message, seen: 1 })
     })
-    socket.on('loadHistory', messages => {
+    socketRef.current.on('loadHistory', messages => {
       delete messages.latest
       let mList = Object.values(messages).sort((firstMessage, secondMessage) => firstMessage.date - secondMessage.date)
       mList = clearSeenStatus(mList)
       setMessagesList(mList)
     })
-    socket.on('newMessage', message => {
-      console.log(message)
-      setMessagesList(messagesList => [...messagesList, message])
-      const contactId = user.role === ROLES.PATIENT ? room.split('-')[1] : room.split('-')[0]
-      const contact = contacts.filter(({ id }) => +id === +contactId)
-      if (!contact[0]) return
-      contact[0].lastMsg = message
-      setContacts(contacts)
-
-      if (user.id === message.receiver) socket.emit('seen', { ...message, seen: 1 })
-    })
-    socket.on('notifySeen', message => {
+    socketRef.current.on('notifySeen', message => {
       setMessagesList(messagesList => {
-        messagesList.forEach(msg => {
-          if (msg.date === message.date) msg.seen = 1
-        })
+        const foundMsg = messagesList.find(msg => msg.date === message.date)
+        if (!foundMsg) return
+        foundMsg.seen = 1
         const mList = clearSeenStatus(messagesList)
         return [...mList]
       })
     })
     return () => {
-      socket.off('roomCreated')
-      socket.off('loadHistory')
-      socket.off('newMessage')
+      socketRef.current.disconnect()
     }
   }, [selectedContact])
   return (

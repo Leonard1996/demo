@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { message } from 'antd'
-import { ROLES } from '../shared/utils'
 
 export const getProducts = async () => {
   return await axios
@@ -179,7 +178,7 @@ export const getAllPatients = async () => {
 export const getAllUsers = async () => {
   return await axios
     .get(`users`)
-    .then(response => ({ error: false, data: response.data.users.filter(u => u.role === ROLES.PATIENT) }))
+    .then(response => ({ error: false, data: response.data.users }))
     .catch(e => {
       message.error(e.response?.data?.error?.message || 'Something went wrong!')
       return []
