@@ -171,7 +171,7 @@ export const getAllPatients = async () => {
       patient[k] = details[k]
     }
     patient.freeTrial = userAsPatient.freeTrial
-    console.log(patient)
+    patient.id = userAsPatient.userId
   })
   return patients
 }
