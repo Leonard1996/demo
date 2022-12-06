@@ -147,6 +147,7 @@ export const getAllDoctorsStatistics = async () => {
 
     doc.numberOfSessions = numberOfSessions
     doc.totalMoneyEarned = totalMoneyEarned || 0
+    doc.id = therapist.userId
   })
   return docs
 }
