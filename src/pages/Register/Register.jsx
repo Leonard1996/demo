@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useMemo }  from 'react'
 import './style.css'
 import { Layout, Row, Col, message } from 'antd'
 // import { UserOutlined, LockOutlined, QuestionOutlined } from '@ant-design/icons'
 
 // import CopyRight from '../../shared/components/CopyRight/CopyRight'
+import { Button, Divider, notification, Space } from 'antd';
+const Context = React.createContext({
+  name: 'Default',
+});
 import { register } from '../../services'
 import { useNavigate } from 'react-router-dom'
 import { HeaderMenu, RegisterForm } from '../../modules'
@@ -18,6 +22,21 @@ const IntroText = () => {
 }
 
 export const Register = () => {
+
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement) => {
+    api.info({
+      message: `Successo`,
+      description: <Context.Consumer>{({ name }) => `Controlla la tua mail per completare la registrazione`}</Context.Consumer>,
+      placement,
+    });
+  };
+  const contextValue = useMemo(
+    () => ({
+      name: 'Ant Design',
+    }),
+    [],
+  );
   const { Content } = Layout
   const navigate = useNavigate()
 
@@ -27,7 +46,8 @@ export const Register = () => {
       return message.error(msg)
     }
     message.success(msg)
-    navigate('/login')
+    openNotification('bottomLeft')
+    // navigate('/login')
   }
   return (
     <Layout className="LoginLayout">
@@ -44,6 +64,15 @@ export const Register = () => {
           </Col>
         </Row>
       </Content>
+      <Context.Provider value={contextValue}>
+      {contextHolder}
+      {/* <Space>
+        <Button type="primary" onClick={() => openNotification('bottomLeft')}>
+          <RadiusUpleftOutlined />
+          topLeft
+        </Button>
+      </Space> */}
+      </Context.Provider>
     </Layout>
   )
 }

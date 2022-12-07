@@ -24,6 +24,7 @@ import {
   Schedule,
   ValidateUser,
 } from '../pages'
+import ResetPassword from '../pages/ResetPassword/ResetPassword'
 import { ROLES } from '../shared/utils'
 
 export const paths = Object.freeze({
@@ -183,5 +184,10 @@ export const routes = [
     name: 'ValidateUser',
     path: '/validate-user',
     element: <ValidateUser />,
+  },
+  {
+    name: 'Reset password',
+    path: '/reset-password',
+    element: <ResetPassword/>
   },
 ]
